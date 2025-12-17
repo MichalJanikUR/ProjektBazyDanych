@@ -1,0 +1,114 @@
+-- ========================================================================
+-- SKRYPT TESTOWY DLA SCHEMATU 'crud' Z WALIDACJĄ
+-- ========================================================================
+
+-- ########################################################################
+-- # 1. USERS
+-- ########################################################################
+
+-- POPRAWNE: Dodanie użytkownika
+CALL crud.insert_user('trener_arek', 'haslo123', 'arek@gym.pl', 'Arkadiusz', 'Nowak');
+
+-- BŁĄD (Walidacja email): Brak kropki lub @
+CALL crud.insert_user('bład_email', 'haslo123', 'arek@gympl', 'Jan', 'Testowy');
+
+-- BŁĄD (Walidacja unikalności): Ten sam username
+CALL crud.insert_user('trener_arek', 'inne_haslo', 'inny@email.pl', 'Marek', 'Zły');
+
+-- UPDATE: Zmiana danych
+CALL crud.update_user(1, 'arek_nowy', 'nowe_haslo', 'nowy_arek@gym.pl', 'Arkadiusz', 'Nowakowski');
+
+-- DELETE: Próba usunięcia nieistniejącego ID
+CALL crud.delete_user(999);
+
+
+-- ########################################################################
+-- # 2. MUSCLE_GROUPS
+-- ########################################################################
+
+-- POPRAWNE: Dodanie grupy
+CALL crud.insert_muscle_group('Plecy');
+CALL crud.insert_muscle_group('Nogi');
+
+-- BŁĄD (Walidacja powtórzeń): Grupa o tej nazwie (nawet małymi literami) już istnieje
+CALL crud.insert_muscle_group('plecy');
+
+-- UPDATE
+CALL crud.update_muscle_group(1, 'Góra Pleców');
+
+
+-- ########################################################################
+-- # 3. EXERCISES
+-- ########################################################################
+
+-- POPRAWNE: Dodanie ćwiczenia do grupy ID 1 (Plecy)
+CALL crud.insert_exercise('Podciąganie', 'Szeroki nachwyt', 1);
+
+-- BŁĄD (Klucz obcy): Grupa mięśniowa o ID 500 nie istnieje
+CALL crud.insert_exercise('Biceps Curl', 'Hantle', 500);
+
+
+-- ########################################################################
+-- # 4. BODY_MEASUREMENTS
+-- ########################################################################
+
+-- POPRAWNE: Nowy pomiar (Waga 85kg, Wzrost 180cm)
+CALL crud.insert_body_measurement(1, NOW(), 180.0, 85.5, 110.0, 85.0, 40.0, 60.0, 95.0);
+
+-- BŁĄD (Walidacja zakresu): Waga poza realistycznym zakresem
+CALL crud.insert_body_measurement(1, NOW(), 180.0, 500.0, 110.0, 85.0, 40.0, 60.0, 95.0);
+
+-- BŁĄD (Walidacja daty): Data z przyszłości
+CALL crud.insert_body_measurement(1, '2099-01-01 12:00:00'::timestamp, 180.0, 80.0, 100.0, 80.0, 35.0, 55.0, 90.0);
+
+
+-- ########################################################################
+-- # 5. WORKOUTS
+-- ########################################################################
+
+-- POPRAWNE: Trening dzisiaj
+CALL crud.insert_workout(1, '2025-01-01 10:00:00'::timestamp);
+
+-- BŁĄD (Walidacja chronologii): Próba dodania treningu z datą wcześniejszą niż istniejące (jeśli baza ma już nowsze wpisy)
+CALL crud.insert_workout(1, '2020-01-01 10:00:00'::timestamp);
+
+-- BŁĄD (Duplikat czasu): Trening o tej samej godzinie dla tego samego usera
+CALL crud.insert_workout(1, '2025-01-01 10:00:00'::timestamp);
+
+
+-- ########################################################################
+-- # 6. WORKOUT_EXERCISES
+-- ########################################################################
+
+-- Załóżmy: workout_id = 1, exercise_id = 1
+CALL crud.insert_workout_exercise(1, 1);
+
+
+-- ########################################################################
+-- # 7. WORKOUT_SETS
+-- ########################################################################
+
+-- POPRAWNE: Seria nr 1 dla ćwiczenia w treningu (workout_exercise_id = 1)
+CALL crud.insert_workout_set(1, 60.0, 12, 1);
+
+-- POPRAWNE: Kolejna seria (nr 2)
+CALL crud.insert_workout_set(1, 65.0, 10, 2);
+
+-- BŁĄD (Walidacja powtórzeń): Reps musi być > 0
+CALL crud.insert_workout_set(1, 60.0, 0, 3);
+
+-- BŁĄD (Nieciągłość serii): Próba dodania serii nr 5, gdy ostatnia to nr 2
+CALL crud.insert_workout_set(1, 70.0, 8, 5);
+
+
+-- ########################################################################
+-- # ODCZYT DANYCH (FUNKCJE)
+-- ########################################################################
+
+SELECT * FROM crud.get_all_users();
+SELECT * FROM crud.get_all_muscle_groups();
+SELECT * FROM crud.get_all_exercises();
+SELECT * FROM crud.get_all_body_measurements();
+SELECT * FROM crud.get_all_workouts();
+SELECT * FROM crud.get_all_workout_exercises();
+SELECT * FROM crud.get_all_workout_sets();

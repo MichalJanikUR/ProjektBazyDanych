@@ -2,12 +2,12 @@
 -- PostgreSQL database dump
 --
 
-\restrict Qy4bmO4P9g5azUjHxNLyTuvTPyLe3zDWOcZ4zPhaxAyTkgd17FWgCU4rhN02lk3
+\restrict gjQLifZhGUcFnvyMXVSzK9D3ULm12ds5ZjCnXAulyN5IWunnJGtSa0HV1aCyqrT
 
 -- Dumped from database version 18.1
 -- Dumped by pg_dump version 18.1
 
--- Started on 2025-12-16 19:17:58
+-- Started on 2025-12-17 15:08:22
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -22,7 +22,7 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --
--- TOC entry 6 (class 2615 OID 24722)
+-- TOC entry 6 (class 2615 OID 24751)
 -- Name: crud; Type: SCHEMA; Schema: -; Owner: postgres
 --
 
@@ -51,7 +51,7 @@ COMMENT ON SCHEMA public IS 'standard public schema';
 
 
 --
--- TOC entry 267 (class 1255 OID 24738)
+-- TOC entry 236 (class 1255 OID 24767)
 -- Name: delete_body_measurement(integer); Type: PROCEDURE; Schema: crud; Owner: postgres
 --
 
@@ -59,8 +59,8 @@ CREATE PROCEDURE crud.delete_body_measurement(IN p_id integer)
     LANGUAGE plpgsql
     AS $$
 BEGIN
-    DELETE FROM body_measurements
-    WHERE id = p_id;
+    DELETE FROM public.body_measurements WHERE id = p_id;
+    IF NOT FOUND THEN RAISE EXCEPTION 'Nie znaleziono pomiaru o ID %', p_id; END IF;
 END;
 $$;
 
@@ -68,7 +68,7 @@ $$;
 ALTER PROCEDURE crud.delete_body_measurement(IN p_id integer) OWNER TO postgres;
 
 --
--- TOC entry 235 (class 1255 OID 24734)
+-- TOC entry 265 (class 1255 OID 24763)
 -- Name: delete_exercise(integer); Type: PROCEDURE; Schema: crud; Owner: postgres
 --
 
@@ -76,8 +76,8 @@ CREATE PROCEDURE crud.delete_exercise(IN p_id integer)
     LANGUAGE plpgsql
     AS $$
 BEGIN
-    DELETE FROM exercises
-    WHERE id = p_id;
+    DELETE FROM public.exercises WHERE id = p_id;
+    IF NOT FOUND THEN RAISE EXCEPTION 'Nie znaleziono ćwiczenia o ID %', p_id; END IF;
 END;
 $$;
 
@@ -85,7 +85,7 @@ $$;
 ALTER PROCEDURE crud.delete_exercise(IN p_id integer) OWNER TO postgres;
 
 --
--- TOC entry 247 (class 1255 OID 24730)
+-- TOC entry 261 (class 1255 OID 24759)
 -- Name: delete_muscle_group(integer); Type: PROCEDURE; Schema: crud; Owner: postgres
 --
 
@@ -93,8 +93,12 @@ CREATE PROCEDURE crud.delete_muscle_group(IN p_id integer)
     LANGUAGE plpgsql
     AS $$
 BEGIN
-    DELETE FROM muscle_groups
-    WHERE id = p_id;
+    BEGIN
+        DELETE FROM public.muscle_groups WHERE id = p_id;
+        IF NOT FOUND THEN RAISE EXCEPTION 'Nie znaleziono grupy o ID %', p_id; END IF;
+    EXCEPTION WHEN foreign_key_violation THEN 
+        RAISE EXCEPTION 'Nie można usunąć grupy - są do niej przypisane ćwiczenia';
+    END;
 END;
 $$;
 
@@ -102,7 +106,7 @@ $$;
 ALTER PROCEDURE crud.delete_muscle_group(IN p_id integer) OWNER TO postgres;
 
 --
--- TOC entry 243 (class 1255 OID 24726)
+-- TOC entry 257 (class 1255 OID 24755)
 -- Name: delete_user(integer); Type: PROCEDURE; Schema: crud; Owner: postgres
 --
 
@@ -110,8 +114,15 @@ CREATE PROCEDURE crud.delete_user(IN p_id integer)
     LANGUAGE plpgsql
     AS $$
 BEGIN
-    DELETE FROM users
-    WHERE id = p_id;
+    IF NOT EXISTS (SELECT 1 FROM public.users WHERE id = p_id) THEN 
+        RAISE EXCEPTION 'Użytkownik o ID % nie istnieje', p_id; 
+    END IF;
+    
+    BEGIN
+        DELETE FROM public.users WHERE id = p_id;
+    EXCEPTION WHEN foreign_key_violation THEN 
+        RAISE EXCEPTION 'Nie można usunąć użytkownika - posiada powiązane dane w innych tabelach';
+    END;
 END;
 $$;
 
@@ -119,7 +130,7 @@ $$;
 ALTER PROCEDURE crud.delete_user(IN p_id integer) OWNER TO postgres;
 
 --
--- TOC entry 271 (class 1255 OID 24742)
+-- TOC entry 271 (class 1255 OID 24771)
 -- Name: delete_workout(integer); Type: PROCEDURE; Schema: crud; Owner: postgres
 --
 
@@ -127,8 +138,8 @@ CREATE PROCEDURE crud.delete_workout(IN p_id integer)
     LANGUAGE plpgsql
     AS $$
 BEGIN
-    DELETE FROM workouts
-    WHERE id = p_id;
+    DELETE FROM public.workouts WHERE id = p_id;
+    IF NOT FOUND THEN RAISE EXCEPTION 'Nie znaleziono treningu o ID %', p_id; END IF;
 END;
 $$;
 
@@ -136,7 +147,7 @@ $$;
 ALTER PROCEDURE crud.delete_workout(IN p_id integer) OWNER TO postgres;
 
 --
--- TOC entry 275 (class 1255 OID 24746)
+-- TOC entry 275 (class 1255 OID 24775)
 -- Name: delete_workout_exercise(integer); Type: PROCEDURE; Schema: crud; Owner: postgres
 --
 
@@ -144,8 +155,8 @@ CREATE PROCEDURE crud.delete_workout_exercise(IN p_id integer)
     LANGUAGE plpgsql
     AS $$
 BEGIN
-    DELETE FROM workout_exercises
-    WHERE id = p_id;
+    DELETE FROM public.workout_exercises WHERE id = p_id;
+    IF NOT FOUND THEN RAISE EXCEPTION 'Wpis o ID % nie istnieje', p_id; END IF;
 END;
 $$;
 
@@ -153,7 +164,7 @@ $$;
 ALTER PROCEDURE crud.delete_workout_exercise(IN p_id integer) OWNER TO postgres;
 
 --
--- TOC entry 279 (class 1255 OID 24750)
+-- TOC entry 279 (class 1255 OID 24779)
 -- Name: delete_workout_set(integer); Type: PROCEDURE; Schema: crud; Owner: postgres
 --
 
@@ -161,8 +172,8 @@ CREATE PROCEDURE crud.delete_workout_set(IN p_id integer)
     LANGUAGE plpgsql
     AS $$
 BEGIN
-    DELETE FROM workout_sets
-    WHERE id = p_id;
+    DELETE FROM public.workout_sets WHERE id = p_id;
+    IF NOT FOUND THEN RAISE EXCEPTION 'Seria o ID % nie istnieje', p_id; END IF;
 END;
 $$;
 
@@ -195,7 +206,7 @@ CREATE TABLE public.body_measurements (
 ALTER TABLE public.body_measurements OWNER TO postgres;
 
 --
--- TOC entry 237 (class 1255 OID 24735)
+-- TOC entry 266 (class 1255 OID 24764)
 -- Name: get_all_body_measurements(); Type: FUNCTION; Schema: crud; Owner: postgres
 --
 
@@ -203,7 +214,7 @@ CREATE FUNCTION crud.get_all_body_measurements() RETURNS SETOF public.body_measu
     LANGUAGE plpgsql
     AS $$
 BEGIN
-    RETURN QUERY SELECT * FROM body_measurements;
+    RETURN QUERY SELECT * FROM public.body_measurements;
 END;
 $$;
 
@@ -226,7 +237,7 @@ CREATE TABLE public.exercises (
 ALTER TABLE public.exercises OWNER TO postgres;
 
 --
--- TOC entry 248 (class 1255 OID 24731)
+-- TOC entry 262 (class 1255 OID 24760)
 -- Name: get_all_exercises(); Type: FUNCTION; Schema: crud; Owner: postgres
 --
 
@@ -234,7 +245,7 @@ CREATE FUNCTION crud.get_all_exercises() RETURNS SETOF public.exercises
     LANGUAGE plpgsql
     AS $$
 BEGIN
-    RETURN QUERY SELECT * FROM exercises;
+    RETURN QUERY SELECT * FROM public.exercises;
 END;
 $$;
 
@@ -255,7 +266,7 @@ CREATE TABLE public.muscle_groups (
 ALTER TABLE public.muscle_groups OWNER TO postgres;
 
 --
--- TOC entry 244 (class 1255 OID 24727)
+-- TOC entry 258 (class 1255 OID 24756)
 -- Name: get_all_muscle_groups(); Type: FUNCTION; Schema: crud; Owner: postgres
 --
 
@@ -263,7 +274,7 @@ CREATE FUNCTION crud.get_all_muscle_groups() RETURNS SETOF public.muscle_groups
     LANGUAGE plpgsql
     AS $$
 BEGIN
-    RETURN QUERY SELECT * FROM muscle_groups;
+    RETURN QUERY SELECT * FROM public.muscle_groups;
 END;
 $$;
 
@@ -288,7 +299,7 @@ CREATE TABLE public.users (
 ALTER TABLE public.users OWNER TO postgres;
 
 --
--- TOC entry 236 (class 1255 OID 24723)
+-- TOC entry 235 (class 1255 OID 24752)
 -- Name: get_all_users(); Type: FUNCTION; Schema: crud; Owner: postgres
 --
 
@@ -296,7 +307,7 @@ CREATE FUNCTION crud.get_all_users() RETURNS SETOF public.users
     LANGUAGE plpgsql
     AS $$
 BEGIN
-    RETURN QUERY SELECT * FROM users;
+    RETURN QUERY SELECT * FROM public.users;
 END;
 $$;
 
@@ -318,7 +329,7 @@ CREATE TABLE public.workout_exercises (
 ALTER TABLE public.workout_exercises OWNER TO postgres;
 
 --
--- TOC entry 272 (class 1255 OID 24743)
+-- TOC entry 272 (class 1255 OID 24772)
 -- Name: get_all_workout_exercises(); Type: FUNCTION; Schema: crud; Owner: postgres
 --
 
@@ -326,7 +337,7 @@ CREATE FUNCTION crud.get_all_workout_exercises() RETURNS SETOF public.workout_ex
     LANGUAGE plpgsql
     AS $$
 BEGIN
-    RETURN QUERY SELECT * FROM workout_exercises;
+    RETURN QUERY SELECT * FROM public.workout_exercises;
 END;
 $$;
 
@@ -350,7 +361,7 @@ CREATE TABLE public.workout_sets (
 ALTER TABLE public.workout_sets OWNER TO postgres;
 
 --
--- TOC entry 276 (class 1255 OID 24747)
+-- TOC entry 276 (class 1255 OID 24776)
 -- Name: get_all_workout_sets(); Type: FUNCTION; Schema: crud; Owner: postgres
 --
 
@@ -358,7 +369,7 @@ CREATE FUNCTION crud.get_all_workout_sets() RETURNS SETOF public.workout_sets
     LANGUAGE plpgsql
     AS $$
 BEGIN
-    RETURN QUERY SELECT * FROM workout_sets;
+    RETURN QUERY SELECT * FROM public.workout_sets;
 END;
 $$;
 
@@ -380,7 +391,7 @@ CREATE TABLE public.workouts (
 ALTER TABLE public.workouts OWNER TO postgres;
 
 --
--- TOC entry 268 (class 1255 OID 24739)
+-- TOC entry 237 (class 1255 OID 24768)
 -- Name: get_all_workouts(); Type: FUNCTION; Schema: crud; Owner: postgres
 --
 
@@ -388,7 +399,7 @@ CREATE FUNCTION crud.get_all_workouts() RETURNS SETOF public.workouts
     LANGUAGE plpgsql
     AS $$
 BEGIN
-    RETURN QUERY SELECT * FROM workouts;
+    RETURN QUERY SELECT * FROM public.workouts;
 END;
 $$;
 
@@ -396,7 +407,7 @@ $$;
 ALTER FUNCTION crud.get_all_workouts() OWNER TO postgres;
 
 --
--- TOC entry 265 (class 1255 OID 24736)
+-- TOC entry 267 (class 1255 OID 24765)
 -- Name: insert_body_measurement(integer, timestamp without time zone, double precision, double precision, double precision, double precision, double precision, double precision, double precision); Type: PROCEDURE; Schema: crud; Owner: postgres
 --
 
@@ -404,7 +415,12 @@ CREATE PROCEDURE crud.insert_body_measurement(IN p_user_id integer, IN p_date ti
     LANGUAGE plpgsql
     AS $$
 BEGIN
-    INSERT INTO body_measurements (user_id, date, height, weight, chest, waist, biceps, thighs, hips)
+    IF p_height < 50 OR p_height > 250 THEN RAISE EXCEPTION 'Wzrost poza realistycznym zakresem (50-250)'; END IF;
+    IF p_weight < 30 OR p_weight > 300 THEN RAISE EXCEPTION 'Waga poza realistycznym zakresem (30-300)'; END IF;
+    IF p_date > NOW() THEN RAISE EXCEPTION 'Data pomiaru nie może być z przyszłości'; END IF;
+    IF p_chest <= 0 OR p_waist <= 0 OR p_biceps <= 0 THEN RAISE EXCEPTION 'Obwody muszą być większe od 0'; END IF;
+
+    INSERT INTO public.body_measurements (user_id, date, height, weight, chest, waist, biceps, thighs, hips)
     VALUES (p_user_id, p_date, p_height, p_weight, p_chest, p_waist, p_biceps, p_thighs, p_hips);
 END;
 $$;
@@ -413,7 +429,7 @@ $$;
 ALTER PROCEDURE crud.insert_body_measurement(IN p_user_id integer, IN p_date timestamp without time zone, IN p_height double precision, IN p_weight double precision, IN p_chest double precision, IN p_waist double precision, IN p_biceps double precision, IN p_thighs double precision, IN p_hips double precision) OWNER TO postgres;
 
 --
--- TOC entry 249 (class 1255 OID 24732)
+-- TOC entry 263 (class 1255 OID 24761)
 -- Name: insert_exercise(character varying, text, integer); Type: PROCEDURE; Schema: crud; Owner: postgres
 --
 
@@ -421,8 +437,10 @@ CREATE PROCEDURE crud.insert_exercise(IN p_name character varying, IN p_descript
     LANGUAGE plpgsql
     AS $$
 BEGIN
-    INSERT INTO exercises (name, description, muscle_group_id)
-    VALUES (p_name, p_description, p_muscle_group_id);
+    IF NOT EXISTS (SELECT 1 FROM public.muscle_groups WHERE id = p_muscle_group_id) THEN
+        RAISE EXCEPTION 'Grupa mięśniowa o ID % nie istnieje', p_muscle_group_id;
+    END IF;
+    INSERT INTO public.exercises (name, description, muscle_group_id) VALUES (p_name, p_description, p_muscle_group_id);
 END;
 $$;
 
@@ -430,7 +448,7 @@ $$;
 ALTER PROCEDURE crud.insert_exercise(IN p_name character varying, IN p_description text, IN p_muscle_group_id integer) OWNER TO postgres;
 
 --
--- TOC entry 245 (class 1255 OID 24728)
+-- TOC entry 259 (class 1255 OID 24757)
 -- Name: insert_muscle_group(character varying); Type: PROCEDURE; Schema: crud; Owner: postgres
 --
 
@@ -438,8 +456,10 @@ CREATE PROCEDURE crud.insert_muscle_group(IN p_name character varying)
     LANGUAGE plpgsql
     AS $$
 BEGIN
-    INSERT INTO muscle_groups (name)
-    VALUES (p_name);
+    IF EXISTS (SELECT 1 FROM public.muscle_groups WHERE LOWER(name) = LOWER(p_name)) THEN 
+        RAISE EXCEPTION 'Grupa mięśniowa % już istnieje', p_name; 
+    END IF;
+    INSERT INTO public.muscle_groups (name) VALUES (p_name);
 END;
 $$;
 
@@ -447,7 +467,7 @@ $$;
 ALTER PROCEDURE crud.insert_muscle_group(IN p_name character varying) OWNER TO postgres;
 
 --
--- TOC entry 239 (class 1255 OID 24724)
+-- TOC entry 255 (class 1255 OID 24753)
 -- Name: insert_user(character varying, character varying, character varying, character varying, character varying); Type: PROCEDURE; Schema: crud; Owner: postgres
 --
 
@@ -455,7 +475,19 @@ CREATE PROCEDURE crud.insert_user(IN p_username character varying, IN p_password
     LANGUAGE plpgsql
     AS $$
 BEGIN
-    INSERT INTO users (username, password, email, first_name, last_name)
+    IF p_email NOT LIKE '%@%.%' THEN 
+        RAISE EXCEPTION 'Niepoprawny format email: %', p_email; 
+    END IF;
+
+    IF EXISTS (SELECT 1 FROM public.users WHERE username = p_username) THEN 
+        RAISE EXCEPTION 'Użytkownik % już istnieje', p_username; 
+    END IF;
+
+    IF EXISTS (SELECT 1 FROM public.users WHERE email = p_email) THEN 
+        RAISE EXCEPTION 'Email % jest już zajęty', p_email; 
+    END IF;
+
+    INSERT INTO public.users (username, password, email, first_name, last_name)
     VALUES (p_username, p_password, p_email, p_first_name, p_last_name);
 END;
 $$;
@@ -464,7 +496,7 @@ $$;
 ALTER PROCEDURE crud.insert_user(IN p_username character varying, IN p_password character varying, IN p_email character varying, IN p_first_name character varying, IN p_last_name character varying) OWNER TO postgres;
 
 --
--- TOC entry 269 (class 1255 OID 24740)
+-- TOC entry 269 (class 1255 OID 24769)
 -- Name: insert_workout(integer, timestamp without time zone); Type: PROCEDURE; Schema: crud; Owner: postgres
 --
 
@@ -472,8 +504,13 @@ CREATE PROCEDURE crud.insert_workout(IN p_user_id integer, IN p_date timestamp w
     LANGUAGE plpgsql
     AS $$
 BEGIN
-    INSERT INTO workouts (user_id, date)
-    VALUES (p_user_id, p_date);
+    IF EXISTS (SELECT 1 FROM public.workouts WHERE user_id = p_user_id AND date = p_date) THEN 
+        RAISE EXCEPTION 'Trening dla tego użytkownika o tej samej godzinie już istnieje'; 
+    END IF;
+    IF EXISTS (SELECT 1 FROM public.workouts WHERE user_id = p_user_id AND date > p_date) THEN
+        RAISE EXCEPTION 'Nie można dodać treningu z datą wcześniejszą niż ostatnie wpisy';
+    END IF;
+    INSERT INTO public.workouts (user_id, date) VALUES (p_user_id, p_date);
 END;
 $$;
 
@@ -481,7 +518,7 @@ $$;
 ALTER PROCEDURE crud.insert_workout(IN p_user_id integer, IN p_date timestamp without time zone) OWNER TO postgres;
 
 --
--- TOC entry 273 (class 1255 OID 24744)
+-- TOC entry 273 (class 1255 OID 24773)
 -- Name: insert_workout_exercise(integer, integer); Type: PROCEDURE; Schema: crud; Owner: postgres
 --
 
@@ -489,8 +526,13 @@ CREATE PROCEDURE crud.insert_workout_exercise(IN p_workout_id integer, IN p_exer
     LANGUAGE plpgsql
     AS $$
 BEGIN
-    INSERT INTO workout_exercises (workout_id, exercise_id)
-    VALUES (p_workout_id, p_exercise_id);
+    IF NOT EXISTS (SELECT 1 FROM public.workouts WHERE id = p_workout_id) THEN 
+        RAISE EXCEPTION 'Trening o ID % nie istnieje', p_workout_id; 
+    END IF;
+    IF NOT EXISTS (SELECT 1 FROM public.exercises WHERE id = p_exercise_id) THEN 
+        RAISE EXCEPTION 'Ćwiczenie o ID % nie istnieje', p_exercise_id; 
+    END IF;
+    INSERT INTO public.workout_exercises (workout_id, exercise_id) VALUES (p_workout_id, p_exercise_id);
 END;
 $$;
 
@@ -498,15 +540,25 @@ $$;
 ALTER PROCEDURE crud.insert_workout_exercise(IN p_workout_id integer, IN p_exercise_id integer) OWNER TO postgres;
 
 --
--- TOC entry 277 (class 1255 OID 24748)
+-- TOC entry 277 (class 1255 OID 24777)
 -- Name: insert_workout_set(integer, double precision, integer, integer); Type: PROCEDURE; Schema: crud; Owner: postgres
 --
 
 CREATE PROCEDURE crud.insert_workout_set(IN p_workout_exercise_id integer, IN p_weight double precision, IN p_reps integer, IN p_set_number integer)
     LANGUAGE plpgsql
     AS $$
+DECLARE
+    v_last_set INT;
 BEGIN
-    INSERT INTO workout_sets (workout_exercise_id, weight, reps, set_number)
+    IF p_reps <= 0 THEN RAISE EXCEPTION 'Liczba powtórzeń musi być większa od 0'; END IF;
+    IF p_weight < 0 THEN RAISE EXCEPTION 'Ciężar nie może być ujemny'; END IF;
+    
+    SELECT MAX(set_number) INTO v_last_set FROM public.workout_sets WHERE workout_exercise_id = p_workout_exercise_id;
+    IF v_last_set IS NOT NULL AND p_set_number != v_last_set + 1 THEN
+        RAISE EXCEPTION 'Nieciągłość serii. Ostatnia seria to %, próbujesz dodać %', v_last_set, p_set_number;
+    END IF;
+
+    INSERT INTO public.workout_sets (workout_exercise_id, weight, reps, set_number)
     VALUES (p_workout_exercise_id, p_weight, p_reps, p_set_number);
 END;
 $$;
@@ -515,7 +567,7 @@ $$;
 ALTER PROCEDURE crud.insert_workout_set(IN p_workout_exercise_id integer, IN p_weight double precision, IN p_reps integer, IN p_set_number integer) OWNER TO postgres;
 
 --
--- TOC entry 266 (class 1255 OID 24737)
+-- TOC entry 268 (class 1255 OID 24766)
 -- Name: update_body_measurement(integer, integer, timestamp without time zone, double precision, double precision, double precision, double precision, double precision, double precision, double precision); Type: PROCEDURE; Schema: crud; Owner: postgres
 --
 
@@ -523,17 +575,12 @@ CREATE PROCEDURE crud.update_body_measurement(IN p_id integer, IN p_user_id inte
     LANGUAGE plpgsql
     AS $$
 BEGIN
-    UPDATE body_measurements
-    SET
-        user_id = p_user_id,
-        date = p_date,
-        height = p_height,
-        weight = p_weight,
-        chest = p_chest,
-        waist = p_waist,
-        biceps = p_biceps,
-        thighs = p_thighs,
-        hips = p_hips
+    IF NOT EXISTS (SELECT 1 FROM public.body_measurements WHERE id = p_id) THEN 
+        RAISE EXCEPTION 'Nie znaleziono pomiaru o ID %', p_id; 
+    END IF;
+    UPDATE public.body_measurements SET 
+        user_id = p_user_id, date = p_date, height = p_height, weight = p_weight, 
+        chest = p_chest, waist = p_waist, biceps = p_biceps, thighs = p_thighs, hips = p_hips
     WHERE id = p_id;
 END;
 $$;
@@ -542,7 +589,7 @@ $$;
 ALTER PROCEDURE crud.update_body_measurement(IN p_id integer, IN p_user_id integer, IN p_date timestamp without time zone, IN p_height double precision, IN p_weight double precision, IN p_chest double precision, IN p_waist double precision, IN p_biceps double precision, IN p_thighs double precision, IN p_hips double precision) OWNER TO postgres;
 
 --
--- TOC entry 250 (class 1255 OID 24733)
+-- TOC entry 264 (class 1255 OID 24762)
 -- Name: update_exercise(integer, character varying, text, integer); Type: PROCEDURE; Schema: crud; Owner: postgres
 --
 
@@ -550,12 +597,13 @@ CREATE PROCEDURE crud.update_exercise(IN p_id integer, IN p_name character varyi
     LANGUAGE plpgsql
     AS $$
 BEGIN
-    UPDATE exercises
-    SET
-        name = p_name,
-        description = p_description,
-        muscle_group_id = p_muscle_group_id
-    WHERE id = p_id;
+    IF NOT EXISTS (SELECT 1 FROM public.exercises WHERE id = p_id) THEN 
+        RAISE EXCEPTION 'Nie znaleziono ćwiczenia o ID %', p_id; 
+    END IF;
+    IF NOT EXISTS (SELECT 1 FROM public.muscle_groups WHERE id = p_muscle_group_id) THEN
+        RAISE EXCEPTION 'Grupa mięśniowa o ID % nie istnieje', p_muscle_group_id;
+    END IF;
+    UPDATE public.exercises SET name = p_name, description = p_description, muscle_group_id = p_muscle_group_id WHERE id = p_id;
 END;
 $$;
 
@@ -563,7 +611,7 @@ $$;
 ALTER PROCEDURE crud.update_exercise(IN p_id integer, IN p_name character varying, IN p_description text, IN p_muscle_group_id integer) OWNER TO postgres;
 
 --
--- TOC entry 246 (class 1255 OID 24729)
+-- TOC entry 260 (class 1255 OID 24758)
 -- Name: update_muscle_group(integer, character varying); Type: PROCEDURE; Schema: crud; Owner: postgres
 --
 
@@ -571,10 +619,10 @@ CREATE PROCEDURE crud.update_muscle_group(IN p_id integer, IN p_name character v
     LANGUAGE plpgsql
     AS $$
 BEGIN
-    UPDATE muscle_groups
-    SET
-        name = p_name
-    WHERE id = p_id;
+    IF NOT EXISTS (SELECT 1 FROM public.muscle_groups WHERE id = p_id) THEN 
+        RAISE EXCEPTION 'Nie znaleziono grupy o ID %', p_id; 
+    END IF;
+    UPDATE public.muscle_groups SET name = p_name WHERE id = p_id;
 END;
 $$;
 
@@ -582,7 +630,7 @@ $$;
 ALTER PROCEDURE crud.update_muscle_group(IN p_id integer, IN p_name character varying) OWNER TO postgres;
 
 --
--- TOC entry 242 (class 1255 OID 24725)
+-- TOC entry 256 (class 1255 OID 24754)
 -- Name: update_user(integer, character varying, character varying, character varying, character varying, character varying); Type: PROCEDURE; Schema: crud; Owner: postgres
 --
 
@@ -590,13 +638,13 @@ CREATE PROCEDURE crud.update_user(IN p_id integer, IN p_username character varyi
     LANGUAGE plpgsql
     AS $$
 BEGIN
-    UPDATE users
-    SET
-        username = p_username,
-        password = p_password,
-        email = p_email,
-        first_name = p_first_name,
-        last_name = p_last_name
+    IF NOT EXISTS (SELECT 1 FROM public.users WHERE id = p_id) THEN 
+        RAISE EXCEPTION 'Nie znaleziono użytkownika o ID %', p_id; 
+    END IF;
+
+    UPDATE public.users SET
+        username = p_username, password = p_password, email = p_email, 
+        first_name = p_first_name, last_name = p_last_name
     WHERE id = p_id;
 END;
 $$;
@@ -605,7 +653,7 @@ $$;
 ALTER PROCEDURE crud.update_user(IN p_id integer, IN p_username character varying, IN p_password character varying, IN p_email character varying, IN p_first_name character varying, IN p_last_name character varying) OWNER TO postgres;
 
 --
--- TOC entry 270 (class 1255 OID 24741)
+-- TOC entry 270 (class 1255 OID 24770)
 -- Name: update_workout(integer, integer, timestamp without time zone); Type: PROCEDURE; Schema: crud; Owner: postgres
 --
 
@@ -613,11 +661,10 @@ CREATE PROCEDURE crud.update_workout(IN p_id integer, IN p_user_id integer, IN p
     LANGUAGE plpgsql
     AS $$
 BEGIN
-    UPDATE workouts
-    SET
-        user_id = p_user_id,
-        date = p_date
-    WHERE id = p_id;
+    IF NOT EXISTS (SELECT 1 FROM public.workouts WHERE id = p_id) THEN 
+        RAISE EXCEPTION 'Nie znaleziono treningu o ID %', p_id; 
+    END IF;
+    UPDATE public.workouts SET user_id = p_user_id, date = p_date WHERE id = p_id;
 END;
 $$;
 
@@ -625,7 +672,7 @@ $$;
 ALTER PROCEDURE crud.update_workout(IN p_id integer, IN p_user_id integer, IN p_date timestamp without time zone) OWNER TO postgres;
 
 --
--- TOC entry 274 (class 1255 OID 24745)
+-- TOC entry 274 (class 1255 OID 24774)
 -- Name: update_workout_exercise(integer, integer, integer); Type: PROCEDURE; Schema: crud; Owner: postgres
 --
 
@@ -633,11 +680,10 @@ CREATE PROCEDURE crud.update_workout_exercise(IN p_id integer, IN p_workout_id i
     LANGUAGE plpgsql
     AS $$
 BEGIN
-    UPDATE workout_exercises
-    SET
-        workout_id = p_workout_id,
-        exercise_id = p_exercise_id
-    WHERE id = p_id;
+    IF NOT EXISTS (SELECT 1 FROM public.workout_exercises WHERE id = p_id) THEN 
+        RAISE EXCEPTION 'Wpis workout_exercise o ID % nie istnieje', p_id; 
+    END IF;
+    UPDATE public.workout_exercises SET workout_id = p_workout_id, exercise_id = p_exercise_id WHERE id = p_id;
 END;
 $$;
 
@@ -645,7 +691,7 @@ $$;
 ALTER PROCEDURE crud.update_workout_exercise(IN p_id integer, IN p_workout_id integer, IN p_exercise_id integer) OWNER TO postgres;
 
 --
--- TOC entry 278 (class 1255 OID 24749)
+-- TOC entry 278 (class 1255 OID 24778)
 -- Name: update_workout_set(integer, integer, double precision, integer, integer); Type: PROCEDURE; Schema: crud; Owner: postgres
 --
 
@@ -653,12 +699,12 @@ CREATE PROCEDURE crud.update_workout_set(IN p_id integer, IN p_workout_exercise_
     LANGUAGE plpgsql
     AS $$
 BEGIN
-    UPDATE workout_sets
-    SET
-        workout_exercise_id = p_workout_exercise_id,
-        weight = p_weight,
-        reps = p_reps,
-        set_number = p_set_number
+    IF NOT EXISTS (SELECT 1 FROM public.workout_sets WHERE id = p_id) THEN 
+        RAISE EXCEPTION 'Seria o ID % nie istnieje', p_id; 
+    END IF;
+    IF p_reps <= 0 THEN RAISE EXCEPTION 'Liczba powtórzeń musi być większa od 0'; END IF;
+    UPDATE public.workout_sets SET 
+        workout_exercise_id = p_workout_exercise_id, weight = p_weight, reps = p_reps, set_number = p_set_number 
     WHERE id = p_id;
 END;
 $$;
@@ -667,7 +713,7 @@ $$;
 ALTER PROCEDURE crud.update_workout_set(IN p_id integer, IN p_workout_exercise_id integer, IN p_weight double precision, IN p_reps integer, IN p_set_number integer) OWNER TO postgres;
 
 --
--- TOC entry 240 (class 1255 OID 16511)
+-- TOC entry 239 (class 1255 OID 16511)
 -- Name: create_body_measurement(integer, timestamp without time zone, double precision, double precision, double precision, double precision, double precision, double precision, double precision); Type: PROCEDURE; Schema: public; Owner: postgres
 --
 
@@ -712,7 +758,7 @@ $$;
 ALTER PROCEDURE public.create_user(IN p_username character varying, IN p_password character varying, IN p_email character varying, IN p_first_name character varying, IN p_last_name character varying, OUT p_user_id integer) OWNER TO postgres;
 
 --
--- TOC entry 241 (class 1255 OID 16517)
+-- TOC entry 240 (class 1255 OID 16517)
 -- Name: get_detailed_workout(integer, integer); Type: FUNCTION; Schema: public; Owner: postgres
 --
 
@@ -745,7 +791,7 @@ $$;
 ALTER FUNCTION public.get_detailed_workout(p_user_id integer, p_workout_id integer) OWNER TO postgres;
 
 --
--- TOC entry 263 (class 1255 OID 16516)
+-- TOC entry 253 (class 1255 OID 16516)
 -- Name: get_exercises_by_muscle_group(character varying); Type: FUNCTION; Schema: public; Owner: postgres
 --
 
@@ -770,7 +816,7 @@ $$;
 ALTER FUNCTION public.get_exercises_by_muscle_group(p_muscle_group_name character varying) OWNER TO postgres;
 
 --
--- TOC entry 264 (class 1255 OID 16514)
+-- TOC entry 254 (class 1255 OID 16514)
 -- Name: get_user_measurements(integer); Type: FUNCTION; Schema: public; Owner: postgres
 --
 
@@ -816,7 +862,7 @@ $$;
 ALTER FUNCTION public.login_by_username(p_username character varying, p_password character varying) OWNER TO postgres;
 
 --
--- TOC entry 262 (class 1255 OID 16512)
+-- TOC entry 252 (class 1255 OID 16512)
 -- Name: update_body_measurement(integer, double precision, double precision, double precision, double precision, double precision, double precision, double precision); Type: PROCEDURE; Schema: public; Owner: postgres
 --
 
@@ -2220,11 +2266,11 @@ ALTER TABLE ONLY public.workouts
     ADD CONSTRAINT workouts_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id);
 
 
--- Completed on 2025-12-16 19:17:58
+-- Completed on 2025-12-17 15:08:23
 
 --
 -- PostgreSQL database dump complete
 --
 
-\unrestrict Qy4bmO4P9g5azUjHxNLyTuvTPyLe3zDWOcZ4zPhaxAyTkgd17FWgCU4rhN02lk3
+\unrestrict gjQLifZhGUcFnvyMXVSzK9D3ULm12ds5ZjCnXAulyN5IWunnJGtSa0HV1aCyqrT
 

@@ -1,0 +1,57 @@
+==========================================================================
+PROJEKT: SYSTEM TRENINGOWY - LOGIKA BIZNESOWA (10 ALGORYTMÓW PL/pgSQL)
+==========================================================================
+
+Poniższe algorytmy zostały zaimplementowane jako funkcje i procedury w schemacie 'crud'.
+Wykraczają one poza zwykłe zapytania SELECT, realizując złożone kroki decyzyjne.
+
+1. ALGORYTM OBLICZANIA OBJĘTOŚCI (Training Volume)
+   - Cel: Analiza pracy wykonanej na ostatniej sesji danego ćwiczenia.
+   - Kroki: Identyfikacja ostatniego treningu (date DESC), pobranie wszystkich 
+     serii i wyliczenie sumy iloczynów (ciężar * powtórzenia).
+
+2. ALGORYTM ESTYMACJI SIŁY MAKSYMALNEJ (Estimated 1PR)
+   - Cel: Wyznaczenie rekordu życiowego bez konieczności podnoszenia max. ciężaru.
+   - Kroki: Przeskanowanie całej historii ćwiczenia, zastosowanie wzoru Brzyckiego 
+     [1PR = weight * (36 / (37 - reps))] i zwrócenie najwyższego wyniku.
+
+3. ALGORYTM SUGEROWANEJ PROGRESJI (+2.5kg)
+   - Cel: Inteligentne podpowiadanie obciążeń na następny trening.
+   - Kroki: Analiza ostatniej sesji. Jeśli we wszystkich seriach wykonano założoną 
+     liczbę powtórzeń, algorytm zwraca rekomendację zwiększenia obciążenia.
+
+4. KLASYFIKACJA TYPU PLANU (FBW vs SPLIT)
+   - Cel: Automatyczne rozpoznanie systemu treningowego użytkownika.
+   - Kroki: Analiza zaangażowanych grup mięśniowych w skali tygodnia. Jeśli każda 
+     partia występuje na każdym treningu - klasyfikuje jako FBW, w przeciwnym razie SPLIT.
+
+5. DETEKTOR PRZETRENOWANIA (Over Training Alert)
+   - Cel: Ochrona użytkownika przed kontuzją i zmęczeniem centralnego układu nerwowego.
+   - Kroki: Porównanie średniej objętości z 3 ostatnich sesji z dzisiejszym wynikiem. 
+     Jeśli spadek siły przekracza 15%, procedura generuje alert o potrzebie odpoczynku.
+
+6. TRACKER CIĄGŁOŚCI (Streak Tracker)
+   - Cel: Monitorowanie regularności i motywowanie użytkownika.
+   - Kroki: Pętla sprawdzająca daty treningów wstecz. Liczy dni/tygodnie aktywności 
+     bez przerw dłuższych niż założony limit (np. 4 dni).
+
+7. WSKAŹNIK INTENSYWNOŚCI (Volume Per Minute - VPM)
+    - Cel: Ocena gęstości treningowej i efektywności przerw między seriami.
+    - Kroki: Obliczenie czasu trwania sesji (od pierwszej do ostatniej serii) 
+      i podzielenie całkowitej objętości przez ten czas.
+
+8. INTELIGENTNE KLONOWANIE TRENINGU (Workout Template Manager)
+   - Cel: Automatyzacja wprowadzania danych dla stałych planów treningowych.
+   - Kroki: Procedura kopiuje strukturę ćwiczeń z poprzedniej sesji, ustawiając 
+     ciężary i powtórzenia z ostatniego razu jako punkt wyjścia dla nowego wpisu.
+
+9. DYNAMICZNY KALKULATOR KALORII (TDEE Estimator)
+   - Cel: Wyznaczenie zapotrzebowania kalorycznego na podstawie aktywności i wagi.
+   - Kroki: Pobranie aktualnej wagi z tabeli pomiarów oraz średniej liczby treningów 
+     z ostatnich 14 dni. Wyliczenie zapotrzebowania (BMR * Activity Factor).
+
+10. ANALIZA BALANSU MIĘŚNIOWEGO (Structural Balance Check)
+   - Cel: Zapobieganie dysproporcjom siłowym i wadom postawy.
+   - Kroki: Porównanie sumy wykonanych serii na grupy antagonistyczne (np. Klatka/Plecy). 
+     Zwraca raport, czy stosunek objętości jest bezpieczny dla zdrowia stawów.
+==========================================================================
