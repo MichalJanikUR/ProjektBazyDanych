@@ -1,31 +1,33 @@
 <?php
-include 'includes/auth.php'; // Obsługuje session_start i sprawdzanie logowania
+include 'includes/auth.php'; 
 include 'includes/db.php';
 
 $user_id = $_SESSION['user_id'];
 
-// --- LOGIKA DANYCH ---
 try {
-    // Streak
+    // 1. Streak
     $stmt = $pdo->prepare("SELECT crud.calculate_workout_streak(:user_id, 4) as streak");
     $stmt->execute(['user_id' => $user_id]);
     $current_streak = $stmt->fetchColumn() ?: 0;
 
-    // Typ Treningu
+    // 2. Typ Treningu
     $stmt = $pdo->prepare("SELECT public.detect_training_split(:user_id) as training_type");
     $stmt->execute(['user_id' => $user_id]);
     $training_type = $stmt->fetchColumn() ?: 'Brak treningów';
 
-    // TDEE / Kalorie
-    $stmt = $pdo->prepare("SELECT public.calculate_user_tdee(:user_id) as tdee");
-    $stmt->execute(['user_id' => $user_id]);
-    $calories_today = $stmt->fetchColumn() ?: 0;
+    // 3. Kalorie (Zoptymalizowane wywołanie nowej funkcji)
+    $stmt = $pdo->prepare("SELECT recommended_calories FROM public.calculate_user_diet_calories(:id)");
+    $stmt->execute(['id' => $user_id]);
+    $calories_today = $stmt->fetchColumn() ?: 2000; // Domyślnie 2000 jeśli brak danych
+    $stmt = $pdo->prepare("SELECT * FROM public.get_user_macros(:id)");
+$stmt->execute(['id' => $user_id]);
+$macro_data = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    // Listy do wykresu
+    // 4. Listy do wykresu
     $muscle_groups = $pdo->query("SELECT * FROM public.muscle_groups ORDER BY name ASC")->fetchAll(PDO::FETCH_ASSOC);
     $exercises_list = $pdo->query("SELECT id, name, muscle_group_id FROM public.exercises ORDER BY name ASC")->fetchAll(PDO::FETCH_ASSOC);
 
-    // Dane wykresu
+    // 5. Dane wykresu
     $exercise_id = $_GET['exercise_id'] ?? 6; 
     $stmt = $pdo->prepare("SELECT * FROM public.get_exercise_volume_progression(:user_id, :ex_id)");
     $stmt->execute(['user_id' => $user_id, 'ex_id' => $exercise_id]);
@@ -78,10 +80,12 @@ try {
                 <div class="card-data"><span class="label">Streak</span><span class="value"><?php echo $current_streak; ?> dni</span></div>
             </div>
 
-            <div class="info-card" onclick="openGoalModal()" style="cursor: pointer;">
-                <i class="fa-solid fa-fire icon-gradient"></i>
-                <div class="card-data"><span class="label">Twój Cel</span><span class="value"><?php echo $calories_today; ?> <small>kcal</small></span></div>
-            </div>
+            <div class="info-card calorie-card-trigger"> <i class="fa-solid fa-fire icon-gradient"></i>
+    <div class="card-data">
+        <span class="label">Twój Cel</span>
+        <span class="value"><?php echo $calories_today; ?> <small>kcal</small></span>
+    </div>
+</div>
         </section>
 
         <section class="chart-section">
@@ -119,34 +123,66 @@ try {
             </div>
         </section>
 
-        <section class="action-section">
-            <button class="main-cta-btn"><i class="fa-solid fa-plus"></i> ROZPOCZNIJ TRENING</button>
-        </section>
+<section class="action-section">
+    <a href="workout.php" class="main-cta-btn" id="start-workout-btn" style="text-decoration: none;">
+        <i class="fa-solid fa-play"></i> ROZPOCZNIJ TRENING
+    </a>
+</section>
+
+<div id="macroModal" class="modal-overlay" onclick="closeMacroModal(event)">
+    <div class="modal-card macro-modal-card" onclick="event.stopPropagation()">
+        <div class="modal-header">
+            <h3><i class="fa-solid fa-chart-pie"></i> Twoje Makro</h3>
+            <button type="button" class="close-btn" onclick="closeMacroModal()">&times;</button>
+        </div>
+        
+        <div class="macro-details-grid">
+            <div class="macro-detail-item">
+                <span class="macro-dot protein"></span>
+                <div class="macro-info">
+                    <span class="m-label">Białko</span>
+                    <span class="m-val"><?php echo $macro_data['protein_g'] ?? 0; ?> <small>g</small></span>
+                </div>
+            </div>
+            <div class="macro-detail-item">
+                <span class="macro-dot fat"></span>
+                <div class="macro-info">
+                    <span class="m-label">Tłuszcze</span>
+                    <span class="m-val"><?php echo $macro_data['fat_g'] ?? 0; ?> <small>g</small></span>
+                </div>
+            </div>
+            <div class="macro-detail-item">
+                <span class="macro-dot carbs"></span>
+                <div class="macro-info">
+                    <span class="m-label">Węglowodany</span>
+                    <span class="m-val"><?php echo $macro_data['carbs_g'] ?? 0; ?> <small>g</small></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="macro-total-footer">
+            <span>Suma kalorii:</span>
+            <strong><?php echo $calories_today; ?> kcal</strong>
+        </div>
+    </div>
+</div>
 
     </main>
 
     <?php include 'includes/navbar.php'; ?>
 
-    <div id="goalModal" class="modal">
-        <div class="modal-content">
-            <h3>Wybierz swój cel</h3>
-            <button onclick="updateGoal('Cut')" class="goal-btn cut">Redukcja (-500 kcal)</button>
-            <button onclick="updateGoal('Maintenance')" class="goal-btn">Utrzymanie (0 kcal)</button>
-            <button onclick="updateGoal('Bulk')" class="goal-btn bulk">Masa (+300 kcal)</button>
-            <button onclick="closeGoalModal()" class="close-btn">Anuluj</button>
-        </div>
-    </div>
-
 <script>
-        const allExercises = <?php echo json_encode($exercises_list); ?>;
-        const chartLabels = <?php echo json_encode($chart_labels); ?>;
-        const chartData = <?php echo json_encode($chart_data); ?>;
-        const currentExerciseId = <?php echo (int)$exercise_id; ?>;
-    </script>
+    const allExercises = <?php echo json_encode($exercises_list); ?>;
+    const chartLabels = <?php echo json_encode($chart_labels); ?>;
+    const chartData = <?php echo json_encode($chart_data); ?>;
+    const currentExerciseId = <?php echo (int)$exercise_id; ?>;
+    const currentUserId = <?php echo json_encode($_SESSION['user_id']); ?>;
+</script>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script src="js/goals.js?v=<?php echo time(); ?>"></script>
 <script src="js/dashboard.js?v=<?php echo time(); ?>"></script>
+
 </body>
 </html>

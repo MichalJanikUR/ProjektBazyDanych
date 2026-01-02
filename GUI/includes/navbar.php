@@ -12,8 +12,8 @@
         <i class="fa-solid fa-chart-line"></i>
         <span>Progres</span>
     </a>
-    <a href="measurements.php" class="nav-item <?php echo ($current_page == 'measurements.php') ? 'active' : ''; ?>">
-        <i class="fa-solid fa-ruler-combined"></i>
-        <span>Pomiary</span>
+    <a href="diet.php" class="nav-item <?php echo ($current_page == 'diet.php') ? 'active' : ''; ?>">
+        <i class="fa-solid fa-utensils"></i>
+        <span>Dieta</span>
     </a>
 </nav>

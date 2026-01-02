@@ -1,0 +1,26 @@
+Wykorzystywane bezpośrednio w Dashboardzie i sekcji Dieta:
+get_user_measurements(p_user_id): Pobiera z bazy ostatnie zapisane obwody i parametry użytkownika, aby wyświetlić je w kafelkach podsumowania.
+
+calculate_user_bf(p_user_id): Pobiera aktualne wymiary z bazy i na ich podstawie wylicza użytkownikowi procentową zawartość tkanki tłuszczowej.
+
+calculate_user_diet_calories(p_user_id): Pobiera dane o wadze, wzroście i celu użytkownika, a następnie wylicza mu dobowe zapotrzebowanie kaloryczne.
+
+get_user_macros(p_user_id): Pobiera z bazy gotowy podział na gramaturę białek, tłuszczy i węglowodanów przypisany do profilu użytkownika.
+
+update_user_measurements(...): Przyjmuje nowe liczby wpisane przez użytkownika w modalu i aktualizuje rekordy w bazie danych, nadpisując stare pomiary.
+
+Wykorzystywane w module treningowym i progresie:
+detect_training_split(p_user_id): Przeszukuje historię treningów z bazy i na podstawie częstotliwości ćwiczonych partii wylicza użytkownikowi, jakim systemem obecnie trenuje (np. Push/Pull/Legs czy FBW).
+
+get_exercise_volume_progression(p_user_id, p_exercise_id): Pobiera historyczne serie dla konkretnego ćwiczenia i wylicza użytkownikowi zmianę objętości (ciężar × powtórzenia) w czasie, co pozwala generować wykresy progresu.
+
+get_user_workout_history(p_user_id): Pobiera z bazy pełną listę archiwalnych sesji treningowych wraz z datami i nazwami planów.
+
+get_last_exercise_stats(...): Wyciąga z bazy wyniki z ostatniego treningu dla danej serii, aby wyświetlić użytkownikowi jego poprzednie rekordy jako punkt odniesienia.
+
+save_complete_workout(...): Przesyła gotowy zestaw danych o wykonanych ćwiczeniach i czasie trwania sesji, tworząc nowy wpis w historii użytkownika.
+
+Pozostałe funkcje systemowe:
+login_by_username(...): Pobiera z bazy zahashowane hasło przypisane do loginu i sprawdza, czy użytkownik może uzyskać dostęp do panelu.
+
+get_exercises_by_muscle_group(...): Pobiera z bazy listę wszystkich dostępnych ćwiczeń przypisanych do konkretnej grupy mięśniowej wybranej przez użytkownika.

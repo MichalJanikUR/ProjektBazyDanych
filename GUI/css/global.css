@@ -1,3 +1,4 @@
+
 :root {
     --bg-color: #1b1b1b;
     --nav-bg: #1a1b1e;
@@ -311,4 +312,30 @@ body {
     background: #1e1f21; /* Ciemne tło listy */
     color: white;
     padding: 10px;
+}
+
+/* --- GLOBALNY RESET RAMEK I OBRYSÓW --- */
+
+/* 1. Usuwamy niebieską/przerywaną ramkę przy klikaniu w cokolwiek (linki, przyciski, divy z onclick) */
+*:focus {
+    outline: none !important;
+}
+
+/* 2. Naprawiamy specyficzny problem z przyciskami, które mogą dziedziczyć dziwne style */
+button, a {
+    -webkit-tap-highlight-color: transparent; /* Usuwa szary prostokąt na telefonach */
+    outline: none !important;
+    border: none; /* Jeśli przycisk ma domyślną ramkę systemową */
+}
+
+/* 3. Jeśli używasz divów jako przycisków (z onclick), przeglądarka czasem traktuje je jak pola tekstowe */
+div[onclick] {
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* 4. Dodatkowy fix dla Twoich kart ćwiczeń, żeby nic nie "wystawało" */
+.exercise-summary-card {
+    outline: none !important;
+    /* Upewniamy się, że ramka jest tylko taka, jaką zdefiniowałeś */
+    border: 1px solid #333 !important; 
 }

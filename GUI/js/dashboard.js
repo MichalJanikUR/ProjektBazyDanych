@@ -78,3 +78,64 @@ if (canvasElement && chartData.length > 0) {
         }
     });
 }
+
+// --- OBSŁUGA TRENINGU W TOKU ---
+function checkActiveWorkout() {
+    if (typeof currentUserId === 'undefined') return;
+
+    const storageKey = `activeWorkout_${currentUserId}`;
+    const activeWorkout = localStorage.getItem(storageKey);
+    const btn = document.getElementById('start-workout-btn');
+    
+    if (activeWorkout && btn) {
+        try {
+            const data = JSON.parse(activeWorkout);
+            if (data && Array.isArray(data) && data.length > 0) {
+                btn.innerHTML = '<i class="fa-solid fa-play"></i> KONTYNUUJ TRENING';
+                btn.style.background = 'linear-gradient(135deg, #f1c40f, #f39c12)';
+                btn.style.boxShadow = '0 4px 15px rgba(243, 156, 18, 0.4)';
+            }
+        } catch (e) {
+            console.error("Błąd parsowania treningu:", e);
+        }
+    }
+}
+
+// --- OBSŁUGA MODALA MAKROSKŁADNIKÓW ---
+function openMacroModal() {
+    const modal = document.getElementById('macroModal');
+    if (modal) {
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+}
+
+function closeMacroModal(event) {
+    const modal = document.getElementById('macroModal');
+    if (!modal) return;
+
+    // Zamyka jeśli wywołano bez eventu (przycisk X) lub kliknięto w tło (overlay)
+    if (!event || event.target.id === 'macroModal' || event.target.classList.contains('close-btn')) {
+        modal.classList.remove('active');
+        document.body.style.overflow = 'auto';
+    }
+}
+
+// --- INICJALIZACJA ---
+document.addEventListener('DOMContentLoaded', function() {
+    // 1. Sprawdź czy jest aktywny trening
+    checkActiveWorkout();
+
+    // 2. Podepnij kliknięcie w kartę kalorii
+    const calorieCard = document.querySelector('.dashboard-grid .info-card:nth-child(2)');
+    if (calorieCard) {
+        calorieCard.style.cursor = 'pointer';
+        calorieCard.addEventListener('click', openMacroModal);
+    }
+
+    // 3. Obsługa zamykania modala (X w nagłówku)
+    const closeBtn = document.querySelector('#macroModal .close-btn');
+    if (closeBtn) {
+        closeBtn.addEventListener('click', () => closeMacroModal());
+    }
+});
