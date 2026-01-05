@@ -1,47 +1,55 @@
-// --- 1. LOGIKA FILTROWANIA I ZAZNACZANIA ---
 const muscleSelect = document.getElementById('muscleGroupSelect');
 const exSelect = document.getElementById('exerciseSelect');
 
-/**
- * Funkcja wypełnia listę ćwiczeń dla danej partii
- */
-function populateExercises(mgId, selectedExId = null) {
-    exSelect.innerHTML = '<option value="">Wybierz ćwiczenie</option>';
+function populateExercises(mgId) {
+    // Zapamiętujemy obecne ćwiczenie, żeby go nie stracić przy resecie (opcjonalnie)
+    const currentExId = new URLSearchParams(window.location.search).get('exercise_id');
     
+    exSelect.innerHTML = '<option value="">Wybierz ćwiczenie</option>';
     if (!mgId) return;
 
     const filtered = allExercises.filter(ex => ex.muscle_group_id == mgId);
-    
     filtered.forEach(ex => {
         const opt = document.createElement('option');
         opt.value = ex.id;
         opt.text = ex.name;
-        if (selectedExId && ex.id == selectedExId) {
-            opt.selected = true;
-        }
+        if (ex.id == currentExId) opt.selected = true;
         exSelect.add(opt);
     });
 }
 
-// Inicjalizacja przy starcie
-if (muscleSelect && muscleSelect.value) {
-    populateExercises(muscleSelect.value, currentExerciseId);
-}
+// Obsługa zmiany partii
+muscleSelect.addEventListener('change', function() {
+    populateExercises(this.value);
+});
 
-// Eventy
-if (muscleSelect) {
-    muscleSelect.addEventListener('change', function() {
-        populateExercises(this.value);
-    });
-}
+// Obsługa zmiany ćwiczenia -> Przeładowanie
+exSelect.addEventListener('change', function() {
+    if (this.value) {
+        window.location.href = 'dashboard.php?exercise_id=' + this.value;
+    }
+});
 
-if (exSelect) {
-    exSelect.addEventListener('change', function() {
-        if (this.value) {
-            window.location.href = 'dashboard.php?exercise_id=' + this.value;
+// --- POPRAWIONA INICJALIZACJA PRZY STARCIE ---
+document.addEventListener('DOMContentLoaded', function() {
+    const urlExId = getUrlParam('exercise_id');
+
+    if (urlExId) {
+        // 1. Znajdź ćwiczenie w liście, aby wiedzieć jaką ma partię
+        const currentEx = allExercises.find(ex => ex.id == urlExId);
+        
+        if (currentEx) {
+            // 2. Ustaw select partii mięśniowej
+            muscleSelect.value = currentEx.muscle_group_id;
+            
+            // 3. Załaduj ćwiczenia dla tej partii i zaznacz właściwe
+            populateExercises(currentEx.muscle_group_id, urlExId);
         }
-    });
-}
+    } else if (muscleSelect && muscleSelect.value) {
+        // Fallback dla domyślnego ładowania (np. id=6 z PHP)
+        populateExercises(muscleSelect.value, currentExerciseId);
+    }
+});
 
 // --- 2. KONFIGURACJA WYKRESU ---
 const canvasElement = document.getElementById('volumeChart');

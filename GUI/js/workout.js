@@ -9,6 +9,21 @@ document.addEventListener('DOMContentLoaded', () => {
     startTimer(); 
 });
 
+// Kod do umieszczenia w pliku dashboard.js lub na dole dashboard.php
+document.addEventListener('DOMContentLoaded', () => {
+    const currentUserId = document.body.dataset.userId; // upewnij się, że masz ID usera
+    const storageKey = `activeWorkout_${currentUserId}`;
+    const timerKey = `workoutStartTime_${currentUserId}`;
+    
+    const workoutData = localStorage.getItem(storageKey);
+    
+    // Jeśli w pamięci nie ma żadnych ćwiczeń (null lub pusty array), usuwamy timer
+    if (!workoutData || JSON.parse(workoutData).length === 0) {
+        localStorage.removeItem(timerKey);
+        localStorage.removeItem(storageKey);
+    }
+});
+
 function saveToLocalStorage() {
     localStorage.setItem(storageKey, JSON.stringify(currentWorkout));
 }
@@ -69,8 +84,11 @@ function selectExercise(id, name) {
     document.getElementById('exercise-id-input').value = id;
     document.getElementById('selected-exercise-label').innerText = name;
     
-    // Na start pobieramy placeholdery dla pierwszej serii
+    // 1. Pobieramy placeholdery
     updatePlaceholders(id, 1);
+    
+    // 2. Pobieramy poradę trenera na podstawie algorytmu PROGRESSION
+    updateCoachAdvice(id);
     
     updateSetCounter();
     updateCurrentExerciseSetsUI(); 
@@ -235,7 +253,12 @@ function updateActiveWorkoutUI() {
 
 function finishWorkout() {
     if (currentWorkout.length === 0) {
-        alert("Dodaj przynajmniej jedno ćwiczenie!");
+        // Zamiast tylko alertu, dajemy opcję wyjścia z resetem
+        if (confirm("Nie dodałeś żadnych ćwiczeń. Czy chcesz wyjść i zresetować stoper?")) {
+            localStorage.removeItem(storageKey);
+            localStorage.removeItem(timerKey);
+            window.location.href = 'dashboard.php';
+        }
         return;
     }
     
@@ -283,4 +306,68 @@ function startTimer() {
     };
     update();
     setInterval(update, 1000);
+}
+
+// Nowa funkcja generująca komunikaty trenera
+function updateCoachAdvice(exerciseId) {
+    const container = document.getElementById('coach-advice-container');
+    const textEl = document.getElementById('coach-text');
+    const bubble = document.getElementById('coach-bubble');
+
+    fetch(`get_coach_advice.php?exercise_id=${exerciseId}`)
+        .then(res => res.json())
+        .then(data => {
+            container.style.display = 'block';
+            let message = "";
+            let borderColor = "#57ca22";
+            let bgColor = "rgba(87, 202, 34, 0.1)";
+
+            switch(data.status) {
+                case 'PROGRESS':
+                    message = "Świetna forma! Na ostatnim treningu objętość wzrosła. Spróbuj utrzymać ten ciężar lub dodaj 1-2kg.";
+                    break;
+                case 'STAGNATION':
+                    message = "Wynik identyczny jak ostatnio. Czas na przełamanie! Spróbuj zrobić chociaż jedno powtórzenie więcej.";
+                    borderColor = "#f1c40f"; // Żółty
+                    bgColor = "rgba(241, 196, 15, 0.1)";
+                    break;
+                case 'REGRESSION':
+                    message = "Ostatnio było nieco słabiej. Skup się na technice i spróbuj wrócić do swoich poprzednich wyników.";
+                    borderColor = "#e74c3c"; // Czerwony
+                    bgColor = "rgba(231, 76, 60, 0.1)";
+                    break;
+                case 'NEW':
+                    message = "To nowe ćwiczenie lub brakuje danych. Daj z siebie wszystko, by ustanowić solidną bazę!";
+                    borderColor = "#3498db"; // Niebieski
+                    bgColor = "rgba(52, 152, 219, 0.1)";
+                    break;
+                default:
+                    container.style.display = 'none';
+            }
+
+            textEl.innerText = message;
+            bubble.style.borderColor = borderColor;
+            bubble.style.background = bgColor;
+        })
+        .catch(() => container.style.display = 'none');
+}
+
+// Ta funkcja czyści timer i localStorage jeśli trening jest pusty lub po potwierdzeniu
+function cancelWorkout() {
+    // Sprawdzamy czy są jakiekolwiek dodane ćwiczenia w currentWorkout
+    const hasData = currentWorkout && currentWorkout.length > 0;
+
+    if (!hasData) {
+        // Jeśli nie ma danych, czyścimy timer i sesję bez pytania
+        localStorage.removeItem(storageKey);
+        localStorage.removeItem(timerKey);
+        window.location.href = 'dashboard.php';
+    } else {
+        // Jeśli są dane, pytamy użytkownika o potwierdzenie
+        if (confirm("Masz dodane ćwiczenia w tej sesji. Czy na pewno chcesz przerwać trening i zresetować stoper? Wszystkie dzisiejsze serie zostaną utracone.")) {
+            localStorage.removeItem(storageKey);
+            localStorage.removeItem(timerKey);
+            window.location.href = 'dashboard.php';
+        }
+    }
 }

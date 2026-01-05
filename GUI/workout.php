@@ -97,18 +97,22 @@ $user_id = $_SESSION['user_id'];
         <div class="workout-main-wrapper">
             
             <div id="step-workout-session" class="workout-step active">
-                <div id="active-workout-log">
-                    <p style="color: var(--text-dim);">Brak ćwiczeń w tej sesji.</p>
-                </div>
-                
-                <button class="btn-basic" onclick="showStep('muscle-groups')">
-                    <i class="fa-solid fa-plus"></i> DODAJ ĆWICZENIE
-                </button>
+    <div id="active-workout-log">
+        <p style="color: var(--text-dim);">Brak ćwiczeń w tej sesji.</p>
+    </div>
+    
+    <button class="btn-basic" onclick="showStep('muscle-groups')">
+        <i class="fa-solid fa-plus"></i> DODAJ ĆWICZENIE
+    </button>
 
-                <button onclick="finishWorkout()" class="btn-finish" style="margin-top: 20px;">
-                    ZAKOŃCZ I ZAPISZ TRENING
-                </button>
-            </div>
+    <button onclick="finishWorkout()" class="btn-finish" style="margin-top: 20px;">
+        ZAKOŃCZ I ZAPISZ TRENING
+    </button>
+
+    <button onclick="cancelWorkout()" class="btn-cancel-session">
+        <i class="fa-solid fa-trash-can"></i> Porzuć ten trening i zresetuj czas
+    </button>
+</div>
 
             <div id="step-muscle-groups" class="workout-step" style="display:none;">
                 <button class="back-btn" onclick="showStep('workout-session')">
@@ -154,6 +158,17 @@ $user_id = $_SESSION['user_id'];
                 
                 <h3 id="selected-exercise-label" style="text-align:center; color:white; margin-bottom: 5px;"></h3>
                 <p id="set-counter" style="text-align:center; color:var(--accent-color); font-weight: bold; margin-bottom: 15px;">Seria #1</p>
+
+                        <h3 id="selected-exercise-label" style="text-align:center; color:white; margin-bottom: 5px;"></h3>
+
+<div id="coach-advice-container" style="margin: 15px 0; display: none;">
+    <div id="coach-bubble" style="background: rgba(87, 202, 34, 0.1); border: 1px solid var(--accent-color); border-radius: 15px; padding: 12px; display: flex; align-items: center; gap: 12px;">
+        <i class="fa-solid fa-robot" style="color: var(--accent-color); font-size: 1.2rem;"></i>
+        <p id="coach-text" style="color: white; font-size: 0.85rem; margin: 0; line-height: 1.4;"></p>
+    </div>
+</div>
+
+<p id="set-counter" style="text-align:center; color:var(--accent-color); font-weight: bold; margin-bottom: 15px;">Seria #1</p>
 
                 <form id="logSetForm">
                     <input type="hidden" id="exercise-id-input" name="exercise_id">

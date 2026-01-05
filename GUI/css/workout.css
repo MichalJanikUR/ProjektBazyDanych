@@ -134,3 +134,51 @@
     cursor: pointer;
     margin-bottom: 15px;
 }
+.workout-session-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    padding: 10px 0;
+    margin-bottom: 30px;
+}
+
+.btn-cancel-session {
+    width: 100%;
+    background: transparent;
+    border: none;
+    color: #666; /* Przygaszony kolor */
+    padding: 12px;
+    margin-top: 15px;
+    font-size: 0.8rem;
+    font-family: 'Poppins', sans-serif;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+}
+
+.btn-cancel-session i {
+    font-size: 0.9rem;
+}
+
+.btn-cancel-session:hover {
+    color: #ff4444; /* Zmienia się na czerwony po najechaniu */
+}
+
+.btn-cancel-session:active {
+    transform: scale(0.98);
+}
+
+/* Stylizacja timera, aby był bardziej widoczny */
+#workout-timer {
+    background: rgba(87, 202, 34, 0.1);
+    padding: 4px 12px;
+    border-radius: 10px;
+    margin-top: 5px;
+    letter-spacing: 1px;
+    border: 1px solid rgba(87, 202, 34, 0.2);
+}
