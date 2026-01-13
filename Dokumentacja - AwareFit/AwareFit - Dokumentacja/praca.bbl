@@ -1,0 +1,32 @@
+\begin{thebibliography}{1}
+
+\bibitem{chartjs}
+Chart.js Contributors.
+\newblock Chart.js - open source html5 charts for wordpress, drupal, react and
+  more, 2025.
+\newblock Biblioteka wykorzystana do generowania interaktywnych wykresów
+  progresji treningowej.
+
+\bibitem{google_fonts_poppins}
+Google Fonts.
+\newblock Poppins font family, 2026.
+\newblock Źródło rodziny czcionek wykorzystanej w typografii systemu.
+
+\bibitem{freepik}
+Freepik.
+\newblock Zestaw ikon oraz grafik wykorzystanych w interfejsie aplikacji
+  awarefit, 2025.
+\newblock Zasoby poddane edycji w programie GIMP w celu zapewnienia spójności
+  wizualnej.
+
+\bibitem{postgresql_doc}
+PostgreSQL Global~Development Group.
+\newblock Postgresql 16 documentation, 2024.
+
+\bibitem{github_repo}
+M.~Hędrzak, O. oraz~Janik.
+\newblock Projektbazydanych - dokumentacja techniczna i kod źródłowy
+  aplikacji awarefit, 2026.
+\newblock Główne repozytorium projektu w serwisie GitHub.
+
+\end{thebibliography}

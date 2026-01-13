@@ -1,0 +1,284 @@
+/* --- ISTNIEJĄCE STYLE --- */
+.app-content {
+    padding: 120px 20px 110px;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Karta Diety */
+.diet-summary-card {
+    background: var(--card-bg);
+    border: 1px solid #2a2a2a;
+    border-radius: 25px;
+    padding: 20px;
+    text-align: center;
+    margin-bottom: 12px;
+    border: 1px solid transparent;
+    background: linear-gradient(#1a1b1d, #1a1b1d) padding-box,
+                var(--accent-gradient) border-box;
+}
+
+.diet-label { font-size: 0.75rem; color: var(--text-dim); text-transform: uppercase; }
+.diet-kcal { 
+    font-size: 2.2rem; 
+    font-weight: 800; 
+    color: #fff; 
+    margin: 5px 0; 
+    background: var(--accent-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.diet-kcal small { font-size: 0.9rem; color: var(--text-dim); }
+
+.diet-macros-mini {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    margin-top: 15px;
+}
+
+.mini-macro {
+    background: #1a1b1d;
+    padding: 10px 5px;
+    border-radius: 15px;
+    border: 1px solid #2a2a2a;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.macro-name { font-size: 0.65rem; color: var(--text-dim); text-transform: uppercase; margin-bottom: 2px; }
+.mini-macro strong { font-size: 0.9rem; color: #fff; }
+
+.bf-highlight-card {
+    background: var(--accent-gradient);
+    border-radius: 25px;
+    padding: 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    color: white;
+}
+
+.bf-label { display: block; font-size: 0.9rem; opacity: 0.9; }
+.bf-value { display: block; font-size: 2.5rem; font-weight: 800; margin: 5px 0; }
+.bf-desc { font-size: 0.75rem; opacity: 0.8; }
+.bf-icon i { font-size: 3.5rem; opacity: 0.3; }
+
+/* KOMPAKTOWA SIATKA (4 kolumny) */
+.measurements-grid.compact {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+}
+
+.m-card {
+    background: var(--card-bg);
+    border: 1px solid #2a2a2a;
+    padding: 12px 8px;
+    border-radius: 18px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.m-label { color: var(--text-dim); font-size: 0.65rem; text-transform: uppercase; margin-bottom: 4px; }
+.m-val { font-size: 1rem; font-weight: 700; }
+.m-val small { font-size: 0.7rem; font-weight: 400; opacity: 0.6; }
+
+.last-update { text-align: center; color: var(--text-dim); font-size: 0.75rem; margin-top: 15px; }
+
+.main-cta-btn {
+    width: 100%;
+    padding: 20px;
+    background: var(--accent-gradient);
+    border: none;
+    border-radius: 18px;
+    color: #ffffff;
+    font-weight: 800;
+    font-size: 1rem;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 10px;
+    cursor: pointer;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 25px 0 15px;
+    padding: 0 5px;
+}
+
+.section-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 0.5px;
+    position: relative;
+    padding-left: 15px;
+}
+
+.section-title::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 4px;
+    height: 18px;
+    background: var(--accent-gradient);
+    border-radius: 10px;
+}
+
+.section-badge {
+    font-size: 0.65rem;
+    background: #1a1b1d;
+    color: var(--text-dim);
+    padding: 4px 10px;
+    text-transform: uppercase;
+    border-radius: 5px;
+}
+
+/* --- NOWE DODANE STYLE DLA MODALA FULL-SCREEN --- */
+/* Overlay - tło */
+.modal-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(5px); /* Rozmycie tła aplikacji */
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    padding: 20px;
+}
+
+.modal-overlay.active { display: flex; }
+
+/* Okno Modala */
+.modal-card {
+    background: #121212;
+    width: 100%;
+    max-width: 450px;
+    border-radius: 25px;
+    border: 2px solid var(--accent-color, #57ca22); /* Twoja zielona obramówka */
+    padding: 25px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+    animation: modalPop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes modalPop {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.modal-header h3 { color: #fff; font-size: 1.2rem; margin: 0; }
+.close-btn { background: none; border: none; color: #666; font-size: 1.8rem; cursor: pointer; }
+
+/* Siatka pomiarów - 2 kolumny dla oszczędności miejsca */
+.measurements-input-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.modal-divider {
+    border: 0;
+    border-top: 1px solid #2a2a2a;
+    margin: 20px 0;
+}
+
+.strategy-section {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Pola tekstowe wewnątrz modala */
+.modal-card .input-group label {
+    font-size: 0.65rem;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    margin-bottom: 5px;
+    display: block;
+}
+
+.modal-card input, .modal-card select {
+    width: 100%;
+    background: #1a1b1d;
+    border: 1px solid #2a2a2a;
+    padding: 10px 12px;
+    border-radius: 12px;
+    color: #fff;
+    font-size: 0.9rem;
+    outline: none;
+}
+
+.modal-card input:focus { border-color: var(--accent-gradient); }
+
+/* Przycisk zapisu */
+.modal-submit-btn {
+    width: 100%;
+    padding: 16px;
+    background: var(--accent-gradient);
+    border: none;
+    border-radius: 15px;
+    color: #fff;
+    font-weight: 800;
+    margin-top: 25px;
+    cursor: pointer;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+}
+
+.no-data-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 60px 20px;
+    background: var(--card-bg);
+    border-radius: 25px;
+    border: 1px dashed #333; /* Przerywana ramka sugeruje "miejsce na dane" */
+    text-align: center;
+    margin: 20px 0;
+}
+
+.no-data-content i {
+    font-size: 3rem;
+    color: var(--accent-color);
+    margin-bottom: 20px;
+    opacity: 0.5;
+}
+
+.no-data-content h3 {
+    font-size: 1.2rem;
+    color: #fff;
+    margin-bottom: 8px;
+}
+
+.no-data-content p {
+    color: var(--text-dim);
+    font-size: 0.9rem;
+    margin-bottom: 25px;
+}
+
+/* Przycisk wewnątrz no-data może być nieco mniejszy lub taki sam */
+.no-data-content {
+display: flex;
+    flex-direction: column;
+    align-items: center; /* Środkuje przycisk względem reszty tekstów */
+    width: 100%;
+}

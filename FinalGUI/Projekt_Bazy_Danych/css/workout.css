@@ -1,0 +1,247 @@
+/* --- KONSTRUKCJA SESJI TRENINGOWEJ --- */
+.workout-main-wrapper {
+    background: transparent;
+    border: none !important;
+}
+
+.workout-step {
+    display: none;
+    flex-direction: column;
+    width: 100%;
+    background: transparent !important;
+    border: none !important; /* Usunięcie przerywanych ramek */
+}
+
+.workout-step.active {
+    display: flex !important;
+}
+
+/* --- LOGI I LISTY --- */
+#active-workout-log {
+    border: none !important;
+    background: transparent !important;
+    margin-bottom: 20px;
+}
+
+.list-container {
+    max-height: 450px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.list-item {
+    background: #1f2022;
+    padding: 15px;
+    border-radius: 12px;
+    color: white;
+    border: 1px solid #333;
+    cursor: pointer;
+}
+
+/* --- SIATKA MIĘŚNI --- */
+.muscle-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.muscle-card {
+    background: #1f2022;
+    border-radius: 20px;
+    padding: 15px;
+    text-align: center;
+    border: 1px solid #333;
+    transition: transform 0.2s;
+}
+
+.muscle-image-container {
+    width: 60px;
+    height: 60px;
+    margin: 0 auto 10px;
+}
+
+.muscle-icon-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+/* --- FORMULARZ SERII --- */
+.input-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin: 20px 0;
+}
+
+.input-group label {
+    color: var(--text-dim);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.input-group input {
+    width: 100%;
+    background: #1f2022;
+    border: 1px solid #333;
+    border-radius: 12px;
+    padding: 12px;
+    color: white;
+    font-size: 1.2rem;
+    text-align: center;
+}
+
+/* --- PODSUMOWANIE (KAFELKI) --- */
+.exercise-summary-card {
+    background: #1f2022;
+    border: 1px solid #2d2e30;
+    border-radius: 20px;
+    padding: 18px;
+    margin-bottom: 15px;
+}
+
+.set-summary-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 8px;
+}
+
+.data-block {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid #333;
+    border-radius: 10px;
+    padding: 8px;
+    text-align: center;
+}
+
+.data-block.series-block {
+    border-color: #57ca22;
+    color: #57ca22;
+}
+
+/* --- PRZYCISKI WSTECZ --- */
+.back-btn {
+    background: rgba(255, 255, 255, 0.05);
+    border: none;
+    color: #57ca22;
+    padding: 10px 15px;
+    border-radius: 12px;
+    cursor: pointer;
+    margin-bottom: 15px;
+}
+.workout-session-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    padding: 10px 0;
+    margin-bottom: 30px;
+}
+
+.btn-cancel-session {
+    width: 100%;
+    background: transparent;
+    border: none;
+    color: #666; /* Przygaszony kolor */
+    padding: 12px;
+    margin-top: 15px;
+    font-size: 0.8rem;
+    font-family: 'Poppins', sans-serif;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+}
+
+.btn-cancel-session i {
+    font-size: 0.9rem;
+}
+
+.btn-cancel-session:hover {
+    color: #ff4444; /* Zmienia się na czerwony po najechaniu */
+}
+
+.btn-cancel-session:active {
+    transform: scale(0.98);
+}
+
+/* Stylizacja timera, aby był bardziej widoczny */
+#workout-timer {
+    background: rgba(87, 202, 34, 0.1);
+    padding: 4px 12px;
+    border-radius: 10px;
+    margin-top: 5px;
+    letter-spacing: 1px;
+    border: 1px solid rgba(87, 202, 34, 0.2);
+}
+
+    /* 1. GŁÓWNY PRZYCISK Z GRADIENTEM (Zakończ Trening) */
+    .btn-finish {
+        width: 100% !important;
+        padding: 16px !important;
+        background: var(--accent-gradient) !important;
+        color: white !important;
+        border: none !important;
+        border-radius: 15px !important;
+        font-weight: 800 !important;
+        text-transform: uppercase !important;
+        cursor: pointer !important;
+        transition: all 0.3s ease !important;
+        box-shadow: 0 4px 15px rgba(87, 202, 34, 0.3) !important;
+        font-family: 'Poppins', sans-serif !important;
+        font-size: 0.9rem !important;
+        display: block !important;
+        text-align: center;
+        margin-top: 15px;
+    }
+
+    .btn-finish:active {
+        transform: scale(0.96) !important;
+        opacity: 0.9;
+    }
+
+    /* 2. ALTERNATYWNY GRADIENT (Zakończ Ćwiczenie - Ciemny/Szary) */
+    .btn-finish-alt {
+        background: var(--accent-gradient) !important;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3) !important;
+    }
+
+    /* 3. PRZYCISK PODSTAWOWY (Dodaj Serię / Dodaj Ćwiczenie) */
+    .btn-basic {
+        width: 100% !important;
+        padding: 16px !important;
+        background: #2a2b2d !important;
+        color: white !important;
+        border: 1px solid #444 !important;
+        border-radius: 15px !important;
+        font-weight: 600 !important;
+        text-transform: uppercase !important;
+        cursor: pointer !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 10px !important;
+        transition: all 0.3s ease !important;
+        font-family: 'Poppins', sans-serif !important;
+        font-size: 0.85rem !important;
+        margin-top: 10px;
+    }
+
+    .btn-basic:hover {
+        background: #353638 !important;
+        border-color: #57ca22 !important;
+    }
+
+    /* Ikona w przycisku podstawowym ma kolor akcentu */
+    .btn-basic i {
+        color: #57ca22 !important;
+        font-size: 1rem !important;
+    }

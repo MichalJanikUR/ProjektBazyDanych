@@ -1,0 +1,252 @@
+\chapter{Opis struktury bazy danych}
+\label{cha:opisStrukturyBazyDanych}
+
+\section{Zdefiniowane struktury tabel}
+
+\subsection*{Tabela: users}
+Tabela ta stanowi centralny punkt bazy danych, przechowując dane identyfikacyjne użytkowników oraz informacje niezbędne do procesów autoryzacji i personalizacji.
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{|l|l|p{7cm}|}
+\hline
+\textbf{Nazwa kolumny} & \textbf{Typ danych} & \textbf{Opis i ograniczenia} \\ \hline
+id (PK) & serial & Unikalny identyfikator użytkownika. \\ \hline
+username & varchar(50) & Nazwa użytkownika wykorzystywana do logowania. \\ \hline
+password & varchar(255) & Zahaszowane hasło użytkownika. \\ \hline
+email & varchar(100) & Adres e-mail przypisany do konta. \\ \hline
+first\_name & varchar(50) & Imię użytkownika. \\ \hline
+last\_name & varchar(50) & Nazwisko użytkownika. \\ \hline
+gender & text & Płeć użytkownika. \\ \hline
+\end{tabular}
+\caption{Struktura tabeli users}
+\end{table}
+
+\subsection*{Tabela: body\_measurements}
+Przechowuje historię pomiarów antropometrycznych użytkownika oraz zdefiniowane przez niego cele i poziomy aktywności.
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{|l|l|p{7cm}|}
+\hline
+\textbf{Nazwa kolumny} & \textbf{Typ danych} & \textbf{Opis i ograniczenia} \\ \hline
+id (PK) & serial & Unikalny identyfikator pomiaru. \\ \hline
+user\_id (FK) & integer & Powiązanie z tabelą users. \\ \hline
+date & timestamp & Data i godzina wykonania pomiaru. \\ \hline
+height & double precision & Wzrost użytkownika. \\ \hline
+weight & double precision & Masa ciała. \\ \hline
+chest & double precision & Obwód klatki piersiowej. \\ \hline
+waist & double precision & Obwód pasa. \\ \hline
+biceps & double precision & Obwód ramienia. \\ \hline
+thighs & double precision & Obwód uda. \\ \hline
+hips & double precision & Obwód bioder. \\ \hline
+neck & numeric & Obwód szyi. \\ \hline
+goal & varchar(50) & Cel treningowy (np. redukcja, masa). \\ \hline
+activity\_level & numeric(4,3) & Współczynnik aktywności fizycznej. \\ \hline
+\end{tabular}
+\caption{Struktura tabeli body\_measurements}
+\end{table}
+
+\subsection*{Tabela: muscle\_groups}
+Słownikowa tabela zawierająca nazwy partii mięśniowych, co pozwala na kategoryzację ćwiczeń.
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{|l|l|p{7cm}|}
+\hline
+\textbf{Nazwa kolumny} & \textbf{Typ danych} & \textbf{Opis i ograniczenia} \\ \hline
+id (PK) & serial & Identyfikator grupy mięśniowej. \\ \hline
+name & varchar(50) & Nazwa partii (np. klatka piersiowa, plecy). \\ \hline
+\end{tabular}
+\caption{Struktura tabeli muscle\_groups}
+\end{table}
+
+\subsection*{Tabela: exercises}
+Katalog dostępnych w systemie ćwiczeń wraz z ich opisami i przypisaniem do konkretnych partii.
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{|l|l|p{7cm}|}
+\hline
+\textbf{Nazwa kolumny} & \textbf{Typ danych} & \textbf{Opis i ograniczenia} \\ \hline
+id (PK) & serial & Identyfikator ćwiczenia. \\ \hline
+name & varchar(100) & Nazwa ćwiczenia. \\ \hline
+description & text & Instrukcja lub opis techniki ćwiczenia. \\ \hline
+muscle\_group\_id (FK) & integer & Powiązanie z tabelą muscle\_groups. \\ \hline
+\end{tabular}
+\caption{Struktura tabeli exercises}
+\end{table}
+
+\newpage
+\subsection*{Tabela: workouts}
+Rejestruje każdą rozpoczętą sesję treningową użytkownika wraz z czasem jej trwania.
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{|l|l|p{7cm}|}
+\hline
+\textbf{Nazwa kolumny} & \textbf{Typ danych} & \textbf{Opis i ograniczenia} \\ \hline
+id (PK) & serial & Identyfikator sesji treningowej. \\ \hline
+user\_id (FK) & integer & Identyfikator użytkownika wykonującego trening. \\ \hline
+date & timestamp & Data i godzina rozpoczęcia treningu. \\ \hline
+duration & interval & Czas trwania sesji treningowej. \\ \hline
+\end{tabular}
+\caption{Struktura tabeli workouts}
+\end{table}
+
+\subsection*{Tabela: workout\_exercises}
+Tabela pośrednicząca, która przypisuje konkretne ćwiczenia do danej jednostki treningowej.
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{|l|l|p{7cm}|}
+\hline
+\textbf{Nazwa kolumny} & \textbf{Typ danych} & \textbf{Opis i ograniczenia} \\ \hline
+id (PK) & serial & Identyfikator wpisu ćwiczenia w treningu. \\ \hline
+workout\_id (FK) & integer & Powiązanie z konkretną sesją (workouts). \\ \hline
+exercise\_id (FK) & integer & Powiązanie z katalogiem ćwiczeń (exercises). \\ \hline
+\end{tabular}
+\caption{Struktura tabeli workout\_exercises}
+\end{table}
+
+\subsection*{Tabela: workout\_sets}
+Najbardziej szczegółowa tabela systemu, przechowująca parametry każdej wykonanej serii.
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{|l|l|p{7cm}|}
+\hline
+\textbf{Nazwa kolumny} & \textbf{Typ danych} & \textbf{Opis i ograniczenia} \\ \hline
+id (PK) & serial & Identyfikator serii. \\ \hline
+workout\_exercise\_id (FK) & integer & Powiązanie z ćwiczeniem w ramach treningu. \\ \hline
+weight & double precision & Obciążenie użyte w serii. \\ \hline
+reps & integer & Liczba wykonanych powtórzeń. \\ \hline
+set\_number & integer & Numer porządkowy serii w danym ćwiczeniu. \\ \hline
+\end{tabular}
+\caption{Struktura tabeli workout\_sets}
+\end{table}
+
+\newpage
+\section{Powiązania pomiędzy tabelami i ich interpretacja}
+
+Analiza diagramu ERD oraz struktur tabel pozwala na zdefiniowanie relacji, które gwarantują spójność danych oraz umożliwiają zaawansowaną analitykę treningową. Poniżej przedstawiono szczegółową interpretację kluczowych powiązań:
+
+\begin{itemize}
+    \item \textbf{Relacja users -- body\_measurements (1:N):} 
+    To powiązanie pozwala na przypisanie wielu pomiarów ciała do jednego profilu użytkownika. Z punktu widzenia systemu jest to kluczowe dla monitorowania zmian w czasie (np. spadku wagi czy wzrostu obwodów). Dzięki tej relacji dashboard może generować wykresy trendów, porównując najnowszy wpis z danymi historycznymi.
+
+    \item \textbf{Relacja users -- workouts (1:N):} 
+    Fundament rejestracji aktywności. Każdy trening jest trwale przypisany do konkretnego użytkownika poprzez klucz obcy \textit{user\_id}. Umożliwia to izolację danych i obliczanie statystyk takich jak aktualna passa treningowa (streak) czy całkowita objętość podniesiona przez daną osobę w skali tygodnia.
+
+    \item \textbf{Struktura hierarchiczna treningu (workouts -- workout\_exercises -- workout\_sets):} 
+    Zastosowano tutaj potrójne powiązanie typu jeden-do-wielu, co odzwierciedla naturalną strukturę sesji na siłowni. Jeden rekord w \textit{workouts} (sesja) zawiera wiele wpisów w \textit{workout\_exercises} (wykonane ćwiczenia), a każde z tych ćwiczeń posiada wiele rekordów w \textit{workout\_sets} (serie). Taka dekompozycja danych pozwala na precyzyjne wyliczanie tonażu (objętości) dla każdego ćwiczenia z osobna.
+
+    \item \textbf{Relacja exercises -- workout\_exercises (1:N):} 
+    Łączy konkretne wykonanie ćwiczenia z jego definicją w katalogu. Dzięki temu system "wie", jakie ćwiczenie wykonuje użytkownik i może pobrać z tabeli \textit{exercises} jego opis lub przypisaną grupę mięśniową.
+
+    \item \textbf{Relacja muscle\_groups -- exercises (1:N):} 
+    Każde ćwiczenie jest sklasyfikowane pod jedną grupą mięśniową. To powiązanie jest niezbędne do działania algorytmu balansu strukturalnego. System sumuje serie z tabeli \textit{workout\_sets}, przechodzi przez powiązania do \textit{muscle\_groups} i na tej podstawie wylicza procentowy udział treningu klatki piersiowej, pleców czy nóg w skali tygodnia.
+\end{itemize}
+
+\newpage
+\subsection{Opcjonalność relacji}
+Dla zachowania spójności danych, w systemie zdefiniowano następujące zasady opcjonalności:
+
+\begin{itemize}
+    \item \textbf{Relacja users -- workouts (Obowiązkowa):} Każdy rekord w tabeli \textit{workouts} musi posiadać przypisane \textit{user\_id}. Nie jest możliwe istnienie treningu w systemie bez przypisanego autora (użytkownika).
+    
+    \item \textbf{Relacja workouts -- workout\_exercises (Obowiązkowa):} Każdy wpis o wykonanym ćwiczeniu musi odwoływać się do konkretnej sesji treningowej. Usunięcie treningu powoduje kaskadowe usunięcie przypisanych do niego ćwiczeń.
+    
+    \item \textbf{Relacja exercises -- muscle\_groups (Obowiązkowa):} W systemie każde ćwiczenie musi być skategoryzowane pod konkretną partią mięśniową, aby algorytmy analityczne mogły poprawnie przeliczać objętość tygodniową.
+    
+    \item \textbf{Relacja users -- body\_measurements (Opcjonalna):} Użytkownik może, ale nie musi posiadać wpisów w tabeli pomiarów. System dopuszcza istnienie konta bez historii pomiarów, choć ogranicza to wtedy dostęp do niektórych funkcji dashboardu (np. wykresów zmiany wagi).
+    
+    \item \textbf{Relacja workout\_exercises -- workout\_sets (Obowiązkowa):} Seria nie może istnieć bez powiązania z konkretnym ćwiczeniem w ramach danego treningu. 
+\end{itemize}
+
+\section{Diagram związków encji (ERD)}
+Poniższy diagram przedstawia graficzną reprezentację struktury bazy danych systemu. Ilustruje on wszystkie opisane wcześniej tabele, ich atrybuty oraz relacje zachodzące pomiędzy poszczególnymi encjami, z uwzględnieniem kluczy głównych (PK) oraz obcych (FK).
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=\textwidth]{figures/diagramERD.jpg}
+    \caption{Diagram związków encji (ERD) projektowanej bazy danych.}
+    \label{fig:diagram_erd}
+\end{figure}
+
+\newpage
+\section{Kod implementujący strukturę bazy danych}
+Poniższy przedstawiono kod, który posłużył do fizycznego utworzenia struktury tabel bazy danych zgodnie z zaprojektowanym diagramem ERD.
+\begin{lstlisting}[language=SQL, caption={Kod implementujący strukturę tabel bazy danych}, breaklines=true, basicstyle=\small\ttfamily]
+-- 1. Tabela uzytkownikow
+CREATE TABLE public.users (
+    id SERIAL PRIMARY KEY,
+    username VARCHAR(50) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    first_name VARCHAR(50),
+    last_name VARCHAR(50),
+    gender TEXT
+);
+
+-- 2. Tabela pomiarow ciala
+CREATE TABLE public.body_measurements (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER NOT NULL,
+    date TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+    height DOUBLE PRECISION,
+    weight DOUBLE PRECISION,
+    chest DOUBLE PRECISION,
+    waist DOUBLE PRECISION,
+    biceps DOUBLE PRECISION,
+    thighs DOUBLE PRECISION,
+    hips DOUBLE PRECISION,
+    neck NUMERIC,
+    goal VARCHAR(50),
+    activity_level NUMERIC(4,3),
+    FOREIGN KEY (user_id) REFERENCES public.users(id)
+);
+
+-- 3. Tabela grup miesniowych
+CREATE TABLE public.muscle_groups (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(50) NOT NULL
+);
+
+-- 4. Tabela cwiczen
+CREATE TABLE public.exercises (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    description TEXT,
+    muscle_group_id INTEGER NOT NULL,
+    FOREIGN KEY (muscle_group_id) REFERENCES public.muscle_groups(id)
+);
+
+-- 5. Tabela treningow (naglowki)
+CREATE TABLE public.workouts (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER NOT NULL,
+    date TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+    duration INTERVAL,
+    FOREIGN KEY (user_id) REFERENCES public.users(id)
+);
+
+-- 6. Tabela cwiczen w ramach treningu
+CREATE TABLE public.workout_exercises (
+    id SERIAL PRIMARY KEY,
+    workout_id INTEGER NOT NULL,
+    exercise_id INTEGER NOT NULL,
+    FOREIGN KEY (workout_id) REFERENCES public.workouts(id),
+    FOREIGN KEY (exercise_id) REFERENCES public.exercises(id)
+);
+
+-- 7. Tabela serii treningowych
+CREATE TABLE public.workout_sets (
+    id SERIAL PRIMARY KEY,
+    workout_exercise_id INTEGER NOT NULL,
+    weight DOUBLE PRECISION,
+    reps INTEGER,
+    set_number INTEGER,
+    FOREIGN KEY (workout_exercise_id) REFERENCES public.workout_exercises(id)
+);
+\end{lstlisting}

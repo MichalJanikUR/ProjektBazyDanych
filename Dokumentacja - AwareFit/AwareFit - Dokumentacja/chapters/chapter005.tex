@@ -1,0 +1,292 @@
+\chapter{Prezentacja interfejsu graficznego (GUI)}
+
+W niniejszym rozdziale przedstawiono warstwę wizualną aplikacji \textit{AwareFit}, która stanowi interfejs komunikacji użytkownika z bazą danych. Każdy z prezentowanych widoków został zaprojektowany z myślą o intuicyjności oraz responsywności. Kluczowym aspektem opisu jest wskazanie bezpośrednich powiązań pomiędzy elementami interfejsu a logiką bazodanową i algorytmami szczegółowo opisanymi w rozdziale 4.
+
+\section{Widok rejestracji użytkownika}
+
+Pierwszym etapem interakcji z systemem jest proces rejestracji, który pozwala na utworzenie unikalnego konta użytkownika. Interfejs gromadzi podstawowe dane uwierzytelniające oraz parametry profilowe.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{figures/GUI/register.jpg}
+    \caption{Interfejs formularza rejestracji użytkownika}
+    \label{fig:registration_view}
+\end{figure}
+
+\textbf{Powiązanie z logiką bazy danych:}
+\textbf{Powiązanie z logiką bazy danych:} \\
+Proces rejestracji obsługiwany jest przez skrypt backendowy \texttt{register.php}. Po stronie serwera następuje odebranie danych z formularza metodą \texttt{POST}, a następnie wywoływana jest funkcja bazodanowa \texttt{\detokenize{crud.insert_user}}. Odpowiada ona za:\begin{itemize}
+    \item \textbf{Walidację unikalności:} Sprawdzenie, czy podany adres e-mail lub username nie istnieje już w tabeli \texttt{\detokenize{users}}.
+    \item \textbf{Persystencję danych:} Trwałe zapisanie hasła oraz danych profilowych.
+    \item \textbf{Inicjalizację konta:} Automatyczne nadanie identyfikatora użytkownika (\texttt{user\_id}), który jest niezbędny do działania pozostałych modułów systemu.
+\end{itemize}
+
+\textbf{Funkcjonalność GUI:}
+Użytkownik wypełnia pola tekstowe, a system po zatwierdzeniu formularza przesyła dane do procedury bazodanowej.
+
+
+\section{Widok logowania}
+
+Widok logowania stanowi główny punkt dostępu do chronionej części aplikacji. Został zaprojektowany w sposób minimalistyczny, z wyraźnym podziałem na sekcję wizualną (branding) oraz funkcjonalną (formularz).
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{figures/GUI/login.jpg}
+    \caption{Interfejs ekranu logowania systemu AwareFit}
+    \label{fig:login_view}
+\end{figure}
+
+\textbf{Powiązanie z logiką bazy danych:} \\
+Logika autoryzacji realizowana jest w pliku \texttt{index.php}. Po przesłaniu formularza metodą \texttt{POST}, skrypt nawiązuje połączenie z bazą danych i wykorzystuje funkcję bazodanową \texttt{\detokenize{public.login_by_username}}. Proces ten obejmuje:
+\begin{itemize}
+    \item \textbf{Weryfikację poświadczeń:} Funkcja przyjmuje login (\texttt{username}) oraz hasło, a następnie sprawdza ich poprawność w tabeli \texttt{\detokenize{users}}.
+    \item \textbf{Ekstrakcję danych sesyjnych:} W przypadku sukcesu, funkcja zwraca rekord zawierający \texttt{user\_id} oraz \texttt{first\_name}, co pozwala na zainicjowanie zmiennych sesyjnych w PHP (\texttt{\$\_SESSION}).
+    \item \textbf{Zarządzanie dostępem:} Jeśli funkcja nie zwróci żadnego rekordu, skrypt generuje komunikat o błędzie (\textit{„Nieprawidłowy login lub hasło”}), blokując dostęp do dalszych modułów systemu.
+\end{itemize}
+
+\textbf{Funkcjonalność GUI:} \\
+Interfejs zawiera mechanizmy poprawiające doświadczenie użytkownika (\textit{User Experience}), takie jak:
+\begin{itemize}
+    \item Przejrzysta sekcja komunikatów o błędach (widoczna w przypadku nieudanej próby logowania).
+    \item Zastosowanie atrybutów \texttt{autocomplete}, co zwiększa bezpieczeństwo i wygodę korzystania z menedżerów haseł.
+    \item Bezpośredni odnośnik do formularza rejestracji (\texttt{register.php}) dla nowych użytkowników.
+\end{itemize}
+
+\newpage
+\section{Panel główny (Dashboard)}
+
+Panel główny (\texttt{dashboard.php}) pełni funkcję centrum analitycznego dla użytkownika. Agreguje on surowe dane treningowe i dietetyczne, prezentując je w formie czytelnych kart informacyjnych (widżetów) oraz interaktywnego wykresu progresji.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{figures/GUI/dashboard.jpg}
+    \caption{Panel główny aplikacji z systemem widżetów i wykresem progresu}
+    \label{fig:dashboard_view}
+\end{figure}
+
+\textbf{Powiązanie z logiką bazy danych:} \\
+Widok ten jest jednym z najbardziej zaawansowanych elementów systemu pod kątem integracji z bazą danych. Wykorzystuje on szereg funkcji opisanych w poprzednich rozdziałach:
+\begin{itemize}
+    \item \textbf{System treningowy i aktywność:} Skrypt wywołuje funkcję \texttt{\detokenize{public.detect_training_split}} w celu identyfikacji aktualnego schematu ćwiczeń oraz wykonuje zliczanie rekordów z tabeli \texttt{\detokenize{workouts}} z ostatnich 7 dni.
+    \item \textbf{Analiza objętości i trendów:} Poprzez funkcję \texttt{\detokenize{public.get_volume_comparison}} system pobiera dane o sumarycznym ciężarze podniesionym w obecnym i poprzednim tygodniu, wyliczając procentowy trend (\texttt{\$diff\_percent}).
+    \item \textbf{Moduł żywieniowy:} Wykorzystywane są funkcje \texttt{\detokenize{calculate_user_diet_calories}} oraz \texttt{\detokenize{get_user_macros}}, które na podstawie profilu użytkownika zwracają dobowe zapotrzebowanie na kalorie i makroskładniki.
+    \item \textbf{Progresja ćwiczeń (Wykres):} Dynamiczny wykres generowany jest dzięki funkcji \texttt{\detokenize{get_exercise_volume_progression}}, która dostarcza historyczne dane o objętości dla konkretnego, wybranego przez użytkownika ćwiczenia.
+\end{itemize}
+
+\textbf{Funkcjonalność GUI:} \\
+Interfejs oferuje wysoką interaktywność dzięki zastosowaniu technologii \textit{Chart.js} oraz asynchronicznej komunikacji:
+\begin{itemize}
+    \item \textbf{Karty Progress Card:} Wykorzystują system ikon (\textit{FontAwesome}) do szybkiej wizualizacji statusu treningowego i trendów objętości.
+    \item \textbf{Interaktywny Wykres:} Użytkownik może filtrować dane za pomocą list rozwijanych (\textit{Select}), co powoduje przeładowanie widoku z nowymi parametrami dla wybranego ćwiczenia.
+    \item \textbf{Modal Makroskładników:} Kliknięcie w kartę kalorii wywołuje okno modalne (\texttt{macroModal}), prezentujące szczegółowy rozkład białek, tłuszczy i węglowodanów w formie graficznej.
+\end{itemize}
+
+\newpage
+\section{Widok aktywnej sesji treningowej (Workout Session)}
+
+Moduł \texttt{workout.php} stanowi najbardziej interaktywną część aplikacji, pełniąc rolę cyfrowego asystenta treningowego. Wykorzystuje on architekturę \textit{Single Page Application} (SPA) wewnątrz skryptu PHP – widoki przełączane są dynamicznie przez JavaScript (\texttt{workout.js}), co zapewnia płynność pracy bez przeładowywania strony.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{figures/GUI/sesja-aktywna.jpg}
+    \caption{Główny ekran aktywnej sesji ze stoperem i listą ćwiczeń}
+    \label{fig:workout_active}
+\end{figure}
+
+\textbf{Powiązanie z logiką bazy danych:} \\
+Mimo że sesja przechowywana jest tymczasowo w pamięci lokalnej przeglądarki, system stale komunikuje się z bazą danych:
+\begin{itemize}
+    \item \textbf{Pobieranie struktur:} Wykorzystanie funkcji \texttt{\detokenize{crud.get_all_muscle_groups}} do wygenerowania kafelków partii mięśniowych.
+    \item \textbf{Inteligentne podpowiedzi (Coach Advice):} Skrypt \texttt{get\_coach\_advice.php} analizuje historyczne wyniki (algorytm \textit{PROGRESSION}) i wyświetla sugestie w czasie rzeczywistym.
+    \item \textbf{Dynamiczne placeholdery:} Dzięki \texttt{get\_last\_stats.php}, pola formularza podpowiadają ciężar i powtórzenia z poprzedniej sesji.
+    \item \textbf{Persystencja danych:} Zakończenie treningu wywołuje skrypt \texttt{save\_workout.php}, który przesyła obiekt JSON do procedury \texttt{\detokenize{save_complete_workout}}.
+\end{itemize}
+
+\textbf{Struktura procesu i widoki interfejsu:}
+
+\begin{enumerate}
+    \item \textbf{Wybór partii mięśniowej:} Użytkownik widzi siatkę kafelków z ikonami reprezentującymi grupy mięśniowe (Rys. \ref{fig:muscle_groups}).
+    \item \textbf{Lista ćwiczeń:} Po wybraniu partii, skrypt \texttt{get\_exercises.php} zwraca listę ćwiczeń przypisanych do danej grupy (Rys. \ref{fig:workout_exercises}).
+    \item \textbf{Logowanie serii:} Ekran \texttt{log-set} umożliwia wprowadzanie danych. Wykorzystuje on system kolorowych ramek „Coach Advice” zależnych od statusu progresji (Rys. \ref{fig:workout_log}).
+    \item \textbf{Podsumowanie sesji:} Widok prezentuje wszystkie wykonane ćwiczenia wraz z ich seriami, pozwalając na edycję sesji przed jej finalnym zapisem.
+    \item \textbf{Zakończenie i zapis:} System przelicza czas trwania sesji (\texttt{durationSec}) i wysyła kompletny obiekt \texttt{currentWorkout} do bazy danych (Rys. \ref{fig:workout_finish}).
+\end{enumerate}
+
+\begin{figure}[H]
+    \centering
+    \begin{minipage}{0.45\textwidth}
+        \centering
+        \includegraphics[width=0.9\textwidth]{figures/GUI/wybor-partii.jpg}
+        \caption{Menu wyboru partii mięśniowej}
+        \label{fig:muscle_groups}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.45\textwidth}
+        \centering
+        \includegraphics[width=0.9\textwidth]{figures/GUI/wybor-cwiczenia.jpg}
+        \caption{Dynamiczna lista ćwiczeń}
+        \label{fig:workout_exercises}
+    \end{minipage}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \begin{minipage}{0.45\textwidth}
+        \centering
+        \includegraphics[width=0.9\textwidth]{figures/GUI/dodane-serie.jpg}
+        \caption{Ekran wprowadzania danych serii}
+        \label{fig:workout_log}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.45\textwidth}
+        \centering
+        \includegraphics[width=0.9\textwidth]{figures/GUI/dodano-cwiczenie.jpg}
+        \caption{Podsumowanie i finalizacja sesji}
+        \label{fig:workout_finish}
+    \end{minipage}
+\end{figure}
+
+\textbf{Zarządzanie stanem (JavaScript):} \\
+Kluczowym rozwiązaniem jest użycie \texttt{localStorage} z unikalnym kluczem \texttt{activeWorkout\_\$\{currentUserId\}}. Dzięki temu, w przypadku awarii przeglądarki, dane treningu oraz czas rozpoczęcia sesji (\texttt{timerKey}) nie zostają utracone.
+
+
+\newpage
+\section{Widok historii treningów}
+
+Widok \texttt{history.php} służy do  analizy aktywności użytkownika. Został on zaprojektowany w formie interaktywnej listy (akordeonu), która pozwala na szybki przegląd ogólnych statystyk sesji oraz ich szczegółowe rozwinięcie.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{figures/GUI/history.jpg}
+    \caption{Interfejs historii treningów z wykorzystaniem systemu akordeonów}
+    \label{fig:history_view}
+\end{figure}
+
+\textbf{Powiązanie z logiką bazy danych:} \\
+Skrypt \texttt{history.php} wykonuje złożone zapytanie do bazy danych, które łączy dane z funkcji tabelarycznej oraz funkcji skalarnej:
+\begin{itemize}
+    \item \textbf{Agregacja sesji:} System wykorzystuje funkcję \texttt{\detokenize{public.get_user_workout_history}}, która zwraca pełną historię ćwiczeń i serii przypisanych do danego \texttt{user\_id}.
+    \item \textbf{Dynamiczne obliczanie objętości:} Wewnątrz zapytania SQL wywoływana jest funkcja \texttt{\detokenize{public.calculate_workout_total_volume(workout_id)}}. Pozwala to na wyświetlenie sumarycznego tonażu treningu (\texttt{db\_total\_volume}) bez konieczności kosztownych obliczeń po stronie PHP.
+    \item \textbf{Mapowanie danych:} Ponieważ wynik zapytania jest „płaską” listą serii, skrypt PHP dokonuje transformacji danych do wielowymiarowej tablicy \texttt{\$history}, grupując wpisy według identyfikatora treningu (\texttt{workout\_id}) oraz nazw ćwiczeń (\texttt{exercise\_name}).
+\end{itemize}
+
+\textbf{Funkcjonalność interfejsu:} \\
+Za warstwę prezentacji odpowiadają dedykowane style \texttt{history.css} oraz logika zawarta w \texttt{history.js}:
+\begin{itemize}
+    \item \textbf{System Akordeonów:} Nagłówek każdego treningu wyświetla kluczowe metadane: numer treningu (\texttt{user\_workout\_no}), datę, czas trwania oraz łączną objętość. Dzięki funkcji \texttt{toggleAccordion}, użytkownik może dynamicznie rozwijać szczegóły konkretnej sesji.
+    \item \textbf{Szczegółowy wykaz serii:} Po rozwinięciu sekcji, wyświetlana jest lista ćwiczeń wraz z tabelarycznym zestawieniem serii (numer serii, ciężar, liczba powtórzeń), co pozwala na precyzyjną analizę wykonanej pracy.
+    \item \textbf{Wizualizacja tonażu:} Całkowita objętość sesji jest wyróżniona za pomocą klasy \texttt{volume-tag}, co ułatwia śledzenie progresji siłowej na przestrzeni czasu.
+\end{itemize}
+
+\textbf{Obsługa skryptowa (\texttt{history.js}):} \\
+Interakcja z dokumentem realizowana jest przez prosty mechanizm manipulacji modelem DOM. Funkcja \texttt{toggleAccordion} zarządza stanem widoczności bloku \texttt{accordion-content} oraz animacją ikony nawigacyjnej (\texttt{chevron}), co znacząco poprawia czytelność interfejsu przy dużej liczbie zarejestrowanych treningów.
+
+\newpage
+\section{Widok analityczny postępów (Progress)}
+
+Moduł \texttt{progress.php} stanowi centrum analityczne aplikacji AwareFit. Jego zadaniem jest przetworzenie surowych danych treningowych na informacje o charakterze motywacyjnym i diagnostycznym. Widok ten w stopniu najwyższym wykorzystuje logikę zaszytą w warstwie bazy danych (PostgreSQL).
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{figures/GUI/progress.jpg}
+    \caption{Panel analityczny z zestawieniem objętości, balansu i rekordów}
+    \label{fig:progress_view}
+\end{figure}
+
+\textbf{Integracja z zaawansowanymi funkcjami bazy danych:} \\
+W przeciwieństwie do prostych list, widok progresu opiera się na wynikach skomplikowanych obliczeń wykonywanych po stronie serwera bazy danych:
+\begin{itemize}
+    \item \textbf{Detekcja systemu treningowego:} Wykorzystanie autorskiej funkcji \texttt{\detokenize{public.detect_training_split}} pozwala systemowi automatycznie zdiagnozować, czy użytkownik trenuje systemem np. „Full Body Workout” czy „Split”, bazując na częstotliwości i doborze ćwiczeń.
+    \item \textbf{Estymacja 1RM (One Rep Max):} Dla „Wielkiej Trójki” bojów siłowych aplikacja wywołuje funkcję \texttt{\detokenize{public.calculate_exercise_1rm}}. Wynik obliczany jest na podstawie najlepszych serii użytkownika przy użyciu matematycznych wzorów progresji (np. Brzyckiego lub Epleya) zaimplementowanych w pgSQL.
+    \item \textbf{Analiza porównawcza objętości:} Funkcja \texttt{\detokenize{public.get_volume_comparison}} zwraca tonaż z obecnego i poprzedniego tygodnia, co pozwala skryptowi PHP wyliczyć procentowy trend (\texttt{diff\_percent}) i dobrać odpowiedni komunikat motywacyjny (trend pozytywny, stagnacja lub regresja).
+    \item \textbf{Balans strukturalny:} Dzięki funkcji \texttt{\detokenize{public.get_user_muscle_balance}}, aplikacja generuje wykresy słupkowe pokazujące procentowe zaangażowanie poszczególnych partii mięśniowych w skali tygodnia.
+\end{itemize}
+
+\textbf{Kluczowe elementy interfejsu:}
+
+\begin{enumerate}
+    \item \textbf{Karta Systemu i Streaku:} Wyświetla aktualną metodę treningową oraz liczbę jednostek treningowych w ostatnich 7 dniach, co pozwala monitorować systematyczność.
+    \item \textbf{Analizator Objętości:} Sekcja ta dynamicznie zmienia kolorystykę (\texttt{trend\_class}) w zależności od wyników. Wykorzystuje ikony \texttt{fa-caret-up/down} do wizualizacji kierunku zmian tonażu.
+    \item \textbf{Wizualizacja Balansu:} Interaktywne paski postępu (\texttt{balance-bar-fill}) pokazują, które partie dominują w planie, a sekcja „Pominięte” (wyliczana przez \texttt{array\_diff} w PHP) ostrzega o zaniedbanych grupach mięśniowych.
+    \item \textbf{Sekcja Rekordów:} Wyświetla estymowaną siłę maksymalną, co pozwala użytkownikowi śledzić progres bez konieczności wykonywania ryzykownych prób maksymalnych.
+\end{enumerate}
+
+\textbf{Logika prezentacji danych:} \\
+Aplikacja dba o czytelność poprzez zaokrąglanie wyników siłowych do jednego miejsca po przecinku oraz formatowanie dużych liczb objętości (np. \texttt{number\_format} dla tonażu w kg). W przypadku braku danych za dany okres, system wyświetla komunikaty pomocnicze, zachęcając do rejestracji pierwszego treningu.
+
+\newpage
+\section{Widok diety i zarządzania pomiarami ciała}
+
+Moduł \texttt{diet.php} integruje dane antropometryczne użytkownika z automatycznym systemem wyliczania zapotrzebowania kalorycznego. Jest to kluczowy element personalizacji planu treningowego, pozwalający na dostosowanie diety do aktualnych celów sylwetkowych.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{figures/GUI/diet.jpg}
+    \caption{Panel diety z wyliczonymi makroskładnikami i historią pomiarów}
+    \label{fig:diet_view}
+\end{figure}
+
+\textbf{Zaawansowana analityka i funkcje SQL:} \\
+Strona ta w dużej mierze polega na logice obliczeniowej zaimplementowanej w PostgreSQL, co odciąża warstwę aplikacji:
+\begin{itemize}
+    \item \textbf{Estymacja Body Fat:} Funkcja \texttt{\detokenize{public.calculate_user_bf}} implementuje algorytm \textit{US Navy Body Fat}, wykorzystując pomiary wzrostu, szyi, pasa i bioder.
+    \item \textbf{Obliczanie zapotrzebowania (TDEE):} Skrypt wywołuje funkcję \texttt{\detokenize{public.calculate_user_diet_calories}}, która na podstawie wzoru Mifflina-St Jeora oraz zadeklarowanego poziomu aktywności (\texttt{activity\_level}), wylicza całkowite zapotrzebowanie kaloryczne.
+    \item \textbf{Podział Makroskładników:} Funkcja \texttt{\detokenize{public.get_user_macros}} dokonuje procentowego podziału kalorii na białka, tłuszcze i węglowodany, biorąc pod uwagę wybrany cel (masa, redukcja lub rekompozycja).
+\end{itemize}
+
+\textbf{Zarządzanie danymi (Modal i Procedury):} \\
+Aplikacja umożliwia szybką aktualizację danych bez przeładowywania strony głównej dzięki zastosowaniu interaktywnego modala (\texttt{measurementModal}):
+\begin{itemize}
+    \item \textbf{Zapisywanie danych:} Formularz przesyła dane do \texttt{add\_measurement\_action.php}, który zamiast prostego zapytania \texttt{INSERT}, wywołuje procedurę składowaną \texttt{\detokenize{crud.insert_body_measurement}}. Gwarantuje to spójność danych i poprawność rzutowania typów (np. \texttt{double precision}, \texttt{numeric}).
+    \item \textbf{Interaktywność (JS):} Skrypt \texttt{add\_measurements.js} zarządza stanem modala oraz zapewnia odpowiednie \textit{User Experience} poprzez wizualne potwierdzenie zapisu (animacja spinnera).
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.45\textwidth]{figures/GUI/dodaj_pomiar.jpg}
+    \caption{Interfejs wprowadzania nowych pomiarów ciała i wyboru celu treningowego}
+    \label{fig:measurement_modal}
+\end{figure}
+
+\textbf{Prezentacja wyników:} \\
+Interfejs użytkownika został podzielony na trzy sekcje priorytetowe:
+\begin{enumerate}
+    \item \textbf{Highlight Card:} Wyświetla aktualny poziom tkanki tłuszczowej, co jest najważniejszym wskaźnikiem kompozycji ciała.
+    \item \textbf{Diet Summary:} Prezentuje docelową kaloryczność oraz gramaturę makroskładników w formie czytelnych kafelków.
+    \item \textbf{Measurements Grid:} Zestawienie wszystkich obwodów ciała w kompaktowej formie, pozwalające na szybką weryfikację ostatniej aktualizacji danych.
+\end{enumerate}
+
+W przypadku braku danych w bazie, system dynamicznie wyświetla widok \textit{empty state}, prowadząc użytkownika za rękę do pierwszego wpisu, co jest istotnym elementem \textit{onboardingu} w aplikacji.
+
+\newpage
+\section{Widok profilu użytkownika}
+
+Widok \texttt{account.php} jest dedykowany zarządzaniu tożsamością użytkownika w aplikacji. Pozwala on na weryfikację danych konta oraz bezpieczne zakończenie sesji. Dostęp do tego panelu uzyskiwany jest poprzez interaktywną ikonę w nagłówku aplikacji (\textit{header}).
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{figures/GUI/acc.jpg}
+    \caption{Podgląd profilu użytkownika z danymi osobowymi}
+    \label{fig:profile_view}
+\end{figure}
+
+\textbf{Integracja z bazą danych:} \\
+Aplikacja wykorzystuje relacyjną strukturę tabeli \texttt{public.users} do dynamicznego generowania treści profilu:
+\begin{itemize}
+    \item \textbf{Personalizacja nagłówka:} Skrypt PHP implementuje logikę priorytetyzacji wyświetlania nazw. Jeśli w bazie uzupełnione są pola \texttt{first\_name} oraz \texttt{last\_name}, system wyświetla pełne imię i nazwisko. W przeciwnym razie, jako identyfikator główny, prezentowany jest \texttt{username}.
+    \item \textbf{Bezpieczeństwo sesji:} Każde żądanie do pliku \texttt{account.php} jest poprzedzone inkluzją \texttt{auth.php}, co gwarantuje, że dane z tabeli \texttt{users} są pobierane wyłącznie dla zweryfikowanego \texttt{user\_id} zapisanego w sesji.
+    \item \textbf{Lokalizacja danych:} System dokonuje mapowania wartości z bazy danych na język polski (np. konwersja wartości pola \texttt{gender} z formatu \textit{Male/Female} na \textit{Mężczyzna/Kobieta}).
+\end{itemize}
+
+\textbf{Komponenty interfejsu:}
+
+\begin{enumerate}
+    \item \textbf{Sekcja identyfikacji (Avatar):} Centralny punkt widoku z ikoną systemową oraz adresem e-mail, co pozwala użytkownikowi szybko potwierdzić, na jakie konto jest zalogowany.
+    \item \textbf{Lista szczegółów (\textit{Profile Details}):} Zestawienie kluczowych atrybutów konta w formie czytelnych par etykieta-wartość. 
+    \item \textbf{Zarządzanie sesją:} Przycisk wylogowania (\texttt{logout-btn}) odsyła do \texttt{index.php}.
+\end{enumerate}
+
+
+
+\textbf{Warstwa wizualna:} \\
+Podobnie jak reszta aplikacji, widok profilu korzysta z arkusza \texttt{global.css} oraz dedykowanego pliku \texttt{account.css}. Zastosowano czcionkę \textit{Poppins} oraz bibliotekę \textit{Font Awesome}, aby zachować spójność wizualną z systemem Android/iOS, co nadaje aplikacji charakter natywnego narzędzia mobilnego.

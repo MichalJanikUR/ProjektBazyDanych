@@ -1,0 +1,778 @@
+\chapter{Logika operacyjna i funkcjonalność bazy danych}
+\label{cha:LOiFBD}
+
+Struktura bazy danych została zaprojektowana tak, aby wspierała kluczowe funkcje aplikacji AwareFit. Funkcjonalność opiera się na dwóch aspektach: standardowej obsłudze danych poprzez mechanizmy CRUD oraz zaawansowanej logice algorytmicznej, która pozwala na przekształcenie surowych wpisów treningowych w użyteczne informacje analityczne dla użytkownika.
+
+\section{Założenia i wymagania dla mechanizmów CRUD}
+Mechanizm CRUD (ang. Create, Read, Update, Delete) stanowi fundament interakcji użytkownika z systemem. W ramach aplikacji AwareFit zdefiniowano, w schemacie \textit{crud} zaimplementowany zestaw funkcji i procedur. Poniżej przedstawiono podział na komponenty CRUD.
+
+\subsection*{Zarządzanie tożsamością i dostępem (Komponent: users)}
+Komponent ten dotyczny zarządzeniem kontami użytkowników, zaimplementowany w procedurach schematu \textit{crud}.
+
+\begin{itemize}
+    \item \textbf{Operacja Create (Rejestracja):} Wykorzystywana jest procedura \texttt{insert\_user}, która przyjmuje komplet danych: login, hasło, email oraz dane personalne. Zapewnia ona poprawność wpisu w tabeli głównej \textit{public.users}.
+    \item \textbf{Operacja Read (Logowanie i Profil):} Funkcja \texttt{get\_all\_users} pozwala na weryfikację uprawnień i pobieranie danych użytkowników. 
+    \item \textbf{Operacja Update i Delete:} Zaimplementowano procedury \texttt{update\_user} oraz \texttt{delete\_user}. Warto zaznaczyć, że choć są one gotowe w warstwie bazy danych, aktualna wersja interfejsu graficznego (GUI) nie wykorzystuje ich bezpośrednio, co stanowi przygotowanie pod przyszłą rozbudowę modułu administracyjnego.
+\end{itemize}
+
+\newpage
+\subsection*{Rejestracja i obsługa sesji treningowych (Komponent: workouts)}
+Jest to najbardziej rozbudowany fragment schematu \textit{crud}, obsługujący wielopoziomową strukturę jednostki treningowej.
+
+\begin{itemize}
+    \item \textbf{Struktura hierarchiczna:} Proces zapisu treningu jest atomowy i sekwencyjny. Najpierw wywoływana jest procedura \texttt{insert\_workout}, a następnie dla każdego wybranego ćwiczenia \texttt{insert\_workout\_exercise}. Detale wykonania (ciężar, powtórzenia) są zapisywane przez \texttt{insert\_workout\_set}.
+    \item \textbf{Zarządzanie zmianami i perspektywy rozwoju:} Procedury \texttt{update\_workout\_set} oraz \texttt{update\_workout\_exercise} zostały zaprojektowane i wdrożone w warstwie bazy danych jako fundament pod przyszłą rozbudowę funkcjonalności systemu. W obecnej iteracji aplikacji, interfejs użytkownika (GUI) nie udostępnia możliwości edycji treningów historycznych, co jest podyktowane dbałością o spójność danych i rzetelność generowanych statystyk. Niemniej jednak, pełna implementacja tych procedur w schemacie \textit{crud} umożliwia ich natychmiastowe wykorzystanie w przyszłości bez konieczności modyfikacji logiki serwera bazy danych.
+\end{itemize}
+
+
+\subsection*{Monitoring parametrów biometrycznych (Komponent: body\_measurements)}
+
+Komponent ten dedykowany jest gromadzeniu i analizie danych o stanie fizycznym użytkownika. Logika bazodanowa została zaprojektowana tak, aby wspierać rzetelne śledzenie progresji w czasie.
+
+\begin{itemize}
+    \item \textbf{Rejestracja pomiarów:} 
+    Główną operacją w interfejsie użytkownika jest \textit{Create}, realizowana przez zestaw procedur \texttt{insert\_body\_measurement}. Użytkownik ma możliwość regularnego dodawania nowych rekordów zawierających wagę oraz obwody poszczególnych partii ciała.
+    
+    \item \textbf{Niezmienność danych historycznych:} 
+    Przyjęto założenie projektowe, według którego raz wprowadzone dane biometryczne nie podlegają edycji z poziomu interfejsu graficznego (GUI). Ma to na celu zachowanie autentyczności historii pomiarów i uniemożliwienie manipulacji danymi archiwalnymi. 
+    
+    \item \textbf{Zaimplementowany mechanizm Update:} 
+    Pomimo ograniczeń w interfejsie, w schemacie \textit{crud} w pełni zaimplementowano procedurę \texttt{update\_body\_measurement}. Pozwala to na ewentualne przyszłe wdrożenie funkcji korekty błędnych wpisów przez użytkownika.
+    
+    \item \textbf{Wyświetlanie i prezentacja danych:} 
+    Za warstwę \textit{Read} odpowiada funkcja \texttt{get\_all\_body\_measurements} oraz dedykowane zapytania filtrujące, które zasilają interfejs graficzny. Mechanizm ten pozwala na dynamiczne prezentowanie parametrów w formie zestawień tabelarycznych oraz stanowi źródło danych dla poszczególnych funkcji prezentujących informacje na temat ciała.
+\end{itemize}
+
+\newpage
+\subsection*{Zarządzanie strukturą słownikową (Komponent: exercises \& muscle\_groups)}
+
+Tabele słownikowe stanowią bazę wiedzy systemu, definiując dostępne ćwiczenia oraz ich przynależność do grup mięśniowych. 
+
+\begin{itemize}
+    \item \textbf{Dostęp użytkownika:} 
+    Z poziomu interfejsu standardowego użytkownika, dostęp do danych słownikowych jest ograniczony wyłącznie do operacji \textit{Read}. Wykorzystywane są do tego funkcje \texttt{get\_all\_exercises} oraz \texttt{get\_all\_muscle\_groups}, które zasilają listy wyboru podczas kreowania nowej sesji treningowej.
+    
+    \item \textbf{Perspektywa administracyjna:} 
+    Mimo braku odpowiednich modułów w bieżącym GUI, w schemacie \textit{crud} zaimplementowano pełen zestaw procedur zarządczych: \texttt{insert\_exercise}, \texttt{update\_exercise}, \texttt{delete\_exercise} (oraz ich odpowiedniki dla grup mięśniowych). 
+    
+    \item \textbf{Założenia projektowe:} 
+    Istnienie tych mechanizmów w warstwie bazy danych zostało przewidziane jako fundament pod dedykowany "Panel Administratora". Pozwoli on w przyszłości na dynamiczne rozbudowywanie bazy ćwiczeń, czy edycję opisów bez konieczności bezpośredniej ingerencji programisty w strukturę bazy danych.
+\end{itemize}
+
+
+\newpage
+\section{Implementacja mechanizmów CRUD na przykładzie komponentu użytkowników}
+
+W celu zapewnienia integralności danych oraz odciążenia warstwy logicznej aplikacji (PHP), kluczowe reguły zostały zaimplementowane bezpośrednio w procedurach składowanych schematu \textit{crud}.
+
+\subsection*{Tworzenie rekordu (Create)} 
+Za dodawanie nowych użytkowników odpowiada procedura \texttt{crud.insert\_user}. 
+
+\begin{itemize} 
+    \item \textbf{Założenia:} Procedura przyjmuje komplet danych profilowych i dokonuje ich ostatecznej weryfikacji przed trwałym zapisem w bazie. 
+    \item \textbf{Implementacja i walidacja:} Poza operacją \texttt{INSERT}, procedura aktywnie sprawdza poprawność formatu adresu e-mail przy użyciu wyrażeń regularnych (\textit{regex}). 
+    \item \textbf{Obsługa błędów unikalności:} Zastosowano blok \texttt{EXCEPTION}, który przechwytuje naruszenia kluczy unikalnych (\texttt{unique\_violation}). Pozwala to na precyzyjne rozróżnienie, czy błąd rejestracji wynika z duplikatu nazwy użytkownika, czy zajętego adresu e-mail, co jest kluczowe dla komunikatów zwrotnych w interfejsie użytkownika.
+\end{itemize}
+
+
+
+\subsection*{Odczyt danych (Read)} 
+Funkcja \texttt{crud.get\_all\_users} stanowi standardowy interfejs dostępu do danych dla warstwy aplikacji. 
+
+\begin{itemize} 
+    \item \textbf{Założenia:} Zapewnienie szybkiego dostępu do listy użytkowników przy zachowaniu struktury rekordowej. 
+    \item \textbf{Implementacja:} Funkcja wykorzystuje mechanizm \texttt{RETURNS SETOF users}, co pozwala traktować jej wynik jak wirtualną tabelę. Zastosowanie instrukcji \texttt{RETURN QUERY} optymalizuje proces pobierania danych przez sterownik PDO w PHP. 
+\end{itemize}
+
+\subsection*{Aktualizacja danych (Update)} 
+Procedura \texttt{crud.update\_user} wprowadza warstwę weryfikacji przed modyfikacją istniejących zasobów. 
+
+\begin{itemize} 
+    \item \textbf{Założenia:} Edycja danych jest dopuszczalna wyłącznie dla istniejącego w systemie identyfikatora użytkownika. 
+    \item \textbf{Mechanizm walidacji:} Przed wykonaniem polecenia \texttt{UPDATE}, procedura sprawdza istnienie rekordu: 
+    \begin{lstlisting}[language=SQL] 
+IF NOT EXISTS (SELECT 1 FROM public.users WHERE id = p_id) THEN 
+   RAISE EXCEPTION 'Nie znaleziono użytkownika o ID %', p_id; 
+END IF; 
+    \end{lstlisting} 
+    Gwarantuje to spójność operacji i ułatwia debugowanie komunikacji na linii API-Baza danych. 
+\end{itemize}
+
+\subsection*{Usuwanie danych (Delete)} 
+Procedura \texttt{crud.delete\_user} odpowiada za bezpieczne usuwanie kont przy zachowaniu integralności referencyjnej. 
+
+\begin{itemize} 
+    \item \textbf{Założenia:} Blokada usunięcia użytkowników posiadających aktywne powiązania w innych modułach systemu (np. historia treningowa). 
+    \item \textbf{Obsługa wyjątków:} Wykorzystano przechwytywanie błędu \texttt{foreign\_key\_violation}: 
+    \begin{lstlisting}[language=SQL] 
+EXCEPTION WHEN foreign_key_violation THEN 
+   RAISE EXCEPTION 'Nie można usunąć użytkownika - posiada powiązane dane...'; 
+    \end{lstlisting} 
+    Dzięki temu system chroni historię treningową przed powstaniem rekordów osieroconych (\textit{orphaned records}).
+\end{itemize}
+\newpage
+%-------------------------------------------------------------------
+
+\section{Opis pytań algorytmicznych}
+
+W niniejszym rozdziale szczegółowo opisano logikę zaimplementowaną bezpośrednio w warstwie bazy danych. Wykorzystanie procedur składowanych (\textit{PL/pgSQL}) pozwoliło na odciążenie warstwy aplikacji oraz zapewnienie wysokiej wydajności przy przetwarzaniu złożonych wskaźników treningowych i biometrycznych.
+
+\subsection{Moduł analityki treningowej i progresji siłowej}
+Głównym zadaniem tego modułu jest transformacja surowych danych o seriach treningowych w czytelne wskaźniki postępu.
+
+% --- ALGORYTM 1 ---
+
+\subsubsection*{1. Algorytm obliczania całkowitej objętości treningu}
+
+Objętość treningowa (ang. \textit{training volume}) jest jednym z najważniejszych wskaźników progresu, pozwalającym na ocenę całkowitej pracy wykonanej podczas jednej jednostki treningowej. Za realizację tego zadania odpowiada funkcja \texttt{calculate\_workout\_total\_volume}.
+
+\textbf{Implementacja SQL:}
+\begin{lstlisting}[language=SQL, caption={Procedura obliczania tonażu sesji treningowej}] 
+CREATE OR REPLACE FUNCTION public.calculate_workout_total_volume(p_workout_id integer)
+RETURNS double precision LANGUAGE 'plpgsql' AS $BODY$
+DECLARE
+    v_total_volume float;
+BEGIN
+    SELECT SUM(ws.weight * ws.reps) INTO v_total_volume
+    FROM public.workout_sets ws
+    JOIN public.workout_exercises we ON ws.workout_exercise_id = we.id
+    WHERE we.workout_id = p_workout_id;
+
+    RETURN COALESCE(v_total_volume, 0);
+END; $BODY$;
+\end{lstlisting}
+
+\textbf{Kroki algorytmu:}
+\begin{enumerate}
+    \item \textbf{Przyjęcie parametrów:} Pobranie \texttt{p\_workout\_id} i inicjalizacja zmiennej \texttt{v\_total\_volume}.
+    \item \textbf{Złączenie relacyjne:} Operacja \textit{JOIN} tabel \textit{workout\_sets} oraz \textit{workout\_exercises} w celu identyfikacji rekordów sesji.
+    \item \textbf{Przetwarzanie danych:} Matematyczne mnożenie obciążenia (\textit{weight}) przez liczbę powtórzeń (\textit{reps}).
+    \item \textbf{Agregacja:} Wykorzystanie funkcji \texttt{SUM} do uzyskania całkowitego tonażu.
+    \item \textbf{Walidacja końcowa:} Zastosowanie \texttt{COALESCE} w celu zamiany ewentualnej wartości \texttt{NULL} na 0.
+    \item \textbf{Ekspedycja wyniku:} Zwrócenie wartości typu \textit{double precision} do aplikacji.
+\end{enumerate}
+
+\newpage
+% --- ALGORYTM 2 ---
+
+\subsubsection*{2. Algorytm analizy progresji objętości ćwiczenia w czasie}
+
+Funkcja \texttt{get\_exercise\_volume\_progression} generuje zestawienie tonażu dla konkretnego ćwiczenia z okresu ostatnich trzech miesięcy, co pozwala na wizualizację trendu siłowego.
+
+\textbf{Implementacja SQL:}
+\begin{lstlisting}[language=SQL, caption={Generowanie szeregu czasowego objętości}] 
+CREATE OR REPLACE FUNCTION public.get_exercise_volume_progression(p_user_id integer, p_exercise_id integer)
+RETURNS TABLE(workout_date date, total_volume numeric) LANGUAGE 'plpgsql' AS $BODY$
+BEGIN
+    RETURN QUERY
+    SELECT w.date::DATE, SUM(COALESCE(ws.weight, 0) * COALESCE(ws.reps, 0))::NUMERIC
+    FROM public.workouts w
+    JOIN public.workout_exercises we ON w.id = we.workout_id
+    JOIN public.workout_sets ws ON we.id = ws.workout_exercise_id
+    WHERE w.user_id = p_user_id AND we.exercise_id = p_exercise_id
+      AND w.date >= CURRENT_DATE - INTERVAL '3 months'
+    GROUP BY w.date::DATE ORDER BY w.date::DATE ASC;
+END; $BODY$;
+\end{lstlisting}
+
+\textbf{Kroki algorytmu:}
+\begin{enumerate}
+    \item \textbf{Przyjęcie kontekstu:} Pobranie identyfikatorów \texttt{p\_user\_id} oraz \texttt{p\_exercise\_id}.
+    \item \textbf{Złączenie wielorelacyjne:} Połączenie tabel \textit{workouts}, \textit{workout\_exercises} oraz \textit{workout\_sets}.
+    \item \textbf{Filtrowanie:} Ograniczenie danych do konkretnego użytkownika, ćwiczenia oraz okresu \texttt{INTERVAL '3 months'}.
+    \item \textbf{Obsługa błędów:} Użycie \texttt{COALESCE} przy wagach i powtórzeniach przed mnożeniem.
+    \item \textbf{Grupowanie:} Agregacja danych według daty (\texttt{GROUP BY}) w celu zsumowania serii z jednego dnia.
+    \item \textbf{Sortowanie:} Uporządkowanie chronologiczne (\texttt{ASC}) dla potrzeb wykresów.
+\end{enumerate}
+
+\newpage
+% --- ALGORYTM 3 ---
+
+\subsubsection*{3. Algorytm wyznaczania statusu progresji ćwiczenia}
+
+Funkcja \texttt{get\_exercise\_progression\_status} porównuje tonaż z dwóch ostatnich sesji, zwracając tekstową ocenę trendu (PROGRES, STAGNACJA, REGRES).
+
+\textbf{Implementacja SQL:}
+\begin{lstlisting}[language=SQL, caption={Analiza trendu przy użyciu CTE i funkcji okna}] 
+CREATE OR REPLACE FUNCTION public.get_exercise_progression_status(
+    p_user_id integer,
+    p_exercise_id integer)
+    RETURNS text LANGUAGE 'plpgsql' AS $BODY$
+DECLARE
+    v_last_total_vol float;
+    v_prev_total_vol float;
+    v_entry_count integer;
+BEGIN
+    -- 1. Pobranie objetosci z dwoch ostatnich sesji (CTE)
+    WITH exercise_history AS (
+        SELECT 
+            w.id as workout_id,
+            w.date,
+            SUM(ws.weight * ws.reps) as total_volume
+        FROM public.workout_sets ws
+        JOIN public.workout_exercises we ON ws.workout_exercise_id = we.id
+        JOIN public.workouts w ON we.workout_id = w.id
+        WHERE w.user_id = p_user_id 
+          AND we.exercise_id = p_exercise_id
+        GROUP BY w.id, w.date
+        ORDER BY w.date DESC
+        LIMIT 2
+    ),
+    ranked_history AS (
+        SELECT 
+            total_volume, 
+            ROW_NUMBER() OVER (ORDER BY date DESC) as rn
+        FROM exercise_history
+    )
+    SELECT 
+        MAX(CASE WHEN rn = 1 THEN total_volume END),
+        MAX(CASE WHEN rn = 2 THEN total_volume END),
+        (SELECT COUNT(*) FROM exercise_history)
+    INTO v_last_total_vol, v_prev_total_vol, v_entry_count
+    FROM ranked_history;
+
+    -- 2. Obsluga przypadku nowej aktywnosci
+    IF v_entry_count < 2 THEN 
+        RETURN 'NEW'; 
+    END IF;
+
+    -- 3. Logiczne porownanie trendow
+    IF v_last_total_vol > v_prev_total_vol THEN
+        RETURN 'PROGRESS';     
+    ELSIF v_last_total_vol = v_prev_total_vol THEN
+        RETURN 'STAGNATION';   
+    ELSE
+        RETURN 'REGRESSION';   
+    END IF;
+END; $BODY$;
+\end{lstlisting}
+
+\textbf{Kroki algorytmu:}
+\begin{enumerate}
+    \item \textbf{Inicjalizacja:} Przyjęcie \texttt{p\_user\_id} i \texttt{p\_exercise\_id}, deklaracja zmiennych \texttt{v\_last\_total\_vol} i \texttt{v\_prev\_total\_vol}.
+    \item \textbf{Agregacja historyczna (CTE):} Wyznaczenie objętości dla dwóch ostatnich sesji z użyciem \texttt{LIMIT 2}.
+    \item \textbf{Rankingowanie (CTE):} Nadanie numerów porządkowych (\texttt{ROW\_NUMBER()}) dla odróżnienia ostatniego treningu od przedostatniego.
+    \item \textbf{Ekstrakcja:} Przypisanie wartości do zmiennych za pomocą konstrukcji \texttt{CASE WHEN}.
+    \item \textbf{Weryfikacja bazy:} Jeśli \texttt{v\_entry\_count < 2}, zwrócenie statusu \texttt{'NEW'}.
+    \item \textbf{Logika porównawcza:} Instrukcje \texttt{IF} porównujące wartości tonażu.
+    \item \textbf{Zakończenie:} Zwrócenie etykiety tekstowej do warstwy prezentacji.
+\end{enumerate}
+
+\newpage
+% --- ALGORYTM 4 ---
+\subsubsection*{4. Algorytm porównawczy objętości tygodniowej}
+
+Funkcja \texttt{get\_volume\_comparison} służy do zestawienia aktywności użytkownika w ujęciu tydzień do tygodnia. Pozwala to na szybką ocenę, czy ogólny nakład pracy wzrasta, czy maleje.
+
+\textbf{Implementacja SQL:}
+\begin{lstlisting}[language=SQL, caption={Zestawienie tonażu z bieżącego i poprzedniego tygodnia}]
+CREATE OR REPLACE FUNCTION public.get_volume_comparison(p_user_id integer)
+RETURNS TABLE(current_volume numeric, previous_volume numeric) LANGUAGE 'plpgsql' AS $BODY$
+BEGIN
+    RETURN QUERY
+    SELECT 
+        -- Tonaz z ostatnich 7 dni
+        COALESCE((SELECT SUM(ws.weight * ws.reps)::numeric 
+         FROM public.workout_sets ws
+         JOIN public.workout_exercises we ON ws.workout_exercise_id = we.id
+         JOIN public.workouts w ON we.workout_id = w.id
+         WHERE w.user_id = p_user_id AND w.date > NOW() - INTERVAL '7 days'), 0),
+        
+        -- Tonaz z dni 8-14
+        COALESCE((SELECT SUM(ws.weight * ws.reps)::numeric 
+         FROM public.workout_sets ws
+         JOIN public.workout_exercises we ON ws.workout_exercise_id = we.id
+         JOIN public.workouts w ON we.workout_id = w.id
+         WHERE w.user_id = p_user_id AND w.date <= NOW() - INTERVAL '7 days' 
+         AND w.date > NOW() - INTERVAL '14 days'), 0);
+END; $BODY$;
+\end{lstlisting}
+
+\textbf{Kroki algorytmu:}
+\begin{enumerate}
+    \item \textbf{Inicjalizacja zapytania:} Przyjęcie identyfikatora użytkownika \texttt{p\_user\_id} jako jedynego parametru wejściowego.
+    \item \textbf{Ekstrakcja danych bieżących:} Wykonanie podzapytania agregującego tonaż dla rekordów, których data (\texttt{w.date}) mieści się w przedziale ostatnich 7 dni od momentu wywołania (\texttt{NOW()}).
+    \item \textbf{Ekstrakcja danych historycznych:} Wykonanie analogicznego podzapytania dla zakresu od 8 do 14 dni wstecz, co stanowi punkt odniesienia (poprzedni tydzień).
+    \item \textbf{Normalizacja wyników:} Zastosowanie funkcji \texttt{COALESCE} dla obu podzapytań, co gwarantuje zwrócenie wartości 0 w przypadku braku aktywności w danym okresie.
+    \item \textbf{Zwrócenie rekordu:} Funkcja przesyła do aplikacji dwa wyniki numeryczne, umożliwiając bezpośrednie porównanie ich w interfejsie graficznym.
+\end{enumerate}
+
+\newpage
+% --- ALGORYTM 5 ---
+
+\subsubsection*{5. Algorytm pobierania historycznego kontekstu serii}
+
+Funkcja \texttt{get\_last\_exercise\_stats} jest wykorzystywana podczas trwania treningu. Pozwala ona użytkownikowi podejrzeć, jakie obciążenie zastosował w konkretnej serii podczas ostatniego wykonywania danego ćwiczenia.
+
+\textbf{Implementacja SQL:}
+\begin{lstlisting}[language=SQL, caption={Pobieranie parametrów ostatniej serii o danym numerze}]
+CREATE OR REPLACE FUNCTION public.get_last_exercise_stats(
+    p_user_id integer, p_exercise_id integer, p_set_no integer)
+RETURNS TABLE(last_weight double precision, last_reps integer) LANGUAGE 'sql' AS $BODY$
+    SELECT ws.weight, ws.reps
+    FROM workout_sets ws
+    JOIN workout_exercises we ON ws.workout_exercise_id = we.id
+    JOIN workouts w ON we.workout_id = w.id
+    WHERE w.user_id = p_user_id AND we.exercise_id = p_exercise_id
+      AND ws.set_number = p_set_no
+    ORDER BY w.date DESC LIMIT 1;
+$BODY$;
+\end{lstlisting}
+
+\textbf{Kroki algorytmu:}
+\begin{enumerate}
+    \item \textbf{Określenie parametrów serii:} Przyjęcie ID użytkownika, ID ćwiczenia oraz konkretnego numeru serii (\texttt{p\_set\_no}).
+    \item \textbf{Złączenie tabel historycznych:} Połączenie tabel \textit{workouts}, \textit{workout\_exercises} i \textit{workout\_sets} w celu odnalezienia danych historycznych.
+    \item \textbf{Filtrowanie precyzyjne:} Wybór rekordów pasujących do użytkownika i ćwiczenia, przy jednoczesnym dopasowaniu numeru serii.
+    \item \textbf{Sortowanie chronologiczne:} Uporządkowanie wyników od najnowszego (\texttt{ORDER BY w.date DESC}).
+    \item \textbf{Ograniczenie wyniku:} Pobranie wyłącznie pierwszego (najświeższego) rekordu za pomocą klauzuli \texttt{LIMIT 1}.
+\end{enumerate}
+
+\newpage
+% --- ALGORYTM 6 ---
+
+\subsubsection*{6. Algorytm estymacji rekordu życiowego (1RM)}
+
+Algorytm \texttt{calculate\_exercise\_1rm} wyznacza teoretyczny ciężar maksymalny (One Rep Max), jaki użytkownik byłby w stanie podnieść jednorazowo. Wykorzystuje on matematyczny model Brzyckiego.
+
+\textbf{Implementacja SQL:}
+\begin{lstlisting}[language=SQL, caption={Wykorzystanie wzoru Brzyckiego w PL/pgSQL}]
+-- Fragment kluczowy algorytmu obliczeniowego
+IF v_reps = 1 THEN
+    v_1rm := v_weight;
+ELSE
+    -- Zastosowanie modelu matematycznego
+    v_1rm := v_weight / (1.0278 - (0.0278 * v_reps));
+END IF;
+RETURN ROUND((v_1rm * 2)::numeric, 0) / 2;
+\end{lstlisting}
+
+\textbf{Kroki algorytmu:}
+\begin{enumerate}
+    \item \textbf{Pobranie danych bazowych:} Algorytm identyfikuje najświeższą pierwszą serię (\texttt{set\_number = 1}) dla danego ćwiczenia i użytkownika.
+    \item \textbf{Ekstrakcja parametrów:} Pobranie wartości ciężaru (\texttt{v\_weight}) oraz liczby powtórzeń (\texttt{v\_reps}).
+    \item \textbf{Walidacja danych wejściowych:} Sprawdzenie, czy dane nie są puste lub czy liczba powtórzeń nie wynosi 0. W takim przypadku zwracane jest 0.
+    \item \textbf{Weryfikacja przypadku szczególnego:} Jeśli użytkownik wykonał 1 powtórzenie, to podniesiony ciężar jest uznawany za aktualny rekord (1RM).
+    \item \textbf{Obliczenia matematyczne:} W przypadku większej liczby powtórzeń stosowany jest wzór Brzyckiego: $1RM = \frac{weight}{1.0278 - (0.0278 \times reps)}$.
+    \item \textbf{Zaokrąglanie inżynierskie:} Wynik jest rzutowany na typ \texttt{numeric} i zaokrąglany do najbliższego 0,5 kg (standardowy skok obciążenia na siłowni).
+    \item \textbf{Zwrócenie estymacji:} Przekazanie gotowego wyniku \texttt{v\_1rm} do modułu statystyk.
+\end{enumerate}
+
+% --- MODUŁ 2 ---
+
+\newpage
+\subsection{Moduł dietetyki i analizy biometrycznej} Moduł ten odpowiada za przetwarzanie danych antropometrycznych użytkownika w celu wyznaczenia kluczowych wskaźników zdrowotnych oraz zapotrzebowania energetycznego.
+
+% --- ALGORYTM 7 ---
+
+\subsubsection*{7. Algorytm estymacji poziomu tkanki tłuszczowej (Body Fat)} Funkcja \texttt{calculate\_user\_bf} implementuje metodę Marynarki Wojennej USA (\textit{US Navy Body Fat Method}) do szacowania procentowej zawartości tkanki tłuszczowej na podstawie obwodów ciała. Jest to kluczowy wskaźnik pozwalający na monitorowanie składu ciała, a nie tylko masy całkowitej.
+
+\textbf{Implementacja SQL:} \begin{lstlisting}[language=SQL, caption={Implementacja wzoru US Navy dla obu płci}] CREATE OR REPLACE FUNCTION public.calculate_user_bf(p_user_id integer) RETURNS numeric LANGUAGE 'plpgsql' AS BODY DECLARE v_gender TEXT; v_height NUMERIC; v_waist NUMERIC; v_neck NUMERIC; v_hips NUMERIC; v_bf NUMERIC; BEGIN -- Pobranie danych profilowych i najnowszych pomiarow SELECT LOWER(TRIM(gender)) INTO v_gender FROM public.users WHERE id = p_user_id;
+
+SELECT height, waist, neck, hips INTO v_height, v_waist, v_neck, v_hips
+FROM public.body_measurements
+WHERE user_id = p_user_id
+ORDER BY date DESC LIMIT 1;
+
+-- Walidacja matematyczna (zabezpieczenie logarytmow)
+IF v_height IS NULL OR v_waist IS NULL OR v_neck IS NULL OR (v_waist - v_neck) <= 0 THEN
+    RETURN NULL;
+END IF;
+
+IF v_gender = 'male' THEN
+    v_bf := 495 / (1.0324 - 0.19077 * log(v_waist - v_neck) + 0.15456 * log(v_height)) - 450;
+ELSE
+    IF v_hips IS NULL OR (v_waist + v_hips - v_neck) <= 0 THEN RETURN NULL; END IF;
+    v_bf := 495 / (1.29579 - 0.35004 * log(v_waist + v_hips - v_neck) + 0.22100 * log(v_height)) - 450;
+END IF;
+
+IF v_bf < 2 THEN RETURN 2.0; END IF;
+RETURN ROUND(v_bf::numeric, 1);
+END; BODY; \end{lstlisting}
+
+\textbf{Kroki algorytmu:} \begin{enumerate} \item \textbf{Przygotowanie danych demograficznych:} Pobranie płci użytkownika z tabeli \textit{users}. Zastosowanie funkcji \texttt{LOWER} i \texttt{TRIM} zapewnia odporność algorytmu na różną wielkość liter w bazie danych. \item \textbf{Ekstrakcja pomiarów antropometrycznych:} Pobranie najświeższych wpisów z tabeli \texttt{body\_measurements} (wzrost, obwód talii, szyi oraz bioder). Sortowanie po dacie gwarantuje aktualność wyniku końcowego. \item \textbf{Walidacja bezpieczeństwa matematycznego:} Sprawdzenie, czy dane nie są puste (\texttt{NULL}) oraz czy różnica obwodów jest dodatnia. Jest to niezbędne, ponieważ logarytm naturalny (\texttt{log}) nie jest zdefiniowany dla liczb niedodatnich i spowodowałby błąd wykonania funkcji. \item \textbf{Dyferencjacja płciowa (Branching):} Wybór odpowiedniego modelu matematycznego w zależności od wartości zmiennej \texttt{v\_gender}: \begin{itemize} \item \textbf{Dla mężczyzn:} Wykorzystanie logarytmicznego stosunku obwodów talii (\texttt{v\_waist}) i szyi (\texttt{v\_neck}). \item \textbf{Dla kobiet:} Uwzględnienie dodatkowo obwodu bioder (\texttt{v\_hips}), co jest kluczowe dla specyfiki kobiecej kompozycji ciała. \end{itemize} \item \textbf{Korekta błędów grubych:} Zastosowanie progu dolnego (2.0\%), aby zapobiec zwracaniu nierealnych wskaźników w przypadku błędnie wprowadzonych danych przez użytkownika. \item \textbf{Normalizacja wyniku:} Zaokrąglenie obliczonej wartości \texttt{v\_bf} do jednego miejsca po przecinku za pomocą funkcji \texttt{ROUND} i zwrot wyniku do aplikacji. \end{enumerate}
+
+% --- ALGORYTM 8 ---
+\subsubsection*{8. Algorytm obliczania zapotrzebowania energetycznego (BMR/TDEE)} Funkcja \texttt{calculate\_user\_diet\_calories} odpowiada za wyznaczenie dziennego zapotrzebowania kalorycznego użytkownika. Algorytm opiera się na uznanym wzorze Mifflina-St Jeora, a następnie modyfikuje wynik w zależności od poziomu aktywności fizycznej (\textit{TDEE}) oraz zadeklarowanego celu treningowego.
+
+\textbf{Implementacja SQL:} \begin{lstlisting}[language=SQL, caption={Obliczanie kalorii przy użyciu wzoru Mifflina-St Jeora}] CREATE OR REPLACE FUNCTION public.calculate_user_diet_calories(p_user_id integer) RETURNS TABLE(recommended_calories integer, goal_label varchar, difference_from_tdee integer) LANGUAGE 'plpgsql' AS BODY DECLARE v_gender varchar; v_height float; v_weight float; v_activity float; v_goal varchar; v_bmr float; v_tdee integer; v_age_const integer := 28; BEGIN -- 1. Pobranie danych demograficznych i antropometrycznych SELECT gender INTO v_gender FROM public.users WHERE id = p_user_id;
+
+SELECT weight, height, activity_level, goal 
+INTO v_weight, v_height, v_activity, v_goal
+FROM public.body_measurements 
+WHERE user_id = p_user_id ORDER BY date DESC LIMIT 1;
+
+-- 2. Walidacja danych (wartosci domyslne)
+v_weight := COALESCE(v_weight, 70.0);
+v_height := COALESCE(v_height, 175.0);
+v_activity := COALESCE(v_activity, 1.2);
+
+-- 3. Obliczenie BMR (Mifflin-St Jeor)
+IF lower(v_gender) LIKE 'm%' THEN
+    v_bmr := (10 * v_weight) + (6.25 * v_height) - (5 * v_age_const) + 5;
+ELSE
+    v_bmr := (10 * v_weight) + (6.25 * v_height) - (5 * v_age_const) - 161;
+END IF;
+
+-- 4. Wyznaczenie TDEE i korekta o cel sylwetkowy
+v_tdee := round(v_bmr * v_activity);
+
+IF v_goal = 'Zbudowanie masy miesniowej' THEN
+    recommended_calories := round(v_tdee * 1.10);
+    goal_label := 'Masa';
+ELSIF v_goal = 'Redukcja tkanki tluszczowej' THEN
+    recommended_calories := round(v_tdee * 0.80);
+    goal_label := 'Redukcja';
+ELSE
+    recommended_calories := v_tdee;
+    goal_label := 'Rekompozycja';
+END IF;
+
+difference_from_tdee := recommended_calories - v_tdee;
+RETURN NEXT;
+END; BODY; \end{lstlisting}
+
+\newpage
+\textbf{Kroki algorytmu:} 
+\begin{enumerate} 
+    \item \textbf{Agregacja danych wejściowych:} System pobiera płeć z profilu użytkownika oraz najnowsze parametry fizyczne (masa ciała \texttt{v\_weight}, wzrost \texttt{v\_height}, poziom aktywności \texttt{v\_activity} oraz cel \texttt{v\_goal}) z tabeli pomiarów biometrycznych. 
+    \item \textbf{Zapewnienie ciągłości obliczeń:} Poprzez funkcję \texttt{COALESCE}, algorytm podstawia wartości uśrednione w przypadku braku kompletnych pomiarów, co zapobiega błędom w warstwie prezentacji. 
+    \item \textbf{Obliczanie podstawowej przemiany materii (BMR):} Algorytm stosuje dyferencjację ze względu na płeć (\texttt{v\_gender}), wykorzystując stałą wieku \texttt{v\_age\_const}. Wynik określa liczbę kalorii niezbędną do podtrzymania funkcji życiowych. 
+    \item \textbf{Wyznaczenie całkowitego zapotrzebowania (TDEE):} Wartość \texttt{v\_bmr} jest mnożona przez współczynnik aktywności fizycznej (\texttt{v\_activity}), odzwierciedlający styl życia użytkownika. 
+    \item \textbf{Aplikacja strategii dietetycznej:} W zależności od wybranego celu (\texttt{v\_goal}), system wyznacza końcową podaż energii: 
+    \begin{itemize} 
+        \item \textbf{Nadwyżka (Masa):} Zwiększenie zapotrzebowania o 10\% (\texttt{v\_tdee * 1.10}). 
+        \item \textbf{Deficyt (Redukcja):} Obniżenie zapotrzebowania o 20\% (\texttt{v\_tdee * 0.80}). 
+        \item \textbf{Zero kaloryczne (Rekompozycja):} Utrzymanie podaży na poziomie \texttt{v\_tdee}. 
+    \end{itemize} 
+    \item \textbf{Analiza różnicy bilansu:} Obliczana jest zmienna \texttt{difference\_from\_tdee}, która informuje użytkownika o wielkości zastosowanego deficytu lub nadwyżki. 
+    \item \textbf{Zwrócenie zestawu danych:} Funkcja zwraca sformatowany rekord zawierający docelową kaloryczność, etykietę celu oraz różnicę bilansową. 
+\end{enumerate}
+
+\newpage
+% --- ALGORYTM 9 ---
+\subsubsection*{9. Algorytm podziału makroskładników dietetycznych} Funkcja \texttt{get\_user\_macros} dokonuje podziału całkowitej puli kalorii na poszczególne makroskładniki: białka, tłuszcze i węglowodany. Algorytm stosuje podejście hybrydowe – zapotrzebowanie na białko obliczane jest na podstawie masy ciała, natomiast tłuszcze i węglowodany są wyznaczane jako procentowy udział w całkowitej podaży energii.
+
+\textbf{Implementacja SQL:} \begin{lstlisting}[language=SQL, caption={Obliczanie gramatury makroskładników w PL/pgSQL}] CREATE OR REPLACE FUNCTION public.get_user_macros(p_user_id integer) RETURNS TABLE(protein_g integer, fat_g integer, carbs_g integer, calories_total integer) LANGUAGE 'plpgsql' AS BODY DECLARE v_weight float; v_kcal integer; BEGIN -- 1. Pobranie zapotrzebowania z algorytmu nadrzednego SELECT recommended_calories INTO v_kcal FROM public.calculate_user_diet_calories(p_user_id);
+
+-- 2. Pobranie najnowszej masy ciala
+SELECT weight INTO v_weight FROM public.body_measurements 
+WHERE user_id = p_user_id ORDER BY date DESC LIMIT 1;
+
+v_weight := COALESCE(v_weight, 70.0);
+calories_total := v_kcal;
+
+-- 3. Obliczenia szczegolowe
+protein_g := round(v_weight * 2.0); -- 2g / kg m.c.
+fat_g := round((v_kcal * 0.25) / 9); -- 25% energii
+carbs_g := round((v_kcal - (protein_g * 4) - (fat_g * 9)) / 4); -- Reszta
+
+RETURN NEXT;
+END; BODY; \end{lstlisting}
+
+\textbf{Kroki algorytmu:}
+\begin{enumerate}
+\item \textbf{Integracja z modułem kaloryczności:} Algorytm wywołuje funkcję \texttt{calculate\_user\_diet\_calories}, aby uzyskać wartość \texttt{v\_kcal} (rekomendowaną podaż energii), co zapewnia spójność danych w całym systemie.
+\item \textbf{Ekstrakcja masy ciała:} Z tabeli \texttt{body\_measurements} pobierana jest zmienna \texttt{v\_weight}. W przypadku braku danych, stosowana jest funkcja \texttt{COALESCE} z wartością domyślną 70,0 kg.
+\item \textbf{Priorytetyzacja białka:} W pierwszej kolejności wyznaczana jest wartość \texttt{protein\_g} według standardu sportowego: 2 g na każdy kilogram masy ciała. Wartość ta jest następnie przeliczana na kilokalorie (przy założeniu 4 kcal za 1 g).
+\item \textbf{Wyznaczenie limitu tłuszczów:} Ilość tłuszczów (\texttt{fat\_g}) jest ustalana jako 25\% całkowitego zapotrzebowania energetycznego. Wynik jest dzielony przez 9 (gęstość energetyczna tłuszczu), zgodnie z regułą: $fat\_g = \frac{v\_kcal \times 0,25}{9}$.
+\item \textbf{Dopełnienie węglowodanami:} Zmienna \texttt{carbs\_g} jest obliczana jako „reszta” energetyczna. Od całkowitej puli \texttt{v\_kcal} odejmowana jest energia pochodząca z białek i tłuszczów, a pozostała wartość jest dzielona przez 4 kcal (gęstość energetyczna węglowodanów).
+\item \textbf{Finalizacja i zwrot danych:} Wyniki są zaokrąglane do pełnych gramów za pomocą funkcji \texttt{round} i przekazywane do interfejsu użytkownika jako kompletny rekord \textit{Macros}.
+\end{enumerate}
+
+% --- ALGORYTM 10 ---
+\newpage
+\subsubsection*{10. Procedura ekstrakcji historii pomiarów biometrycznych}
+
+Funkcja \texttt{get\_user\_measurements} służy do pobierania pełnej, chronologicznej historii danych antropometrycznych przypisanych do konkretnego konta użytkownika. Zapewnia ona ustandaryzowany zestaw danych wynikowych, który jest niezbędny do generowania wykresów progresji sylwetkowej oraz zestawień tabelarycznych w interfejsie użytkownika.
+
+\textbf{Implementacja SQL:}
+\begin{lstlisting}[language=SQL, caption={Funkcja SQL do pobierania historii pomiarów ciała}]
+CREATE OR REPLACE FUNCTION public.get_user_measurements(p_user_id integer)
+RETURNS TABLE(
+    measurement_id integer, 
+    date timestamp, 
+    height double precision, 
+    weight double precision, 
+    chest double precision, 
+    waist double precision, 
+    neck double precision,
+    biceps double precision, 
+    thighs double precision, 
+    hips double precision
+) LANGUAGE 'sql' AS $BODY$
+    SELECT 
+        bm.id, bm.date, bm.height, bm.weight,
+        bm.chest, bm.waist, bm.neck, bm.biceps,
+        bm.thighs, bm.hips
+    FROM public.body_measurements bm
+    WHERE bm.user_id = p_user_id
+    ORDER BY bm.date ASC;
+$BODY$;
+\end{lstlisting}
+
+
+
+\textbf{Kroki algorytmu:}
+\begin{enumerate}
+    \item \textbf{Weryfikacja kontekstu użytkownika:} Algorytm przyjmuje parametr wejściowy \texttt{p\_user\_id}, który stanowi klucz do filtrowania rekordów. Dzięki temu zapytanie zwraca wyłącznie dane należące do zalogowanej osoby.
+    \item \textbf{Agregacja kompletu danych antropometrycznych:} Funkcja wybiera z tabeli \texttt{body\_measurements} wszystkie kluczowe parametry: masę ciała (\texttt{weight}), wzrost (\texttt{height}), obwód szyi (\texttt{neck}) oraz obwody klatki piersiowej (\texttt{chest}), talii (\texttt{waist}), bicepsa (\texttt{biceps}), ud (\texttt{thighs}) i bioder (\texttt{hips}).
+    \item \textbf{Identyfikacja rekordów:} Do strumienia danych dołączane jest pole \texttt{measurement\_id} (pochodzące z kolumny \texttt{bm.id}). Pozwala to aplikacji na precyzyjne zarządzanie konkretnymi wpisami w historii.
+    \item \textbf{Utrzymanie porządku chronologicznego:} Kluczowym elementem algorytmu jest sortowanie według pola \texttt{date} w porządku rosnącym (\texttt{ASC}). Gwarantuje to poprawność renderowania osi czasu.
+    \item \textbf{Zwrócenie ustrukturyzowanej tabeli:} Wynik działania funkcji trafia do aplikacji jako obiekt typu \texttt{TABLE}, co pozwala na uniknięcie błędów typu \textit{Undefined array key} w kodzie PHP, ponieważ każda kolumna (w tym \texttt{neck}) jest jawnie zdefiniowana.
+\end{enumerate}
+
+
+% ---- MOduł 3 -------
+\subsection{Moduł Inteligencji Projektowej i Struktury}
+
+Ten rozdział opisuje algorytmy odpowiedzialne za automatyczną analizę schematów treningowych oraz weryfikację balansu strukturalnego planów realizowanych przez użytkowników.
+
+\subsubsection*{11. Algorytm detekcji systemu treningowego (Split Detection)}
+
+Funkcja \texttt{\detokenize{detect_training_split}} dokonuje heurystycznej analizy danych z ostatnich 30 dni aktywności w celu sklasyfikowania systemu treningowego. Jest to kluczowy element personalizacji raportów progresu.
+
+\textbf{Implementacja SQL:}
+\begin{lstlisting}[language=SQL, caption={Funkcja klasyfikująca system treningowy na podstawie statystyk}]
+CREATE OR REPLACE FUNCTION public.detect_training_split(p_user_id integer)
+RETURNS text LANGUAGE 'plpgsql' AS $BODY$
+DECLARE
+    v_avg_groups_per_workout FLOAT;
+    v_days_active_30d INT;
+    v_total_groups_30d INT;
+    v_has_legs BOOLEAN; v_has_push BOOLEAN; v_has_pull BOOLEAN;
+    v_result TEXT;
+BEGIN
+    SELECT 
+        COUNT(DISTINCT s.workout_id),
+        COUNT(DISTINCT s.muscle_group_name),
+        EXISTS (SELECT 1 FROM crud.get_user_training_stats(p_user_id) x WHERE x.muscle_group_name ILIKE '%Nogi%'),
+        EXISTS (SELECT 1 FROM crud.get_user_training_stats(p_user_id) x WHERE x.muscle_group_name IN ('Klatka piersiowa', 'Barki', 'Triceps')),
+        EXISTS (SELECT 1 FROM crud.get_user_training_stats(p_user_id) x WHERE x.muscle_group_name IN ('Plecy', 'Biceps'))
+    INTO v_days_active_30d, v_total_groups_30d, v_has_legs, v_has_push, v_has_pull
+    FROM crud.get_user_training_stats(p_user_id) s;
+
+    SELECT AVG(daily_count) INTO v_avg_groups_per_workout
+    FROM (
+        SELECT COUNT(DISTINCT muscle_group_name) as daily_count
+        FROM crud.get_user_training_stats(p_user_id)
+        GROUP BY workout_id
+    ) AS subquery;
+
+    IF v_days_active_30d = 0 OR v_avg_groups_per_workout IS NULL THEN
+        RETURN 'Brak aktywnosci (30 dni)';
+    END IF;
+
+    -- Logika klasyfikacji
+    IF v_avg_groups_per_workout >= 3.8 THEN v_result := 'Full Body Workout';
+    ELSIF v_has_push AND v_has_pull AND NOT v_has_legs THEN v_result := 'Push Pull (No Legs)';
+    ELSE v_result := 'Wlasny system'; END IF;
+
+    RETURN v_result;
+END; $BODY$;
+\end{lstlisting}
+\newpage
+\textbf{Kroki algorytmu:}
+\begin{enumerate}
+    \item \textbf{Agregacja statystyk okresowych:} Funkcja korzysta z widoku \texttt{\detokenize{crud.get_user_training_stats}} w celu wyznaczenia liczby aktywnych dni (\texttt{\detokenize{v_days_active_30d}}) oraz unikalnych grup mięśniowych trenowanych w ciągu ostatnich 30 dni.
+    \item \textbf{Analiza wektorów treningowych:} Poprzez zapytania \texttt{EXISTS} system sprawdza obecność kluczowych wzorców ruchowych: dolnych partii ciała (\texttt{\detokenize{v_has_legs}}), ruchów wyciskających (\texttt{\detokenize{v_has_push}}) oraz przyciągających (\texttt{\detokenize{v_has_pull}}).
+    \item \textbf{Obliczanie gęstości treningu:} Wyznaczana jest średnia liczba grup mięśniowych przypadająca na jedną sesję (\texttt{\detokenize{v_avg_groups_per_workout}}).
+    \item \textbf{Klasyfikacja logiczna:} System przechodzi przez zestaw warunków decyzyjnych w celu dopasowania wzorca do znanych systemów (np. FBW, Split).
+    \item \textbf{Obsługa braku danych:} W przypadku braku wpisów w tabeli \texttt{\detokenize{workout_sets}}, algorytm zwraca informację o braku aktywności.
+\end{enumerate}
+
+\subsubsection*{12. Algorytm analizy balansu strukturalnego (Muscle Balance)}
+
+Algorytm \texttt{\detokenize{get_user_muscle_balance}} oblicza procentowy udział objętościowy poszczególnych partii mięśniowych w skali ostatniego tygodnia.
+
+\textbf{Implementacja SQL:}
+\begin{lstlisting}[language=SQL, caption={Analiza procentowego rozkladu objetosci treningowej}]
+CREATE OR REPLACE FUNCTION public.get_user_muscle_balance(p_user_id integer)
+RETURNS TABLE(muscle_group_name text, volume_percentage numeric) AS $BODY$
+DECLARE
+    v_total_volume numeric;
+BEGIN
+    SELECT SUM(ws.weight * ws.reps)::numeric INTO v_total_volume
+    FROM public.workout_sets ws
+    JOIN public.workout_exercises we ON ws.workout_exercise_id = we.id
+    JOIN public.workouts w ON we.workout_id = w.id
+    WHERE w.user_id = p_user_id AND w.date > NOW() - INTERVAL '7 days';
+
+    IF v_total_volume IS NULL OR v_total_volume = 0 THEN RETURN; END IF;
+
+    RETURN QUERY
+    SELECT 
+        mg.name::text,
+        ROUND(((SUM(ws.weight * ws.reps) / v_total_volume) * 100)::numeric, 1) as percentage
+    FROM public.workout_sets ws
+    JOIN public.workout_exercises we ON ws.workout_exercise_id = we.id
+    JOIN public.workouts w ON we.workout_id = w.id
+    JOIN public.exercises e ON we.exercise_id = e.id
+    JOIN public.muscle_groups mg ON e.muscle_group_id = mg.id
+    WHERE w.user_id = p_user_id AND w.date > NOW() - INTERVAL '7 days'
+    GROUP BY mg.name ORDER BY percentage DESC;
+END; $BODY$;
+\end{lstlisting}
+\newpage
+\textbf{Kroki algorytmu:}
+\begin{enumerate}
+    \item \textbf{Kalkulacja objętości całkowitej:} System sumuje iloczyn ciężaru i powtórzeń ze wszystkich serii wykonanych przez użytkownika (\texttt{\detokenize{p_user_id}}). Wynik zapisywany jest w zmiennej \texttt{\detokenize{v_total_volume}}.
+    \item \textbf{Złączenia relacyjne:} Funkcja łączy tabele \texttt{\detokenize{workout_sets}}, \texttt{\detokenize{workout_exercises}}, \texttt{\detokenize{exercises}} oraz \texttt{\detokenize{muscle_groups}}.
+    \item \textbf{Normalizacja procentowa:} Dla każdej grupy mięśniowej obliczany jest stosunek jej objętości do objętości całkowitej.
+    \item \textbf{Precyzja obliczeń:} Zastosowano rzutowanie na typ \texttt{numeric} oraz funkcję \texttt{ROUND} dla poprawy czytelności.
+    \item \textbf{Sortowanie hierarchiczne:} Rekordy są zwracane w kolejności malejącej według kolumny \texttt{percentage}.
+\end{enumerate}
+
+
+% ---- Moduł 4 -------
+\subsection{Moduł Integracji i Operacji Złożonych}
+
+Ten rozdział opisuje funkcje integrujące wiele operacji bazodanowych w ramach jednej transakcji oraz zaawansowane procedury odczytu danych historycznych i autoryzacji.
+
+\subsubsection*{13. Algorytm autoryzacji użytkowników (User Authentication)}
+
+Funkcja \texttt{\detokenize{login_by_username}} stanowi warstwę uwierzytelniania bezpośrednio na poziomie bazy danych. Została zaprojektowana w celu szybkiej weryfikacji tożsamości przy minimalnym narzucie komunikacyjnym.
+
+\textbf{Implementacja SQL:}
+\begin{lstlisting}[language=SQL, caption={Procedura logowania użytkownika}, breaklines=true]
+CREATE OR REPLACE FUNCTION public.login_by_username(
+    p_username character varying,
+    p_password character varying)
+RETURNS TABLE(user_id integer, first_name character varying) 
+LANGUAGE 'sql' AS $BODY$
+    SELECT u.id, u.first_name
+    FROM users u
+    WHERE u.username = p_username
+      AND u.password = p_password;
+$BODY$;
+\end{lstlisting}
+
+\textbf{Kroki algorytmu:}
+\begin{itemize}
+    \item \textbf{Walidacja parametrów:} System przyjmuje ciągi znaków \texttt{\detokenize{p_username}} oraz \texttt{\detokenize{p_password}}.
+    \item \textbf{Wyszukiwanie binarne:} Dzięki indeksowi na kolumnie \texttt{\detokenize{username}}, baza danych lokalizuje rekord użytkownika.
+    \item \textbf{Weryfikacja tożsamości:} Porównanie haseł następuje po stronie silnika bazy danych w klauzuli \texttt{WHERE}.
+    \item \textbf{Zwracanie kontekstu:} W przypadku sukcesu funkcja zwraca \texttt{\detokenize{user_id}} oraz \texttt{\detokenize{first_name}}.
+\end{itemize}
+
+\subsubsection*{14. Algorytm filtrowania zasobów ćwiczeń (Exercise Discovery)}
+
+Funkcja \texttt{\detokenize{get_exercises_by_muscle_group}} wspiera interfejs użytkownika w procesie planowania treningu, oferując dynamiczne filtrowanie bazy ćwiczeń według przypisanych grup mięśniowych.
+
+\textbf{Implementacja SQL:}
+\begin{lstlisting}[language=SQL, caption={Filtrowanie bazy ćwiczeń według grup mięśniowych}, breaklines=true]
+CREATE OR REPLACE FUNCTION public.get_exercises_by_muscle_group(
+    p_muscle_group_name character varying)
+RETURNS TABLE(exercise_id integer, exercise_name character varying, muscle_group_name character varying) 
+LANGUAGE 'sql' AS $BODY$
+    SELECT 
+        e.id, 
+        e.name, 
+        mg.name
+    FROM exercises e
+    JOIN muscle_groups mg ON e.muscle_group_id = mg.id
+    WHERE mg.name ILIKE p_muscle_group_name
+    ORDER BY e.name;
+$BODY$;
+\end{lstlisting}
+
+\textbf{Kroki algorytmu:}
+\begin{itemize}
+    \item \textbf{Relacyjne złączenie danych:} System wykonuje operację \texttt{JOIN} między tabelą \texttt{\detokenize{exercises}} a \texttt{\detokenize{muscle_groups}}.
+    \item \textbf{Dopasowanie wzorca:} Użycie operatora \texttt{ILIKE} pozwala na elastyczne wyszukiwanie bez względu na wielkość liter.
+    \item \textbf{Sortowanie alfabetyczne:} Zastosowanie \texttt{ORDER BY} gwarantuje spójność wyświetlanej listy ćwiczeń (\texttt{\detokenize{e.name}}).
+\end{itemize}
+
+\subsubsection*{15. Algorytm odczytu szczegółów treningu (Workout Detailed View)}
+
+Funkcja \texttt{\detokenize{get_detailed_workout}} służy do agregacji danych o konkretnej sesji treningowej. Algorytm łączy informacje o ćwiczeniach, seriach, ciężarze i liczbie powtórzeń w jedną strukturę wynikową.
+
+\textbf{Implementacja SQL:}
+\begin{lstlisting}[language=SQL, caption={Pobieranie szczegółowych danych o treningu}, breaklines=true]
+CREATE OR REPLACE FUNCTION public.get_detailed_workout(
+    p_workout_id integer)
+RETURNS TABLE(exercise_name character varying, set_number integer, weight numeric, reps integer, rpe integer) 
+LANGUAGE 'sql' AS $BODY$
+    SELECT 
+        e.name, 
+        ws.set_number, 
+        ws.weight, 
+        ws.reps, 
+        ws.rpe
+    FROM workout_exercises we
+    JOIN exercises e ON we.exercise_id = e.id
+    JOIN workout_sets ws ON we.id = ws.workout_exercise_id
+    WHERE we.workout_id = p_workout_id
+    ORDER BY we.id, ws.set_number;
+$BODY$;
+\end{lstlisting}
+
+\textbf{Kroki algorytmu:}
+\begin{itemize}
+    \item \textbf{Identyfikacja sesji:} Przyjęcie \texttt{\detokenize{p_workout_id}} jako klucza głównego do filtrowania danych.
+    \item \textbf{Relacyjne złączenie danych:} System wykonuje operacje \texttt{JOIN} między tabelami \texttt{\detokenize{workout_exercises}}, \texttt{\detokenize{exercises}} oraz \texttt{\detokenize{workout_sets}}.
+    \item \textbf{Sortowanie strukturalne:} Zastosowanie \texttt{ORDER BY} zapewnia poprawną kolejność wyświetlania ćwiczeń i serii.
+\end{itemize}
+
+\subsubsection*{16. Algorytm zestawienia historii treningowej (Workout History)}
+
+Funkcja \texttt{\detokenize{get_user_workout_history}} odpowiada za dostarczenie danych do widoku kalendarza lub listy archiwalnej użytkownika.
+
+\textbf{Implementacja SQL:}
+\begin{lstlisting}[language=SQL, caption={Pobieranie historii treningów użytkownika}, breaklines=true]
+CREATE OR REPLACE FUNCTION public.get_user_workout_history(
+    p_user_id integer)
+RETURNS TABLE(workout_id integer, workout_date timestamp without time zone, total_volume numeric, exercise_count bigint) 
+LANGUAGE 'sql' AS $BODY$
+    SELECT 
+        w.id, 
+        w.date, 
+        SUM(ws.weight * ws.reps) as total_volume,
+        COUNT(DISTINCT we.exercise_id) as exercise_count
+    FROM workouts w
+    LEFT JOIN workout_exercises we ON w.id = we.workout_id
+    LEFT JOIN workout_sets ws ON we.id = ws.workout_exercise_id
+    WHERE w.user_id = p_user_id
+    GROUP BY w.id, w.date
+    ORDER BY w.date DESC;
+$BODY$;
+\end{lstlisting}
+
+\textbf{Kroki algorytmu:}
+\begin{itemize}
+    \item \textbf{Agregacja objętości:} Obliczanie sumy iloczynów ciężaru i powtórzeń (\texttt{SUM}) dla wszystkich serii w treningu.
+    \item \textbf{Analiza różnorodności:} Wyznaczenie liczby unikalnych ćwiczeń przy użyciu funkcji \texttt{COUNT(DISTINCT)}.
+    \item \textbf{Sortowanie chronologiczne:} Zastosowanie \texttt{ORDER BY DESC} dla zapewnienia widoczności najnowszych wpisów na górze listy.
+\end{itemize}
+
+\subsubsection*{17. Algorytm zapisu kompletnej sesji (Atomic Workout Save)}
+
+Procedura \texttt{\detokenize{save_complete_workout}} zapewnia spójność danych poprzez zapis nagłówka treningu w ramach jednej operacji.
+
+\textbf{Implementacja SQL:}
+\begin{lstlisting}[language=SQL, caption={Zapis nagłówka sesji treningowej}, breaklines=true]
+CREATE OR REPLACE PROCEDURE public.save_complete_workout(
+    p_user_id integer,
+    p_date timestamp without time zone,
+    p_notes text)
+LANGUAGE 'plpgsql' AS $BODY$
+BEGIN
+    INSERT INTO workouts (user_id, date, notes)
+    VALUES (p_user_id, p_date, p_notes);
+END;
+$BODY$;
+\end{lstlisting}
+
+\textbf{Kroki algorytmu:}
+\begin{itemize}
+    \item \textbf{Inicjalizacja rekordu:} Wstawienie danych podstawowych (identyfikator użytkownika, data) do tabeli \texttt{\detokenize{workouts}}.
+    \item \textbf{Persystencja uwag:} Zapis opcjonalnych notatek treningowych przekazanych w parametrze \texttt{\detokenize{p_notes}}.
+\end{itemize}
+
+\subsection{Podsumowanie logiki bazodanowej}
+
+Przedstawione powyżej algorytmy oraz procedury składowane stanowią fundament operacyjny systemu \textit{AwareFit}. Dzięki przeniesieniu kluczowych obliczeń (takich jak estymacja \textit{1RM}, wyliczanie objętości treningowej czy zapotrzebowania kalorycznego) bezpośrednio do warstwy bazy danych, uzyskano wysoką wydajność oraz spójność danych niezależnie od platformy klienckiej.
+
+Zaimplementowana logika zapewnia pełną automatyzację procesów analitycznych, co minimalizuje obciążenie urządzenia końcowego i pozwala na błyskawiczne generowanie raportów progresu użytkownika.
+
+W kolejnym rozdziale dokumentacji przedstawiona zostanie implementacja warstwy wizualnej systemu. Zostanie tam zaprezentowany interfejs graficzny użytkownika (GUI), który w sposób intuicyjny wykorzystuje opisane wcześniej funkcje i procedury, przekładając surowe dane bazodanowe na czytelne widoki, wykresy oraz formularze interaktywne.

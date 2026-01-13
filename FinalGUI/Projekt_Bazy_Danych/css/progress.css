@@ -1,0 +1,242 @@
+.app-content {
+    padding: 110px 20px 120px;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.section-title { margin-bottom: 25px; color: white; }
+
+.sub-title {
+    font-size: 0.8rem;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    margin: 30px 0 15px;
+    letter-spacing: 1px;
+}
+
+/* Wspólny styl kart */
+.progress-card {
+    background: var(--card-bg);
+    border: 1px solid #2a2a2d;
+    border-radius: 24px;
+    padding: 20px;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+/* Specyficzne dla Streaku */
+.card-icon-circle {
+    width: 60px;
+    height: 60px;
+    background: rgba(87, 202, 34, 0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.card-icon-circle i {
+    font-size: 1.5rem;
+    color: #57ca22;
+}
+
+.label { display: block; font-size: 0.75rem; color: var(--text-dim); margin-bottom: 4px; }
+.value { font-size: 1.2rem; font-weight: 700; color: white; margin: 0; }
+.sub-value { font-size: 0.8rem; color: var(--text-dim); margin-top: 5px; }
+
+/* Objętość */
+.volume-card {
+    flex-direction: row; /* Zmieniamy z powrotem na wiersz, żeby strzałka była obok tekstu */
+    justify-content: space-between;
+    align-items: center;
+    padding: 25px 20px; /* Nieco więcej paddingu dla lepszego wyglądu bez paska */
+}
+
+.volume-header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.trend-indicator {
+    padding: 8px;
+    border-radius: 12px;
+    font-size: 1.2rem;
+}
+
+.trend-indicator.positive { color: #57ca22; background: rgba(87, 202, 34, 0.1); }
+
+.volume-bar-container {
+    width: 100%;
+    height: 8px;
+    background: #1a1a1c;
+    border-radius: 4px;
+    margin-top: 15px;
+    overflow: hidden;
+}
+
+.volume-bar-fill {
+    height: 100%;
+    background: var(--accent-gradient);
+    border-radius: 4px;
+}
+
+/* Siatka rekordów 1RM */
+.records-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+}
+
+.record-box {
+    background: var(--card-bg);
+    border: 1px solid #2a2a2d;
+    padding: 18px;
+    border-radius: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.record-top {
+    display: flex;
+    align-items: center;
+    color: white;
+    font-size: 0.95rem; /* Nieco większy tekst skoro nie ma ikon */
+    font-weight: 600;
+}
+
+.record-box {
+    background: var(--card-bg);
+    border: 1px solid #2a2a2d;
+    padding: 22px 20px; /* Nieco więcej światła w środku */
+    border-radius: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: transform 0.2s ease;
+}
+
+.record-box:active {
+    transform: scale(0.98);
+}
+
+.record-val {
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: white;
+    font-variant-numeric: tabular-nums; /* Zapewnia równą szerokość cyfr */
+}
+
+.balance-container {
+    background: var(--card-bg);
+    border: 1px solid #2a2a2d;
+    padding: 20px;
+    border-radius: 24px;
+}
+
+.balance-item {
+    margin-bottom: 15px;
+}
+
+.balance-item:last-child {
+    margin-bottom: 0;
+}
+
+.balance-info {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    color: white;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.balance-bar-bg {
+    width: 100%;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.balance-bar-fill {
+    height: 100%;
+    background: var(--accent-gradient);
+    border-radius: 10px;
+    transition: width 1s ease-in-out; /* Fajny efekt przy ładowaniu */
+}   
+
+.missing-parts-container {
+    margin-top: 20px;
+    padding: 15px;
+    background: rgba(255, 166, 0, 0.05);
+    border-radius: 18px;
+    border: 1px dashed rgba(255, 166, 0, 0.2);
+}
+
+.missing-title {
+    font-size: 0.75rem;
+    color: #ffa600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.missing-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.missing-tag {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-dim);
+    padding: 4px 10px;
+    border-radius: 8px;
+    font-size: 0.75rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Badge z trendem */
+.trend-badge {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 6px 12px;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 0.9rem;
+}
+
+.trend-badge.positive { background: rgba(87, 202, 34, 0.15); color: #57ca22; }
+.trend-badge.negative { background: rgba(255, 68, 68, 0.15); color: #ff4444; }
+.trend-badge.neutral { background: rgba(255, 255, 255, 0.05); color: var(--text-dim); }
+
+/* Tekst pod tonażem */
+.volume-insight {
+    margin-top: 0px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.volume-insight p {
+    font-size: 0.8rem;
+    line-height: 1.4;
+    margin: 0;
+}
+
+.text-positive { color: #57ca22; }
+.text-warning { color: #ffa600; }
+.text-neutral { color: var(--text-dim); }
+
+.volume-card {
+    flex-direction: column !important; /* Wymuszamy układ pionowy dla nowej treści */
+    align-items: flex-start !important;
+}

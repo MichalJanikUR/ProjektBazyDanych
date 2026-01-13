@@ -1,0 +1,46 @@
+\chapter{Podsumowanie techniczne projektu AwareFit}
+
+Niniejszy rozdział stanowi syntetyczne zestawienie informacji o architekturze, technologiach oraz przeznaczeniu aplikacji AwareFit, bazujące na zaimplementowanych rozwiązaniach programistycznych.
+
+\section{Przeznaczenie i cele aplikacji}
+Głównym celem aplikacji AwareFit jest dostarczenie użytkownikowi kompleksowego narzędzia do monitorowania progresji siłowej oraz zarządzania dietą. System został zaprojektowany z myślą o:
+\begin{itemize}
+    \item \textbf{Efektywnym zapisywaniu jednostek treningowych:} Intuicyjny system rejestrowania sesji treningowych, pozwalający na precyzyjne dokumentowanie każdego ćwiczenia, serii, obciążenia oraz liczby powtórzeń, co stanowi fundament rzetelnej analizy postępów.
+    \item \textbf{Automatyzacji obliczeń parametrów treningowych:} Wykorzystanie mechanizmów bazodanowych do bieżącego wyliczania tonażu treningowego oraz ciągłości aktywności użytkownika.
+    \item \textbf{Wizualizacji progresu:} Dynamiczne generowanie zestawień graficznych obrazujących wzrost siły i objętości w czasie.
+    \item \textbf{Monitorowaniu kompozycji ciała:} Automatyczne dostosowywanie wyliczeń makroskładników i zapotrzebowania kalorycznego na podstawie wprowadzanych pomiarów antropometrycznych.
+\end{itemize}
+
+\section{Struktura bazy danych i logiki serwerowej}
+Architektura bazy danych PostgreSQL opiera się na dwóch głównych schematach, co zapewnia separację logiki operacyjnej od fizycznej struktury przechowywania danych:
+
+\begin{itemize}
+    \item \textbf{Schemat (\texttt{public}):} Przechowuje strukturę tabel bazy danych oraz zaawansowane algorytmy.
+    \item \textbf{Schemat (\texttt{crud}):} Zawiera wszystkie procedury oraz funkcje CRUD.
+\end{itemize}
+
+\section{Interfejs użytkownika (GUI) i warstwa frontendowa}
+Warstwa wizualna została zbudowana w oparciu o podejście \textit{Mobile-First} oraz nowoczesne standardy webowe, zapewniając pełną responsywność na urządzeniach mobilnych:
+\begin{itemize}
+    \item \textbf{Technologie:} HTML5, CSS3 (z wykorzystaniem zmiennych CSS dla ujednoliconego motywu graficznego) oraz nowoczesny JavaScript (ES6+).
+    \item \textbf{Wizualizacja danych:} Wykorzystanie profesjonalnych bibliotek do tworzenia interaktywnych wykresów liniowych, które pozwalają użytkownikowi na intuicyjną analizę historii treningowej.
+    \item \textbf{Interaktywność:} Zastosowanie systemowych okien modalnych do prezentacji danych szczegółowych oraz mechanizmów pamięci lokalnej przeglądarki, które umożliwiają kontynuację sesji treningowej nawet po przypadkowym zamknięciu aplikacji.
+    \item \textbf{Estetyka:} Wykorzystanie nowoczesnej typografii oraz płynnych animacji interfejsu, które podnoszą komfort użytkowania i czytelność prezentowanych statystyk.
+\end{itemize}
+
+\section{Integracja technologii (Tech Stack)}
+System stanowi spójne połączenie warstwy prezentacji, logiki biznesowej oraz trwałego składowania danych:
+\begin{itemize}
+    \item \textbf{Bezpieczeństwo i komunikacja:} Wykorzystanie języka PHP jako pośrednika pomiędzy interfejsem a bazą danych. Zastosowano bezpieczne połączenia poprzez sterowniki bazodanowe.
+    \item \textbf{Asynchroniczność:} Skrypty klienckie dynamicznie przetwarzają dane, co pozwala na aktualizację kluczowych elementów panelu sterowania (\textit{Dashboard}) bez konieczności przeładowywania całej strony.
+    \item \textbf{Środowisko uruchomieniowe:} Serwer Apache oraz silnik PostgreSQL, zintegrowane w ramach lokalnego środowiska deweloperskiego, zapewniające wysoką stabilność podczas prac nad projektem.
+\end{itemize}
+
+\section{Dostępność projektu i kontrola wersji}
+Projekt AwareFit jest rozwijany w oparciu o nowoczesne standardy zarządzania kodem źródłowym, co zapewnia bezpieczeństwo danych oraz pełną przejrzystość historii zmian:
+
+\begin{itemize}
+    \item \textbf{Repozytorium zdalne:} Pełny kod źródłowy aplikacji, wraz z dokumentacją bazy danych oraz plikami konfiguracyjnymi środowiska, jest dostępny pod adresem: \\ \url{https://github.com/MichalJanikUR/ProjektBazyDanych.git}.
+    \item \textbf{System kontroli wersji:} Wykorzystanie systemu Git umożliwiło precyzyjne śledzenie postępów prac, zarządzanie równoległymi zmianami w kodzie oraz bezpieczne wdrażanie poprawek bez ryzyka utraty stabilności głównej wersji systemu.
+    \item \textbf{Struktura plików i dokumentacja:} Kod w repozytorium został zorganizowany w sposób modularny, z wyraźnym podziałem na warstwy aplikacji (logika PHP, interfejs użytkownika, skrypty bazy danych). Pozwala to na łatwą weryfikację implementacji oraz ewentualną rozbudowę systemu w przyszłości.
+\end{itemize}

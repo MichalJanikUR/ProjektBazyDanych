@@ -1,0 +1,45 @@
+\chapter{Specyfikacja}
+\label{cha:Specyfikacja}
+
+%---------------------------------------------------------------------------
+
+Projektowanie systemu \textbf{AwareFit} rozpoczęto od analizy tego, jak naprawdę wygląda trening siłowy i co tak naprawdę pomoże użytkownikowi w jego przygodzie z siłownią. Kluczowe było to, aby nie tworzyć kolejnego notesu do zapisywania treningu, lecz takiego dziennika, który faktycznie będzie wspierał użytkownika i prowadził go przez swoją drogę do upragnionej formy.
+Poniżej znajduje się opis, w jaki sposób rzeczywistość została przeniesiona z siłowni do logiki systemu bazodanowego. Ważnym aspektem była elastyczność danych, co pozwala na swobodny rozwój aplikacji. Na bazie własnych obserwacji oraz doświadczeniu utworzony został koncept, który zawiera odpowiednią strukturę oraz algorytmy w języku pgSQL stanowiące serce całego systemu.
+
+\section{Scenariusz interakcji z systemem}
+
+Aby w pełni zrozumieć strukturę projektowanej bazy danych, należy prześledzić typową ścieżkę użytkownika, która determinuje sposób przepływu informacji w systemie:
+
+\begin{enumerate}
+      \item \textbf{Rejestracja/Logowanie:} Pierwszym krokiem interakcji z systemem jest utworzenie unikalnego konta użytkownika. Logowanie to mechanizm, który pozwala systemowi wyizolować dane konkretnej osoby. Dzięki temu, po podaniu danych uwierzytelniających, baza filtruje setki rekordów, aby wyświetlić tylko te trendy i statystyki, które należą do danego użytkownika, zapewniając mu prywatność i spersonalizowany widok dashboardu.
+      \item \textbf{Przygotowanie i cel:} Użytkownik rozpoczyna korzystanie z aplikacji od wprowadzenia swojego celu oraz kluczowych pomiarów ciała, co pozwala na zdefiniowanie momentu, w którym się znajduje. Dzięki zaawansowanym algorytmom po stronie bazy danych możliwe jest obliczenie zapotrzebowania kalorycznego, makroskładników, czy chociażby procenta tkanki tłuszczowej w ciele. Zarówno cel jak i pomiary mogą być aktualizowane przez użytkownika w przeznaczonym do tego panelu.
+      \item \textbf{Rozpoczęcie sesji i inteligentne wsparcie:} Po przyjściu na siłownię, użytkownik inicjuje nową jednostkę treningową. W tym momencie system tworzy w bazie danych unikalny rekord treningu przypisany do zalogowanej osoby i rozpoczyna pomiar czasu trwania sesji. Użytkownik wybiera partię mięśniową, a następnie konkretne ćwiczenie z nią powiązane. 
+
+      Kluczowym elementem systemu jest wsparcie w czasie rzeczywistym. Podczas wpisywania danych, użytkownik widzi podpowiedzi w polach formularza, które przypominają mu o użytym ciężarze i liczbie powtórzeń z ostatniego treningu tego samego ćwiczenia. Dzięki temu nie musi on co chwilę spoglądać w historię zapisanych treningów. Warto dodać, że system analizuje treningi wstecz i wyświetla rekomendację, czy użytkownik powinien zwiększyć obciążenie, czy pozostać przy obecnym. 
+
+      Po każdej serii użytkownik zapisuje swoje osiągi, budując strukturę treningu krok po kroku, aż do jego zakończenia. Cała ta logika jest wynikiem zaawansowanych algorytmów działających bezpośrednio po stronie silnika bazy danych.
+      \newpage
+\item \textbf{Analiza potreningowa:} Po zakończeniu i zapisaniu sesji, system natychmiastowo przetwarza zebrane informacje, aby zaktualizować centralny panel sterowania – Dashboard. W tym momencie dane z tabel dotyczących treningów są agregowane przez funkcje bazodanowe, które przeliczają całkowitą objętość (tonaż) z ostatnich 7 dni i porównują ją z analogicznym okresem w przeszłości. 
+
+Dzięki temu, przy kolejnym uruchomieniu aplikacji, użytkownik od razu widzi dynamiczne wskaźniki postępu, takie jak procentowy wzrost objętości czy aktualną passę treningową (streak). System generuje również interaktywne wykresy progresji siłowej dla wybranych ćwiczeń, pozwalając na wizualną ocenę progresu. Dodatkowo do systemu zaimplementowany został algorytm, który samodzielnie rozpoznaje rodzaj treningu, na bazie wykonanych jednostek w skali tygodnia.
+
+W tym samym miejscu dane treningowe spotykają się z danymi dietetycznymi. Dashboard wyświetla podsumowanie spożytych kalorii i makroskładników w formie czytelnych kart, co pozwala użytkownikowi błyskawicznie ocenić, czy jego regeneracja i odżywianie są spójne z intensywnością wykonanej pracy na siłowni. Cały ten proces sprawia, że AwareFit przestaje być tylko dziennikiem, a staje się osobistym analitykiem sportowym dostępnym na żądanie.
+      
+\item \textbf{Panel progresu:} Kluczowym elementem AwareFit jest zaawansowany panel progresu, który służy do monitorowania rozwoju. Najważniejszym wskaźnikiem jest tutaj objętość, która pokazuje użytkownikowi jego tendencję progresu. Dzięki temu możliwe jest, aby użytkownik doszedł do wniosku, czy przyjęta przez niego metoda treningowa przynosi zamierzone efekty.
+
+Baza danych analizuje wszystkie treningi z ostatnich 7 dni i wylicza procentowy udział każdej partii mięśniowej w całym planie. Jeśli użytkownik zaniedba jakąś grupę (np. pominie trening nóg), system natychmiast to wyłapie i wyświetli komunikat o pominiętej partii. Ma to na celu zapobieganie dysproporcjom sylwetkowym i kontuzjom. Dodatkowo, na podstawie historii serii, aplikacja estymuje aktualny rekord maksymalny (1RM) w najważniejszych bojach, takich jak wyciskanie, przysiad czy martwy ciąg, co pozwala na bieżąco śledzić wzrost czystej siły bez konieczności ryzykownego sprawdzania jej w każdej sesji.
+\end{enumerate}
+
+\bigskip
+\noindent Podsumowując, powyższy scenariusz pokazuje, że system \textbf{AwareFit} został zaprojektowany z myślą o rzeczywistym problemie. Struktura została zaprojektowana w taki sposób, aby możliwe było prowadzenie użytkownika przez jego przygodę z siłownią. Od momentu pomiarów ciała, przez wyliczenie diety oraz zapisywanie treningu, po analizę danych i końcowe wskazówki i kluczowe wartości. Dzięki temu użytkownik otrzymuje intuicyjny w obsłudze dziennik treningowy, który dba o jego progres, zdrowie i buduje jego świadomość ciała.
+
+
+\newpage
+\section{Użyte technologie}
+Realizacja systemu \textbf{AwareFit} opiera się na sprawdzonych rozwiązaniach, które zapewniają stabilność przetwarzania danych oraz responsywność interfejsu użytkownika:
+\begin{itemize}
+    \item \textbf{PostgreSQL (Silnik bazy danych):} Centralny element systemu. Wybrany ze względu na zaawansowane wsparcie dla języka \textbf{pgSQL}, który pozwolił na przeniesienie logiki analitycznej i algorytmów progresji bezpośrednio na stronę serwera bazy danych.
+    \item \textbf{PHP (Backend):} Odpowiada za bezpieczną komunikację między interfejsem użytkownika a bazą danych, obsługę sesji oraz logikę przesyłania formularzy.
+    \item \textbf{HTML5 / CSS3 / JavaScript (Frontend):} Wykorzystane do budowy intuicyjnego interfejsu oraz dynamicznych dashboardów. Za warstwę wizualną wykresów progresji odpowiada biblioteka \textbf{Chart.js}, która w czasie rzeczywistym renderuje dane dostarczane z bazy. Projektowanie GUI opierało się o metodę mobile-first.
+      \item \textbf{XAMPP:} Zintegrowany pakiet oprogramowania, który posłużył jako lokalne środowisko deweloperskie. Zapewnił on niezbędne komponenty, takie jak serwer Apache do obsługi skryptów PHP.
+\end{itemize}

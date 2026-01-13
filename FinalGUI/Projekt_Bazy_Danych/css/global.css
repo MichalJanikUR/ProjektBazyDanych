@@ -1,0 +1,341 @@
+
+:root {
+    --bg-color: #1b1b1b;
+    --nav-bg: #1a1b1e;
+    --card-bg: #1e1f21;
+    --accent-gradient: linear-gradient(90deg, #57ca22 10%, #00aeff 100%);
+    --text-main: #ffffff;
+    --text-dim: #949494;
+    --font-main: 'Poppins', sans-serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-main);
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    min-height: 100vh;
+}
+
+/* --- HEADER & NAVIGATION --- */
+.app-header {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 90px;
+    background-color: var(--nav-bg);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 30px;
+    z-index: 1000;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+    border-bottom: 1px solid #2a2a2a;
+}
+
+.header-logo img {
+    padding-top: 5px;
+    height: 60px;
+}
+
+/* --- AKTUALIZACJA IKONY KONTA --- */
+.header-user i {
+    font-size: 40px;
+    /* Zamiast koloru var(--text-dim), stosujemy gradient: */
+    background: var(--accent-gradient);
+    -webkit-background-clip: text; /* Maskowanie tła do kształtu ikony */
+    -webkit-text-fill-color: transparent; /* Sprawienie, by środek ikony był przezroczysty, odsłaniając gradient */
+    display: inline-block; /* Wymagane, aby gradient poprawnie się nakładał */
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+/* Opcjonalnie: efekt po najechaniu, żeby ikona "żyła" */
+.header-user a:hover i {
+    transform: scale(1.1);
+    opacity: 0.9;
+}
+
+.bottom-nav {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    height: 95px;
+    background-color: var(--nav-bg);
+    backdrop-filter: blur(15px);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border-top: 1px solid #2a2a2a;
+    box-shadow: 0 -4px 20px rgba(0,0,0,0.5);
+}
+
+.nav-item {
+    text-decoration: none;
+    color: var(--text-dim);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 0.75rem;
+    transition: 0.3s;
+}
+
+.nav-item i { font-size: 24px; margin-bottom: 6px; }
+
+.nav-item.active {
+    background: var(--accent-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 700;
+}
+
+/* --- LOGIN & REGISTER PAGES --- */
+.login-page {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 20px;
+    background-color: var(--bg-color);
+}
+
+.login-container {
+    width: 100%;
+    max-width: 460px;
+}
+
+.login-box {
+    background: var(--card-bg);
+    padding: 50px 40px;
+    border-radius: 30px;
+    box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+    border: 1px solid #2a2a2a;
+    text-align: center;
+}
+
+.logo-section { margin-bottom: 40px; }
+.main-logo { height: 160px; width: auto; margin-bottom: 15px; }
+
+.input-group { margin-bottom: 15px; text-align: left; }
+.input-group label {
+    display: block;
+    color: var(--text-dim);
+    font-size: 0.8rem;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+}
+
+.input-group input, .input-group select {
+    width: 100%;
+    padding: 18px 22px;
+    background: #2a2b2d;
+    border: 1px solid #3a3b3d;
+    border-radius: 18px;
+    color: white;
+    font-family: var(--font-main);
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.input-group input:focus, .input-group select:focus {
+    outline: none;
+    border-color: #57ca22;
+    background: #313235;
+    box-shadow: 0 0 0 4px rgba(87, 202, 34, 0.1);
+}
+
+.login-btn {
+    width: 100%;
+    padding: 20px;
+    background: var(--accent-gradient);
+    border: none;
+    border-radius: 18px;
+    color: #ffffff;
+    font-weight: 800;
+    text-transform: uppercase;
+    cursor: pointer;
+    font-size: 1.1rem;
+}
+
+/* --- MODALS --- */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 2000;
+    left: 0; top: 0; width: 100%; height: 100%;
+    background-color: rgba(0,0,0,0.8);
+    backdrop-filter: blur(5px);
+}
+
+.modal-content {
+    background-color: var(--card-bg);
+    margin: 20% auto;
+    padding: 30px;
+    border-radius: 25px;
+    width: 85%;
+    max-width: 400px;
+    text-align: center;
+    border: 1px solid #333;
+}
+
+.login-footer {
+    margin-top: 25px;
+    font-size: 0.9rem;
+    color: var(--text-dim);
+}
+
+.login-footer a {
+    color: #57ca22; /* Zielony kolor akcentu */
+    text-decoration: none;
+    font-weight: 700;
+    transition: 0.3s;
+}
+
+.login-footer a:hover {
+    text-underline-offset: 4px;
+    text-decoration: underline;
+    opacity: 0.8;
+}
+
+/* --- OPCJE DODATKOWE (Checkbox) --- */
+.form-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    font-size: 0.85rem;
+}
+
+.remember-me {
+    color: var(--text-dim);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.remember-me:hover {
+    color: var(--text-main);
+}
+
+/* Stylizacja samego kwadracika */
+.remember-me input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    background: #2a2b2d;
+    border: 1px solid #3a3b3d;
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.remember-me input[type="checkbox"]:checked {
+    background: var(--accent-gradient);
+    border-color: transparent;
+}
+
+/* Dodanie "ptaszka" (v) po zaznaczeniu */
+.remember-me input[type="checkbox"]:checked::after {
+    content: "\f00c"; /* Kod ikony check z FontAwesome */
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    font-size: 10px;
+    color: white;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.remember-me input[type="checkbox"]:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(87, 202, 34, 0.1);
+}
+
+/* --- STYL DLA HASŁA POD LOGO --- */
+.logo-section p {
+    color: var(--text-dim);
+    font-size: 0.95rem;
+    font-weight: 300;
+    letter-spacing: 0.5px;
+    opacity: 0.8;
+}
+
+/* Jeśli chcesz, aby "Inteligentny" był nieco wyróżniony, 
+   możesz w HTML ubrać go w <span> i dodać to: */
+.logo-section p span {
+    color: #57ca22;
+    font-weight: 500;
+}
+
+/* --- STYLIZACJA SELECTA (PŁEĆ I INNE) --- */
+.input-group select {
+    width: 100%;
+    padding: 14px 20px; /* Spójne ze zmniejszonymi inputami */
+    background: #2a2b2d;
+    border: 1px solid #3a3b3d;
+    border-radius: 18px;
+    color: white;
+    font-family: var(--font-main);
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    
+    /* Wyłączenie domyślnej strzałki przeglądarki */
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    
+    /* Dodanie własnej, pasującej strzałki */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23949494' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 20px center;
+    background-size: 18px;
+}
+
+/* Efekt kliknięcia w select */
+.input-group select:focus {
+    outline: none;
+    border-color: #57ca22;
+    background-color: #313235;
+    box-shadow: 0 0 0 4px rgba(87, 202, 34, 0.1);
+}
+
+/* Stylizacja opcji wewnątrz rozwijanej listy */
+.input-group select option {
+    background: #1e1f21; /* Ciemne tło listy */
+    color: white;
+    padding: 10px;
+}
+
+/* --- GLOBALNY RESET RAMEK I OBRYSÓW --- */
+
+/* 1. Usuwamy niebieską/przerywaną ramkę przy klikaniu w cokolwiek (linki, przyciski, divy z onclick) */
+*:focus {
+    outline: none !important;
+}
+
+/* 2. Naprawiamy specyficzny problem z przyciskami, które mogą dziedziczyć dziwne style */
+button, a {
+    -webkit-tap-highlight-color: transparent; /* Usuwa szary prostokąt na telefonach */
+    outline: none !important;
+    border: none; /* Jeśli przycisk ma domyślną ramkę systemową */
+}
+
+/* 3. Jeśli używasz divów jako przycisków (z onclick), przeglądarka czasem traktuje je jak pola tekstowe */
+div[onclick] {
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* 4. Dodatkowy fix dla Twoich kart ćwiczeń, żeby nic nie "wystawało" */
+.exercise-summary-card {
+    outline: none !important;
+    /* Upewniamy się, że ramka jest tylko taka, jaką zdefiniowałeś */
+    border: 1px solid #333 !important; 
+}

@@ -1,0 +1,81 @@
+\chapter{Dostęp zdalny do bazy danych}
+
+W niniejszym rozdziale przedstawiono koncepcję oraz techniczną realizację komunikacji pomiędzy aplikacją AwareFit a systemem zarządzania bazą danych PostgreSQL.
+
+\section{Koncepcja dostępu zdalnego}
+
+\textbf{Model architektury systemowej:} \\
+Aplikacja AwareFit została zaprojektowana jako progresywna platforma webowa działająca w modelu \textit{Client-Server}. Koncepcja dostępu zdalnego opiera się na separacji interfejsu użytkownika od fizycznej lokalizacji danych.
+
+\begin{itemize}
+    \item \textbf{Dostęp przez protokół HTTP/HTTPS:} Użytkownik uzyskuje dostęp do aplikacji poprzez przeglądarkę internetową. Eliminuje to konieczność instalacji bazy danych na urządzeniu końcowym – wszystkie operacje są procesowane zdalnie na serwerze.
+    \item \textbf{Rola serwera pośredniczącego:} Serwer Apache (XAMPP) pełni rolę bramy (Gateway). Przyjmuje on żądania od użytkownika, a następnie nawiązuje zdalne połączenie z silnikiem PostgreSQL, aby pobrać lub zapisać dane.
+    \item \textbf{Niezależność lokalizacji:} Dzięki zastosowaniu standardu TCP/IP oraz sterowników PDO, system jest przygotowany do pracy w rozproszonym środowisku sieciowym. Baza danych może znajdować się na dedykowanym hostingu, podczas gdy pliki strony serwowane są z innej lokalizacji.
+\end{itemize}
+
+\textbf{Zalety koncepcji webowej:} \\
+Dzięki takiemu podejściu, dostęp zdalny zapewnia:
+\begin{itemize}
+    \item \textbf{Mobilność:} Użytkownik może edytować swój trening na telefonie w siłowni, a następnie analizować postępy na komputerze domowym – dane są zawsze zsynchronizowane w centralnej bazie.
+    \item \textbf{Bezpieczeństwo:} Kluczowe dane (hasła, wyniki) nigdy nie są przechowywane bezpośrednio w przeglądarce, a jedynie przesyłane bezpiecznym kanałem do bazy danych.
+\end{itemize}
+
+\newpage
+\section{Opis realizacji dostępu zdalnego}
+
+Realizacja połączenia opiera się na rozszerzeniu \texttt{PDO} (PHP Data Objects). Środowisko uruchomieniowe zostało oparte na pakiecie \textbf{XAMPP} (serwer Apache) oraz systemie \textbf{PostgreSQL} zarządzanym przez narzędzie \textbf{pgAdmin 4}.
+
+\textbf{Implementacja techniczna połączenia:} \\
+Kluczowym elementem jest plik \texttt{includes/db.php}, który inicjuje sesję komunikacyjną. Poniżej przedstawiono kod źródłowy realizujący to zadanie:
+
+\begin{verbatim}
+<?php
+$host = "localhost";
+$port = "5432";
+$dbname = "awarefit_db";
+$user = "postgres";
+$password = "psql";
+
+try {
+    $dsn = "pgsql:host=$host;port=$port;dbname=$dbname";
+    $pdo = new PDO($dsn, $user, $password, [
+        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
+    ]);
+} catch (PDOException $e) {
+    die("Błąd połączenia: " . $e->getMessage());
+}
+?>
+\end{verbatim}
+
+\textbf{Autoryzacja dostępu w warstwie aplikacji:} \\
+Aby zapewnić, że zdalny dostęp do danych jest bezpieczny, każdy skrypt wymagający połączenia z bazą chroniony jest przez mechanizm sesji zawarty w pliku \texttt{auth.php}:
+
+\begin{verbatim}
+<?php
+session_start();
+if (!isset($_SESSION['user\_id'])) {
+    header("Location: index.php");
+    exit();
+}
+?>
+\end{verbatim}
+
+\textbf{Prezentacja i monitoring (pgAdmin 4):} \\
+Do monitorowania stanu połączeń oraz weryfikacji poprawności zapisu danych wykorzystywane jest narzędzie \textbf{pgAdmin 4}. Pozwala ono na podgląd aktywnych procesów serwera oraz zarządzanie strukturą tabel (Rys. \ref{fig:pgadmin_structure}).
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{figures/GUI/pgAdmin4.jpg}
+    \caption{Struktura bazy danych awarefit\_db widoczna w narzędziu pgAdmin 4}
+    \label{fig:pgadmin_structure}
+\end{figure}
+
+
+
+\textbf{Weryfikacja działania:} \\
+Poprawność realizacji dostępu zdalnego została potwierdzona poprzez:
+\begin{enumerate}
+    \item \textbf{Testy połączenia:} Weryfikacja reakcji aplikacji na błędne dane logowania (poprawne przechwycenie wyjątku \texttt{PDOException}).
+    \item \textbf{Integracja z Apache:} Poprawne procesowanie żądań przez serwer Apache wewnątrz środowiska XAMPP i stabilne utrzymywanie połączenia z procesem \texttt{postgres.exe}.
+    \item \textbf{Zdalne zarządzanie:} Możliwość edycji i przeglądu danych w czasie rzeczywistym bezpośrednio w interfejsie graficznym pgAdmin 4.
+\end{enumerate}
