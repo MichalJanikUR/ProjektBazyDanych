@@ -5,27 +5,27 @@ include 'includes/db.php';
 $user_id = $_SESSION['user_id'];
 
 try {
-    // Pobieramy historię. Dodajemy wywołanie funkcji calculate_workout_total_volume do zapytania.
-    // Zakładając, że funkcja get_user_workout_history zwraca zestaw wierszy dla każdego seta:
+    // Pobranie historii przy użyciu funkcji tabelarycznej.
     $stmt = $pdo->prepare("
         SELECT *, 
         public.calculate_workout_total_volume(workout_id) as db_total_volume 
-        FROM public.get_user_workout_history(?)
+        FROM public.get_user_workout_history(:user_id::integer)
     ");
-    $stmt->execute([$user_id]);
-    $raw_data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $stmt->execute(['user_id' => $user_id]);
+    $raw_data = $stmt->fetchAll(\PDO::FETCH_ASSOC);
 
     $history = [];
     foreach ($raw_data as $row) {
         $w_id = $row['workout_id'];
         $ex_name = $row['exercise_name'];
 
+        // Grupowanie danych w tablicy asocjacyjnej
         if (!isset($history[$w_id])) {
             $history[$w_id] = [
                 'display_number' => $row['user_workout_no'],
                 'date'           => $row['workout_date'],
                 'duration'       => $row['duration'],
-                'total_volume'   => $row['db_total_volume'], // Dane prosto z funkcji SQL
+                'total_volume'   => $row['db_total_volume'], 
                 'exercises'      => []
             ];
         }
@@ -40,8 +40,10 @@ try {
             'set_no'  => $row['set_number']
         ];
     }
-} catch (PDOException $e) {
-    die("Błąd: " . $e->getMessage());
+} catch (\PDOException $e) {
+    // Logowanie błędu i wyświetlenie bezpiecznego komunikatu
+    error_log("Błąd historii: " . $e->getMessage());
+    $error_msg = "Nie udało się załadować historii treningów.";
 }
 ?>
 

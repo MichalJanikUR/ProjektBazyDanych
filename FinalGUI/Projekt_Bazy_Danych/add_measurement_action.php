@@ -41,7 +41,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
 
     } catch (PDOException $e) {
-        // Wyświetlenie błędu pomoże nam zdiagnozować, jeśli baza odrzuci dane (np. walidacja)
         die("Błąd zapisu pomiarów: " . $e->getMessage());
     }
 }

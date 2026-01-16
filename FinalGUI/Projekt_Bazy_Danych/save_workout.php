@@ -4,25 +4,32 @@ include 'includes/db.php';
 
 header('Content-Type: application/json');
 
-// Odbieramy surowe dane JSON
 $json = file_get_contents('php://input');
 $data = json_decode($json, true);
 
 if (!$data || !isset($data['workout'])) {
-    echo json_encode(['success' => false, 'message' => 'Brak danych']);
+    echo json_encode(['success' => false, 'message' => 'Brak poprawnych danych treningu']);
     exit;
 }
 
 $user_id = $_SESSION['user_id'];
 $duration = $data['duration'] ?? 0;
-// Przekazujemy listę ćwiczeń jako string JSON dla PostgreSQL
+
 $workout_json = json_encode($data['workout']);
 
 try {
-    $stmt = $pdo->prepare("SELECT public.save_complete_workout(?, ?, ?)");
-    $stmt->execute([$user_id, $duration, $workout_json]);
+    $stmt = $pdo->prepare("SELECT public.save_complete_workout(:u::integer, :d::integer, :w::jsonb)");
+    $stmt->execute([
+        'u' => $user_id,
+        'd' => $duration,
+        'w' => $workout_json
+    ]);
     
     echo json_encode(['success' => true]);
-} catch (PDOException $e) {
-    echo json_encode(['success' => false, 'message' => 'Błąd bazy: ' . $e->getMessage()]);
+} catch (\PDOException $e) {
+    error_log("Błąd zapisu treningu: " . $e->getMessage());
+    echo json_encode([
+        'success' => false, 
+        'message' => 'Wystąpił błąd po stronie bazy danych.'
+    ]);
 }

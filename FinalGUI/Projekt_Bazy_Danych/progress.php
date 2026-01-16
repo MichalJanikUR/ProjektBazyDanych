@@ -4,76 +4,70 @@ include 'includes/db.php';
 
 $user_id = $_SESSION['user_id'];
 
-// 1. Pobranie Streaku (możesz użyć swojej logiki lub prostego counta z ostatnich dni)
-// Zakładając, że masz tabelę workouts:
-$stmt_streak = $pdo->prepare("SELECT COUNT(*) FROM public.workouts WHERE user_id = ? AND date > NOW() - INTERVAL '7 days'");
-$stmt_streak->execute([$user_id]);
-$weekly_workouts = $stmt_streak->fetchColumn();
+try {
+    // Pobranie liczby treningów z ostatnich 7 dni przy użyciu rzutowania typów
+    $stmt_streak = $pdo->prepare("SELECT public.get_weekly_workout_count(:id::integer)");
+    $stmt_streak->execute(['id' => $user_id]);
+    $weekly_workouts = $stmt_streak->fetchColumn() ?: 0;    $stmt_streak->execute(['id' => $user_id]);
+    $weekly_workouts = $stmt_streak->fetchColumn() ?: 0;
 
-// 2. Pobranie typu splitu (Twoja funkcja detect_training_split)
-$stmt_split = $pdo->prepare("SELECT public.detect_training_split(?)");
-$stmt_split->execute([$user_id]);
-$training_split = $stmt_split->fetchColumn();
+    // Pobranie typu splitu za pomocą funkcji analitycznej
+    $stmt_split = $pdo->prepare("SELECT public.detect_training_split(:id::integer)");
+    $stmt_split->execute(['id' => $user_id]);
+    $training_split = $stmt_split->fetchColumn() ?: 'Brak danych';
 
-// 3. Dane do 1RM (Twoja funkcja calculate_exercise_1rm)
-$bigThree = [
-    ['id' => 6, 'name' => 'Wyciskanie na ławce', 'icon' => 'fa-align-justify'],
-    ['id' => 69, 'name' => 'Przysiad ze sztangą', 'icon' => 'fa-child-reaching'],
-    ['id' => 59, 'name' => 'Martwy ciąg', 'icon' => 'fa-dumbbell']
-];
-
-$records = [];
-foreach ($bigThree as $exercise) {
-    $stmt_rm = $pdo->prepare("SELECT public.calculate_exercise_1rm(?, ?)");
-    $stmt_rm->execute([$user_id, $exercise['id']]);
-    $val = $stmt_rm->fetchColumn();
-    $records[] = [
-        'name' => $exercise['name'],
-        'val' => $val ? $val : 0,
-        'icon' => $exercise['icon']
+    // Definicja ćwiczeń "Big 3" do obliczenia rekordu estymowanego (1RM)
+    $bigThree = [
+        ['id' => 6, 'name' => 'Wyciskanie na ławce'],
+        ['id' => 69, 'name' => 'Przysiad ze sztangą'],
+        ['id' => 59, 'name' => 'Martwy ciąg']
     ];
+
+    $records = [];
+    foreach ($bigThree as $exercise) {
+        // Wywołanie funkcji obliczającej 1RM (np. wzorem Brzyckiego lub Epleya w SQL)
+        $stmt_rm = $pdo->prepare("SELECT public.calculate_exercise_1rm(:u::integer, :e::integer)");
+        $stmt_rm->execute(['u' => $user_id, 'e' => $exercise['id']]);
+        $val = $stmt_rm->fetchColumn();
+        $records[] = [
+            'name' => $exercise['name'],
+            'val' => $val ?: 0
+        ];
+    }
+
+    // Pobranie balansu strukturalnego (procentowy udział partii mięśniowych w objętości)
+    $stmt_balance = $pdo->prepare("SELECT * FROM public.get_user_muscle_balance(:id::integer)");
+    $stmt_balance->execute(['id' => $user_id]);
+    $balance_data = $stmt_balance->fetchAll(\PDO::FETCH_ASSOC);
+
+    // Wyznaczenie partii pominiętych w ostatnim cyklu treningowym
+    $trained_groups = array_column($balance_data, 'muscle_group_name');
+    $stmt_all_mg = $pdo->query("SELECT name FROM crud.get_all_muscle_groups()");
+    $all_groups = $stmt_all_mg->fetchAll(\PDO::FETCH_COLUMN);
+    $missing_groups = array_diff($all_groups, $trained_groups);
+
+    // Porównanie objętości tydzień do tygodnia (Trend progresji)
+    $stmt_comp = $pdo->prepare("SELECT * FROM public.get_volume_comparison(:id::integer)");
+    $stmt_comp->execute(['id' => $user_id]);
+    $comp_data = $stmt_comp->fetch(\PDO::FETCH_ASSOC);
+
+    $curr_vol = $comp_data['current_volume'] ?? 0;
+    $prev_vol = $comp_data['previous_volume'] ?? 0;
+    $diff_percent = 0;
+    $trend_class = 'neutral';
+
+    if ($prev_vol > 0) {
+        $diff_percent = (($curr_vol - $prev_vol) / $prev_vol) * 100;
+        $trend_class = ($diff_percent >= 0) ? 'positive' : 'negative';
+    } elseif ($curr_vol > 0) {
+        $diff_percent = 100; 
+        $trend_class = 'positive';
+    }
+
+} catch (\PDOException $e) {
+    error_log("Błąd progress.php: " . $e->getMessage());
+    die("Wystąpił błąd podczas generowania statystyk progresu.");
 }
-
-// 4. Progres Objętości (Suma z ostatniego tygodnia vs poprzedni)
-$stmt_vol = $pdo->prepare("
-    SELECT SUM(public.calculate_workout_total_volume(id)) 
-    FROM public.workouts 
-    WHERE user_id = ? AND date > NOW() - INTERVAL '7 days'
-");
-$stmt_vol->execute([$user_id]);
-$current_volume = $stmt_vol->fetchColumn();
-
-$stmt_balance = $pdo->prepare("SELECT * FROM public.get_user_muscle_balance(?)");
-$stmt_balance->execute([$user_id]);
-$balance_data = $stmt_balance->fetchAll(PDO::FETCH_ASSOC);
-
-// 1. Pobieramy partie, które były trenowane (mamy to już w $balance_data)
-$trained_groups = array_column($balance_data, 'muscle_group_name');
-
-// 2. Pobieramy WSZYSTKIE partie z bazy przy użyciu Twojej funkcji
-$stmt_all_mg = $pdo->query("SELECT name FROM crud.get_all_muscle_groups()");
-$all_groups = $stmt_all_mg->fetchAll(PDO::FETCH_COLUMN);
-
-// 3. Wyliczamy różnicę - czyli partie, których nie ma w treningach z 7 dni
-$missing_groups = array_diff($all_groups, $trained_groups);
-
-$stmt_comp = $pdo->prepare("SELECT * FROM public.get_volume_comparison(?)");
-$stmt_comp->execute([$user_id]);
-$comp_data = $stmt_comp->fetch(PDO::FETCH_ASSOC);
-
-$curr_vol = $comp_data['current_volume'];
-$prev_vol = $comp_data['previous_volume'];
-$diff_percent = 0;
-$trend_class = 'neutral';
-
-if ($prev_vol > 0) {
-    $diff_percent = (($curr_vol - $prev_vol) / $prev_vol) * 100;
-    $trend_class = ($diff_percent >= 0) ? 'positive' : 'negative';
-} elseif ($curr_vol > 0) {
-    $diff_percent = 100; // Pierwszy tydzień po przerwie
-    $trend_class = 'positive';
-}
-
 ?>
 
 <!DOCTYPE html>

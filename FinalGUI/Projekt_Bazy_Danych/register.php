@@ -4,25 +4,39 @@ $message = "";
 $message_type = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $u = $_POST['username'];
-    $p = $_POST['password'];
-    $e = $_POST['email'];
-    $fn = $_POST['first_name'];
-    $ln = $_POST['last_name'];
-    $g = $_POST['gender']; // 1. Odbierasz dane o płci z formularza
+    // Odbieranie danych z formularza
+    $u  = $_POST['username'] ?? '';
+    $p  = $_POST['password'] ?? '';
+    $e  = $_POST['email'] ?? '';
+    $fn = $_POST['first_name'] ?? '';
+    $ln = $_POST['last_name'] ?? '';
+    $g  = $_POST['gender'] ?? ''; 
 
     try {
-        // 2. Aktualizujemy CALL - dodajemy szósty znak zapytania (?) dla płci
-        $stmt = $pdo->prepare("CALL crud.insert_user(?, ?, ?, ?, ?, ?)");
-        $stmt->execute([$u, $p, $e, $fn, $ln, $g]); // Dodajemy $g do tablicy
+        $stmt = $pdo->prepare("CALL crud.insert_user(
+            :u::text, 
+            :p::text, 
+            :e::text, 
+            :fn::text, 
+            :ln::text, 
+            :g::text
+        )");
+        
+        $stmt->execute([
+            'u'  => $u,
+            'p'  => $p,
+            'e'  => $e,
+            'fn' => $fn,
+            'ln' => $ln,
+            'g'  => $g
+        ]); 
 
         $message = "Konto zostało utworzone pomyślnie! Możesz się teraz zalogować.";
         $message_type = "success";
-    } catch (PDOException $ex) {
-        // Przechwytywanie błędów z procedury (np. RAISE EXCEPTION)
+        
+    } catch (\PDOException $ex) {
         $raw_error = $ex->getMessage();
         
-        // Mapowanie błędów bazy na komunikaty przyjazne dla użytkownika
         if (strpos($raw_error, 'już istnieje') !== false) {
             $message = "Wybrana nazwa użytkownika jest już zajęta.";
         } elseif (strpos($raw_error, 'już zajęty') !== false) {
@@ -30,7 +44,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         } elseif (strpos($raw_error, 'format email') !== false) {
             $message = "Wprowadzony adres e-mail ma niepoprawny format.";
         } else {
-            $message = "Wystąpił błąd podczas rejestracji: " . $raw_error;
+            error_log("Błąd rejestracji: " . $raw_error);
+            $message = "Wystąpił błąd podczas rejestracji. Spróbuj ponownie później.";
         }
         $message_type = "error";
     }

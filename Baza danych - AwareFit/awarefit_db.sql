@@ -2,12 +2,12 @@
 -- PostgreSQL database dump
 --
 
-\restrict 2bfLs3J59zqLM9lrANlt2fbZL0BrtB1nmOOtz8XTLrDSLPZjIbtqsTieemJcxn0
+\restrict jDII0nafavgmwV887zLiYAWbWDg3jCBjyVb0O7tevesDMD6Y0gui0SGw4DeBjGa
 
 -- Dumped from database version 18.1
 -- Dumped by pg_dump version 18.1
 
--- Started on 2026-01-13 18:55:39
+-- Started on 2026-01-16 18:46:09
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -23,36 +23,15 @@ SET row_security = off;
 
 --
 -- TOC entry 6 (class 2615 OID 24751)
--- Name: crud; Type: SCHEMA; Schema: -; Owner: postgres
+-- Name: crud; Type: SCHEMA; Schema: -; Owner: -
 --
 
 CREATE SCHEMA crud;
 
 
-ALTER SCHEMA crud OWNER TO postgres;
-
 --
--- TOC entry 4 (class 2615 OID 2200)
--- Name: public; Type: SCHEMA; Schema: -; Owner: pg_database_owner
---
-
-CREATE SCHEMA public;
-
-
-ALTER SCHEMA public OWNER TO pg_database_owner;
-
---
--- TOC entry 5135 (class 0 OID 0)
--- Dependencies: 4
--- Name: SCHEMA public; Type: COMMENT; Schema: -; Owner: pg_database_owner
---
-
-COMMENT ON SCHEMA public IS 'standard public schema';
-
-
---
--- TOC entry 272 (class 1255 OID 24780)
--- Name: calculate_workout_streak(integer, integer); Type: FUNCTION; Schema: crud; Owner: postgres
+-- TOC entry 298 (class 1255 OID 24780)
+-- Name: calculate_workout_streak(integer, integer); Type: FUNCTION; Schema: crud; Owner: -
 --
 
 CREATE FUNCTION crud.calculate_workout_streak(p_user_id integer, p_max_break_days integer DEFAULT 4) RETURNS integer
@@ -67,7 +46,8 @@ BEGIN
     FOR current_workout_record IN 
         SELECT DISTINCT date::date as w_date 
         FROM public.workouts 
-        WHERE user_id = p_user_id 
+        WHERE user_id = p_user_id
+			AND date <= CURRENT_DATE
         ORDER BY w_date DESC
     LOOP
         IF last_workout_date IS NULL THEN
@@ -91,11 +71,9 @@ END;
 $$;
 
 
-ALTER FUNCTION crud.calculate_workout_streak(p_user_id integer, p_max_break_days integer) OWNER TO postgres;
-
 --
--- TOC entry 236 (class 1255 OID 24767)
--- Name: delete_body_measurement(integer); Type: PROCEDURE; Schema: crud; Owner: postgres
+-- TOC entry 235 (class 1255 OID 24767)
+-- Name: delete_body_measurement(integer); Type: PROCEDURE; Schema: crud; Owner: -
 --
 
 CREATE PROCEDURE crud.delete_body_measurement(IN p_id integer)
@@ -108,11 +86,9 @@ END;
 $$;
 
 
-ALTER PROCEDURE crud.delete_body_measurement(IN p_id integer) OWNER TO postgres;
-
 --
--- TOC entry 259 (class 1255 OID 24763)
--- Name: delete_exercise(integer); Type: PROCEDURE; Schema: crud; Owner: postgres
+-- TOC entry 257 (class 1255 OID 24763)
+-- Name: delete_exercise(integer); Type: PROCEDURE; Schema: crud; Owner: -
 --
 
 CREATE PROCEDURE crud.delete_exercise(IN p_id integer)
@@ -125,11 +101,9 @@ END;
 $$;
 
 
-ALTER PROCEDURE crud.delete_exercise(IN p_id integer) OWNER TO postgres;
-
 --
--- TOC entry 255 (class 1255 OID 24759)
--- Name: delete_muscle_group(integer); Type: PROCEDURE; Schema: crud; Owner: postgres
+-- TOC entry 253 (class 1255 OID 24759)
+-- Name: delete_muscle_group(integer); Type: PROCEDURE; Schema: crud; Owner: -
 --
 
 CREATE PROCEDURE crud.delete_muscle_group(IN p_id integer)
@@ -146,11 +120,9 @@ END;
 $$;
 
 
-ALTER PROCEDURE crud.delete_muscle_group(IN p_id integer) OWNER TO postgres;
-
 --
--- TOC entry 251 (class 1255 OID 24755)
--- Name: delete_user(integer); Type: PROCEDURE; Schema: crud; Owner: postgres
+-- TOC entry 249 (class 1255 OID 24755)
+-- Name: delete_user(integer); Type: PROCEDURE; Schema: crud; Owner: -
 --
 
 CREATE PROCEDURE crud.delete_user(IN p_id integer)
@@ -170,11 +142,9 @@ END;
 $$;
 
 
-ALTER PROCEDURE crud.delete_user(IN p_id integer) OWNER TO postgres;
-
 --
--- TOC entry 263 (class 1255 OID 24771)
--- Name: delete_workout(integer); Type: PROCEDURE; Schema: crud; Owner: postgres
+-- TOC entry 261 (class 1255 OID 24771)
+-- Name: delete_workout(integer); Type: PROCEDURE; Schema: crud; Owner: -
 --
 
 CREATE PROCEDURE crud.delete_workout(IN p_id integer)
@@ -187,11 +157,9 @@ END;
 $$;
 
 
-ALTER PROCEDURE crud.delete_workout(IN p_id integer) OWNER TO postgres;
-
 --
--- TOC entry 267 (class 1255 OID 24775)
--- Name: delete_workout_exercise(integer); Type: PROCEDURE; Schema: crud; Owner: postgres
+-- TOC entry 265 (class 1255 OID 24775)
+-- Name: delete_workout_exercise(integer); Type: PROCEDURE; Schema: crud; Owner: -
 --
 
 CREATE PROCEDURE crud.delete_workout_exercise(IN p_id integer)
@@ -204,11 +172,9 @@ END;
 $$;
 
 
-ALTER PROCEDURE crud.delete_workout_exercise(IN p_id integer) OWNER TO postgres;
-
 --
--- TOC entry 271 (class 1255 OID 24779)
--- Name: delete_workout_set(integer); Type: PROCEDURE; Schema: crud; Owner: postgres
+-- TOC entry 269 (class 1255 OID 24779)
+-- Name: delete_workout_set(integer); Type: PROCEDURE; Schema: crud; Owner: -
 --
 
 CREATE PROCEDURE crud.delete_workout_set(IN p_id integer)
@@ -221,15 +187,13 @@ END;
 $$;
 
 
-ALTER PROCEDURE crud.delete_workout_set(IN p_id integer) OWNER TO postgres;
-
 SET default_tablespace = '';
 
 SET default_table_access_method = heap;
 
 --
 -- TOC entry 227 (class 1259 OID 16431)
--- Name: body_measurements; Type: TABLE; Schema: public; Owner: postgres
+-- Name: body_measurements; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.body_measurements (
@@ -249,20 +213,18 @@ CREATE TABLE public.body_measurements (
 );
 
 
-ALTER TABLE public.body_measurements OWNER TO postgres;
-
 --
--- TOC entry 5136 (class 0 OID 0)
+-- TOC entry 5138 (class 0 OID 0)
 -- Dependencies: 227
--- Name: COLUMN body_measurements.activity_level; Type: COMMENT; Schema: public; Owner: postgres
+-- Name: COLUMN body_measurements.activity_level; Type: COMMENT; Schema: public; Owner: -
 --
 
 COMMENT ON COLUMN public.body_measurements.activity_level IS '1:Siedzący, 2:Lekka, 3:Średnia, 4:Wysoka, 5:Ekstremalna';
 
 
 --
--- TOC entry 260 (class 1255 OID 24764)
--- Name: get_all_body_measurements(); Type: FUNCTION; Schema: crud; Owner: postgres
+-- TOC entry 258 (class 1255 OID 24764)
+-- Name: get_all_body_measurements(); Type: FUNCTION; Schema: crud; Owner: -
 --
 
 CREATE FUNCTION crud.get_all_body_measurements() RETURNS SETOF public.body_measurements
@@ -274,11 +236,9 @@ END;
 $$;
 
 
-ALTER FUNCTION crud.get_all_body_measurements() OWNER TO postgres;
-
 --
 -- TOC entry 225 (class 1259 OID 16414)
--- Name: exercises; Type: TABLE; Schema: public; Owner: postgres
+-- Name: exercises; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.exercises (
@@ -289,11 +249,9 @@ CREATE TABLE public.exercises (
 );
 
 
-ALTER TABLE public.exercises OWNER TO postgres;
-
 --
--- TOC entry 256 (class 1255 OID 24760)
--- Name: get_all_exercises(); Type: FUNCTION; Schema: crud; Owner: postgres
+-- TOC entry 254 (class 1255 OID 24760)
+-- Name: get_all_exercises(); Type: FUNCTION; Schema: crud; Owner: -
 --
 
 CREATE FUNCTION crud.get_all_exercises() RETURNS SETOF public.exercises
@@ -305,11 +263,9 @@ END;
 $$;
 
 
-ALTER FUNCTION crud.get_all_exercises() OWNER TO postgres;
-
 --
 -- TOC entry 223 (class 1259 OID 16405)
--- Name: muscle_groups; Type: TABLE; Schema: public; Owner: postgres
+-- Name: muscle_groups; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.muscle_groups (
@@ -318,11 +274,9 @@ CREATE TABLE public.muscle_groups (
 );
 
 
-ALTER TABLE public.muscle_groups OWNER TO postgres;
-
 --
--- TOC entry 252 (class 1255 OID 24756)
--- Name: get_all_muscle_groups(); Type: FUNCTION; Schema: crud; Owner: postgres
+-- TOC entry 250 (class 1255 OID 24756)
+-- Name: get_all_muscle_groups(); Type: FUNCTION; Schema: crud; Owner: -
 --
 
 CREATE FUNCTION crud.get_all_muscle_groups() RETURNS SETOF public.muscle_groups
@@ -334,11 +288,9 @@ END;
 $$;
 
 
-ALTER FUNCTION crud.get_all_muscle_groups() OWNER TO postgres;
-
 --
 -- TOC entry 221 (class 1259 OID 16390)
--- Name: users; Type: TABLE; Schema: public; Owner: postgres
+-- Name: users; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.users (
@@ -353,11 +305,9 @@ CREATE TABLE public.users (
 );
 
 
-ALTER TABLE public.users OWNER TO postgres;
-
 --
--- TOC entry 235 (class 1255 OID 24752)
--- Name: get_all_users(); Type: FUNCTION; Schema: crud; Owner: postgres
+-- TOC entry 234 (class 1255 OID 24752)
+-- Name: get_all_users(); Type: FUNCTION; Schema: crud; Owner: -
 --
 
 CREATE FUNCTION crud.get_all_users() RETURNS SETOF public.users
@@ -369,11 +319,9 @@ END;
 $$;
 
 
-ALTER FUNCTION crud.get_all_users() OWNER TO postgres;
-
 --
 -- TOC entry 231 (class 1259 OID 16461)
--- Name: workout_exercises; Type: TABLE; Schema: public; Owner: postgres
+-- Name: workout_exercises; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.workout_exercises (
@@ -383,11 +331,9 @@ CREATE TABLE public.workout_exercises (
 );
 
 
-ALTER TABLE public.workout_exercises OWNER TO postgres;
-
 --
--- TOC entry 264 (class 1255 OID 24772)
--- Name: get_all_workout_exercises(); Type: FUNCTION; Schema: crud; Owner: postgres
+-- TOC entry 262 (class 1255 OID 24772)
+-- Name: get_all_workout_exercises(); Type: FUNCTION; Schema: crud; Owner: -
 --
 
 CREATE FUNCTION crud.get_all_workout_exercises() RETURNS SETOF public.workout_exercises
@@ -399,11 +345,9 @@ END;
 $$;
 
 
-ALTER FUNCTION crud.get_all_workout_exercises() OWNER TO postgres;
-
 --
 -- TOC entry 233 (class 1259 OID 16481)
--- Name: workout_sets; Type: TABLE; Schema: public; Owner: postgres
+-- Name: workout_sets; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.workout_sets (
@@ -415,11 +359,9 @@ CREATE TABLE public.workout_sets (
 );
 
 
-ALTER TABLE public.workout_sets OWNER TO postgres;
-
 --
--- TOC entry 268 (class 1255 OID 24776)
--- Name: get_all_workout_sets(); Type: FUNCTION; Schema: crud; Owner: postgres
+-- TOC entry 266 (class 1255 OID 24776)
+-- Name: get_all_workout_sets(); Type: FUNCTION; Schema: crud; Owner: -
 --
 
 CREATE FUNCTION crud.get_all_workout_sets() RETURNS SETOF public.workout_sets
@@ -431,11 +373,9 @@ END;
 $$;
 
 
-ALTER FUNCTION crud.get_all_workout_sets() OWNER TO postgres;
-
 --
 -- TOC entry 229 (class 1259 OID 16446)
--- Name: workouts; Type: TABLE; Schema: public; Owner: postgres
+-- Name: workouts; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.workouts (
@@ -446,20 +386,18 @@ CREATE TABLE public.workouts (
 );
 
 
-ALTER TABLE public.workouts OWNER TO postgres;
-
 --
--- TOC entry 5137 (class 0 OID 0)
+-- TOC entry 5139 (class 0 OID 0)
 -- Dependencies: 229
--- Name: COLUMN workouts.duration; Type: COMMENT; Schema: public; Owner: postgres
+-- Name: COLUMN workouts.duration; Type: COMMENT; Schema: public; Owner: -
 --
 
 COMMENT ON COLUMN public.workouts.duration IS 'Czas trwania sesji treningowej';
 
 
 --
--- TOC entry 237 (class 1255 OID 24768)
--- Name: get_all_workouts(); Type: FUNCTION; Schema: crud; Owner: postgres
+-- TOC entry 236 (class 1255 OID 24768)
+-- Name: get_all_workouts(); Type: FUNCTION; Schema: crud; Owner: -
 --
 
 CREATE FUNCTION crud.get_all_workouts() RETURNS SETOF public.workouts
@@ -471,11 +409,9 @@ END;
 $$;
 
 
-ALTER FUNCTION crud.get_all_workouts() OWNER TO postgres;
-
 --
--- TOC entry 290 (class 1255 OID 24813)
--- Name: get_user_training_stats(integer); Type: FUNCTION; Schema: crud; Owner: postgres
+-- TOC entry 286 (class 1255 OID 24813)
+-- Name: get_user_training_stats(integer); Type: FUNCTION; Schema: crud; Owner: -
 --
 
 CREATE FUNCTION crud.get_user_training_stats(p_user_id integer) RETURNS TABLE(workout_id integer, muscle_group_name text)
@@ -493,11 +429,9 @@ END;
 $$;
 
 
-ALTER FUNCTION crud.get_user_training_stats(p_user_id integer) OWNER TO postgres;
-
 --
--- TOC entry 293 (class 1255 OID 24815)
--- Name: insert_body_measurement(integer, timestamp without time zone, double precision, double precision, double precision, double precision, double precision, double precision, double precision, double precision, text, text); Type: PROCEDURE; Schema: crud; Owner: postgres
+-- TOC entry 288 (class 1255 OID 24815)
+-- Name: insert_body_measurement(integer, timestamp without time zone, double precision, double precision, double precision, double precision, double precision, double precision, double precision, double precision, text, text); Type: PROCEDURE; Schema: crud; Owner: -
 --
 
 CREATE PROCEDURE crud.insert_body_measurement(IN p_user_id integer, IN p_date timestamp without time zone, IN p_height double precision, IN p_weight double precision, IN p_chest double precision, IN p_waist double precision, IN p_biceps double precision, IN p_thighs double precision, IN p_hips double precision, IN p_neck double precision, IN p_goal text, IN p_activity_lvl text)
@@ -529,11 +463,9 @@ END;
 $$;
 
 
-ALTER PROCEDURE crud.insert_body_measurement(IN p_user_id integer, IN p_date timestamp without time zone, IN p_height double precision, IN p_weight double precision, IN p_chest double precision, IN p_waist double precision, IN p_biceps double precision, IN p_thighs double precision, IN p_hips double precision, IN p_neck double precision, IN p_goal text, IN p_activity_lvl text) OWNER TO postgres;
-
 --
--- TOC entry 275 (class 1255 OID 24820)
--- Name: insert_body_measurement(integer, timestamp without time zone, double precision, double precision, double precision, double precision, double precision, double precision, double precision, numeric, character varying, numeric); Type: PROCEDURE; Schema: crud; Owner: postgres
+-- TOC entry 271 (class 1255 OID 24820)
+-- Name: insert_body_measurement(integer, timestamp without time zone, double precision, double precision, double precision, double precision, double precision, double precision, double precision, numeric, character varying, numeric); Type: PROCEDURE; Schema: crud; Owner: -
 --
 
 CREATE PROCEDURE crud.insert_body_measurement(IN p_user_id integer, IN p_date timestamp without time zone, IN p_height double precision, IN p_weight double precision, IN p_chest double precision, IN p_waist double precision, IN p_biceps double precision, IN p_thighs double precision, IN p_hips double precision, IN p_neck numeric, IN p_goal character varying, IN p_activity_lvl numeric)
@@ -550,11 +482,9 @@ END;
 $$;
 
 
-ALTER PROCEDURE crud.insert_body_measurement(IN p_user_id integer, IN p_date timestamp without time zone, IN p_height double precision, IN p_weight double precision, IN p_chest double precision, IN p_waist double precision, IN p_biceps double precision, IN p_thighs double precision, IN p_hips double precision, IN p_neck numeric, IN p_goal character varying, IN p_activity_lvl numeric) OWNER TO postgres;
-
 --
--- TOC entry 295 (class 1255 OID 24817)
--- Name: insert_body_measurement(integer, timestamp without time zone, numeric, numeric, numeric, numeric, numeric, numeric, numeric, numeric, text, numeric); Type: PROCEDURE; Schema: crud; Owner: postgres
+-- TOC entry 290 (class 1255 OID 24817)
+-- Name: insert_body_measurement(integer, timestamp without time zone, numeric, numeric, numeric, numeric, numeric, numeric, numeric, numeric, text, numeric); Type: PROCEDURE; Schema: crud; Owner: -
 --
 
 CREATE PROCEDURE crud.insert_body_measurement(IN p_user_id integer, IN p_date timestamp without time zone, IN p_height numeric, IN p_weight numeric, IN p_chest numeric, IN p_waist numeric, IN p_biceps numeric, IN p_thighs numeric, IN p_hips numeric, IN p_neck numeric, IN p_goal text, IN p_activity_lvl numeric)
@@ -571,11 +501,9 @@ END;
 $$;
 
 
-ALTER PROCEDURE crud.insert_body_measurement(IN p_user_id integer, IN p_date timestamp without time zone, IN p_height numeric, IN p_weight numeric, IN p_chest numeric, IN p_waist numeric, IN p_biceps numeric, IN p_thighs numeric, IN p_hips numeric, IN p_neck numeric, IN p_goal text, IN p_activity_lvl numeric) OWNER TO postgres;
-
 --
--- TOC entry 257 (class 1255 OID 24761)
--- Name: insert_exercise(character varying, text, integer); Type: PROCEDURE; Schema: crud; Owner: postgres
+-- TOC entry 255 (class 1255 OID 24761)
+-- Name: insert_exercise(character varying, text, integer); Type: PROCEDURE; Schema: crud; Owner: -
 --
 
 CREATE PROCEDURE crud.insert_exercise(IN p_name character varying, IN p_description text, IN p_muscle_group_id integer)
@@ -590,11 +518,9 @@ END;
 $$;
 
 
-ALTER PROCEDURE crud.insert_exercise(IN p_name character varying, IN p_description text, IN p_muscle_group_id integer) OWNER TO postgres;
-
 --
--- TOC entry 253 (class 1255 OID 24757)
--- Name: insert_muscle_group(character varying); Type: PROCEDURE; Schema: crud; Owner: postgres
+-- TOC entry 251 (class 1255 OID 24757)
+-- Name: insert_muscle_group(character varying); Type: PROCEDURE; Schema: crud; Owner: -
 --
 
 CREATE PROCEDURE crud.insert_muscle_group(IN p_name character varying)
@@ -609,11 +535,9 @@ END;
 $$;
 
 
-ALTER PROCEDURE crud.insert_muscle_group(IN p_name character varying) OWNER TO postgres;
-
 --
--- TOC entry 278 (class 1255 OID 24787)
--- Name: insert_user(text, text, text, text, text, text); Type: PROCEDURE; Schema: crud; Owner: postgres
+-- TOC entry 274 (class 1255 OID 24787)
+-- Name: insert_user(text, text, text, text, text, text); Type: PROCEDURE; Schema: crud; Owner: -
 --
 
 CREATE PROCEDURE crud.insert_user(IN p_username text, IN p_password text, IN p_email text, IN p_first_name text, IN p_last_name text, IN p_gender text)
@@ -642,11 +566,9 @@ END;
 $_$;
 
 
-ALTER PROCEDURE crud.insert_user(IN p_username text, IN p_password text, IN p_email text, IN p_first_name text, IN p_last_name text, IN p_gender text) OWNER TO postgres;
-
 --
--- TOC entry 261 (class 1255 OID 24769)
--- Name: insert_workout(integer, timestamp without time zone); Type: PROCEDURE; Schema: crud; Owner: postgres
+-- TOC entry 259 (class 1255 OID 24769)
+-- Name: insert_workout(integer, timestamp without time zone); Type: PROCEDURE; Schema: crud; Owner: -
 --
 
 CREATE PROCEDURE crud.insert_workout(IN p_user_id integer, IN p_date timestamp without time zone)
@@ -664,11 +586,9 @@ END;
 $$;
 
 
-ALTER PROCEDURE crud.insert_workout(IN p_user_id integer, IN p_date timestamp without time zone) OWNER TO postgres;
-
 --
--- TOC entry 276 (class 1255 OID 24821)
--- Name: insert_workout(integer, timestamp without time zone, interval); Type: PROCEDURE; Schema: crud; Owner: postgres
+-- TOC entry 273 (class 1255 OID 24821)
+-- Name: insert_workout(integer, timestamp without time zone, interval); Type: PROCEDURE; Schema: crud; Owner: -
 --
 
 CREATE PROCEDURE crud.insert_workout(IN p_user_id integer, IN p_date timestamp without time zone, IN p_duration interval)
@@ -681,11 +601,9 @@ END;
 $$;
 
 
-ALTER PROCEDURE crud.insert_workout(IN p_user_id integer, IN p_date timestamp without time zone, IN p_duration interval) OWNER TO postgres;
-
 --
--- TOC entry 265 (class 1255 OID 24773)
--- Name: insert_workout_exercise(integer, integer); Type: PROCEDURE; Schema: crud; Owner: postgres
+-- TOC entry 263 (class 1255 OID 24773)
+-- Name: insert_workout_exercise(integer, integer); Type: PROCEDURE; Schema: crud; Owner: -
 --
 
 CREATE PROCEDURE crud.insert_workout_exercise(IN p_workout_id integer, IN p_exercise_id integer)
@@ -703,11 +621,9 @@ END;
 $$;
 
 
-ALTER PROCEDURE crud.insert_workout_exercise(IN p_workout_id integer, IN p_exercise_id integer) OWNER TO postgres;
-
 --
--- TOC entry 269 (class 1255 OID 24777)
--- Name: insert_workout_set(integer, double precision, integer, integer); Type: PROCEDURE; Schema: crud; Owner: postgres
+-- TOC entry 267 (class 1255 OID 24777)
+-- Name: insert_workout_set(integer, double precision, integer, integer); Type: PROCEDURE; Schema: crud; Owner: -
 --
 
 CREATE PROCEDURE crud.insert_workout_set(IN p_workout_exercise_id integer, IN p_weight double precision, IN p_reps integer, IN p_set_number integer)
@@ -730,11 +646,9 @@ END;
 $$;
 
 
-ALTER PROCEDURE crud.insert_workout_set(IN p_workout_exercise_id integer, IN p_weight double precision, IN p_reps integer, IN p_set_number integer) OWNER TO postgres;
-
 --
--- TOC entry 294 (class 1255 OID 24816)
--- Name: update_body_measurement(integer, integer, timestamp without time zone, double precision, double precision, double precision, double precision, double precision, double precision, double precision, double precision, text, text); Type: PROCEDURE; Schema: crud; Owner: postgres
+-- TOC entry 289 (class 1255 OID 24816)
+-- Name: update_body_measurement(integer, integer, timestamp without time zone, double precision, double precision, double precision, double precision, double precision, double precision, double precision, double precision, text, text); Type: PROCEDURE; Schema: crud; Owner: -
 --
 
 CREATE PROCEDURE crud.update_body_measurement(IN p_id integer, IN p_user_id integer, IN p_date timestamp without time zone, IN p_height double precision, IN p_weight double precision, IN p_chest double precision, IN p_waist double precision, IN p_biceps double precision, IN p_thighs double precision, IN p_hips double precision, IN p_neck double precision, IN p_goal text, IN p_activity_lvl text)
@@ -772,11 +686,9 @@ END;
 $$;
 
 
-ALTER PROCEDURE crud.update_body_measurement(IN p_id integer, IN p_user_id integer, IN p_date timestamp without time zone, IN p_height double precision, IN p_weight double precision, IN p_chest double precision, IN p_waist double precision, IN p_biceps double precision, IN p_thighs double precision, IN p_hips double precision, IN p_neck double precision, IN p_goal text, IN p_activity_lvl text) OWNER TO postgres;
-
 --
--- TOC entry 273 (class 1255 OID 24819)
--- Name: update_body_measurement(integer, integer, timestamp without time zone, double precision, double precision, double precision, double precision, double precision, double precision, double precision, numeric, character varying, numeric); Type: PROCEDURE; Schema: crud; Owner: postgres
+-- TOC entry 270 (class 1255 OID 24819)
+-- Name: update_body_measurement(integer, integer, timestamp without time zone, double precision, double precision, double precision, double precision, double precision, double precision, double precision, numeric, character varying, numeric); Type: PROCEDURE; Schema: crud; Owner: -
 --
 
 CREATE PROCEDURE crud.update_body_measurement(IN p_id integer, IN p_user_id integer, IN p_date timestamp without time zone, IN p_height double precision, IN p_weight double precision, IN p_chest double precision, IN p_waist double precision, IN p_biceps double precision, IN p_thighs double precision, IN p_hips double precision, IN p_neck numeric, IN p_goal character varying, IN p_activity_lvl numeric)
@@ -801,11 +713,9 @@ END;
 $$;
 
 
-ALTER PROCEDURE crud.update_body_measurement(IN p_id integer, IN p_user_id integer, IN p_date timestamp without time zone, IN p_height double precision, IN p_weight double precision, IN p_chest double precision, IN p_waist double precision, IN p_biceps double precision, IN p_thighs double precision, IN p_hips double precision, IN p_neck numeric, IN p_goal character varying, IN p_activity_lvl numeric) OWNER TO postgres;
-
 --
--- TOC entry 258 (class 1255 OID 24762)
--- Name: update_exercise(integer, character varying, text, integer); Type: PROCEDURE; Schema: crud; Owner: postgres
+-- TOC entry 256 (class 1255 OID 24762)
+-- Name: update_exercise(integer, character varying, text, integer); Type: PROCEDURE; Schema: crud; Owner: -
 --
 
 CREATE PROCEDURE crud.update_exercise(IN p_id integer, IN p_name character varying, IN p_description text, IN p_muscle_group_id integer)
@@ -823,11 +733,9 @@ END;
 $$;
 
 
-ALTER PROCEDURE crud.update_exercise(IN p_id integer, IN p_name character varying, IN p_description text, IN p_muscle_group_id integer) OWNER TO postgres;
-
 --
--- TOC entry 254 (class 1255 OID 24758)
--- Name: update_muscle_group(integer, character varying); Type: PROCEDURE; Schema: crud; Owner: postgres
+-- TOC entry 252 (class 1255 OID 24758)
+-- Name: update_muscle_group(integer, character varying); Type: PROCEDURE; Schema: crud; Owner: -
 --
 
 CREATE PROCEDURE crud.update_muscle_group(IN p_id integer, IN p_name character varying)
@@ -842,11 +750,9 @@ END;
 $$;
 
 
-ALTER PROCEDURE crud.update_muscle_group(IN p_id integer, IN p_name character varying) OWNER TO postgres;
-
 --
--- TOC entry 292 (class 1255 OID 24814)
--- Name: update_user(integer, text, text, text, text, text, text); Type: PROCEDURE; Schema: crud; Owner: postgres
+-- TOC entry 287 (class 1255 OID 24814)
+-- Name: update_user(integer, text, text, text, text, text, text); Type: PROCEDURE; Schema: crud; Owner: -
 --
 
 CREATE PROCEDURE crud.update_user(IN p_id integer, IN p_username text, IN p_password text, IN p_email text, IN p_first_name text, IN p_last_name text, IN p_gender text)
@@ -871,11 +777,9 @@ END;
 $$;
 
 
-ALTER PROCEDURE crud.update_user(IN p_id integer, IN p_username text, IN p_password text, IN p_email text, IN p_first_name text, IN p_last_name text, IN p_gender text) OWNER TO postgres;
-
 --
--- TOC entry 262 (class 1255 OID 24770)
--- Name: update_workout(integer, integer, timestamp without time zone); Type: PROCEDURE; Schema: crud; Owner: postgres
+-- TOC entry 260 (class 1255 OID 24770)
+-- Name: update_workout(integer, integer, timestamp without time zone); Type: PROCEDURE; Schema: crud; Owner: -
 --
 
 CREATE PROCEDURE crud.update_workout(IN p_id integer, IN p_user_id integer, IN p_date timestamp without time zone)
@@ -890,11 +794,9 @@ END;
 $$;
 
 
-ALTER PROCEDURE crud.update_workout(IN p_id integer, IN p_user_id integer, IN p_date timestamp without time zone) OWNER TO postgres;
-
 --
--- TOC entry 266 (class 1255 OID 24774)
--- Name: update_workout_exercise(integer, integer, integer); Type: PROCEDURE; Schema: crud; Owner: postgres
+-- TOC entry 264 (class 1255 OID 24774)
+-- Name: update_workout_exercise(integer, integer, integer); Type: PROCEDURE; Schema: crud; Owner: -
 --
 
 CREATE PROCEDURE crud.update_workout_exercise(IN p_id integer, IN p_workout_id integer, IN p_exercise_id integer)
@@ -909,11 +811,9 @@ END;
 $$;
 
 
-ALTER PROCEDURE crud.update_workout_exercise(IN p_id integer, IN p_workout_id integer, IN p_exercise_id integer) OWNER TO postgres;
-
 --
--- TOC entry 270 (class 1255 OID 24778)
--- Name: update_workout_set(integer, integer, double precision, integer, integer); Type: PROCEDURE; Schema: crud; Owner: postgres
+-- TOC entry 268 (class 1255 OID 24778)
+-- Name: update_workout_set(integer, integer, double precision, integer, integer); Type: PROCEDURE; Schema: crud; Owner: -
 --
 
 CREATE PROCEDURE crud.update_workout_set(IN p_id integer, IN p_workout_exercise_id integer, IN p_weight double precision, IN p_reps integer, IN p_set_number integer)
@@ -931,11 +831,9 @@ END;
 $$;
 
 
-ALTER PROCEDURE crud.update_workout_set(IN p_id integer, IN p_workout_exercise_id integer, IN p_weight double precision, IN p_reps integer, IN p_set_number integer) OWNER TO postgres;
-
 --
--- TOC entry 285 (class 1255 OID 24808)
--- Name: calculate_exercise_1rm(integer, integer); Type: FUNCTION; Schema: public; Owner: postgres
+-- TOC entry 278 (class 1255 OID 24808)
+-- Name: calculate_exercise_1rm(integer, integer); Type: FUNCTION; Schema: public; Owner: -
 --
 
 CREATE FUNCTION public.calculate_exercise_1rm(p_user_id integer, p_exercise_id integer) RETURNS numeric
@@ -946,12 +844,9 @@ DECLARE
     v_reps integer;
     v_1rm numeric;
 BEGIN
-    -- Dodajemy jawne rzutowanie ::int, aby upewnić się, że Postgres znajdzie funkcję
-    -- oraz sprawdzamy, czy funkcja na pewno istnieje w Twoim schemacie CRUD
     SELECT h.weight, h.reps 
     INTO v_weight, v_reps
     FROM (
-        -- Jeśli funkcja crud nadal sprawia problemy, używamy bezpiecznego podzapytania:
         SELECT ws.weight, ws.reps, w.date as workout_date, ws.set_number
         FROM public.workout_sets ws
         JOIN public.workout_exercises we ON ws.workout_exercise_id = we.id
@@ -978,11 +873,9 @@ END;
 $$;
 
 
-ALTER FUNCTION public.calculate_exercise_1rm(p_user_id integer, p_exercise_id integer) OWNER TO postgres;
-
 --
--- TOC entry 282 (class 1255 OID 24788)
--- Name: calculate_user_bf(integer); Type: FUNCTION; Schema: public; Owner: postgres
+-- TOC entry 292 (class 1255 OID 24788)
+-- Name: calculate_user_bf(integer); Type: FUNCTION; Schema: public; Owner: -
 --
 
 CREATE FUNCTION public.calculate_user_bf(p_user_id integer) RETURNS numeric
@@ -996,8 +889,6 @@ DECLARE
     v_hips NUMERIC;
     v_bf NUMERIC;
 BEGIN
-    -- Pobieramy płeć (upewnij się, że w bazie jest dokładnie 'Male' lub 'Female')
-    -- Dodajemy TRIM i LOWER dla bezpieczeństwa
     SELECT LOWER(TRIM(gender)) INTO v_gender FROM public.users WHERE id = p_user_id;
 
     SELECT height, waist, neck, hips INTO v_height, v_waist, v_neck, v_hips
@@ -1027,11 +918,9 @@ END;
 $$;
 
 
-ALTER FUNCTION public.calculate_user_bf(p_user_id integer) OWNER TO postgres;
-
 --
--- TOC entry 279 (class 1255 OID 24793)
--- Name: calculate_user_diet_calories(integer); Type: FUNCTION; Schema: public; Owner: postgres
+-- TOC entry 293 (class 1255 OID 24793)
+-- Name: calculate_user_diet_calories(integer); Type: FUNCTION; Schema: public; Owner: -
 --
 
 CREATE FUNCTION public.calculate_user_diet_calories(p_user_id integer) RETURNS TABLE(recommended_calories integer, goal_label character varying, difference_from_tdee integer)
@@ -1047,34 +936,33 @@ DECLARE
     v_tdee integer;
     v_age_const integer := 28; -- Przyjęta stała wieku
 BEGIN
-    -- 1. Pobierz płeć z tabeli users (to tam jest)
+    -- Pobranie płci z users
     SELECT gender INTO v_gender 
     FROM public.users WHERE id = p_user_id;
 
-    -- 2. Pobierz najnowsze dane fizyczne z pomiarów (waga, WZROST, aktywność, cel)
+    -- Pobranie najnowszych danych pomiarów (waga, WZROST, aktywność, cel)
     SELECT weight, height, activity_level, goal 
     INTO v_weight, v_height, v_activity, v_goal
     FROM public.body_measurements 
     WHERE user_id = p_user_id 
-    ORDER BY date DESC LIMIT 1; -- Używamy kolumny 'date' (z Twojego pliku SQL)
-
+    ORDER BY date DESC LIMIT 1;
     -- Zabezpieczenie przed brakiem danych
     v_weight := COALESCE(v_weight, 70.0);
     v_height := COALESCE(v_height, 175.0);
     v_activity := COALESCE(v_activity, 1.2);
     v_goal := COALESCE(v_goal, 'Rekompozycja ciała');
 
-    -- 3. Oblicz BMR (Mifflin-St Jeor)
+    -- Obliczenie BMR (Mifflin-St Jeor)
     IF lower(v_gender) LIKE 'm%' THEN
         v_bmr := (10 * v_weight) + (6.25 * v_height) - (5 * v_age_const) + 5;
     ELSE
         v_bmr := (10 * v_weight) + (6.25 * v_height) - (5 * v_age_const) - 161;
     END IF;
 
-    -- 4. TDEE
+    -- Obliczenie TDEE
     v_tdee := round(v_bmr * v_activity);
 
-    -- 5. Logika celu
+    -- Logika dla poszczególnych celów
     IF v_goal = 'Zbudowanie masy mięśniowej' THEN
         recommended_calories := round(v_tdee * 1.10);
         goal_label := 'Masa';
@@ -1093,11 +981,9 @@ END;
 $$;
 
 
-ALTER FUNCTION public.calculate_user_diet_calories(p_user_id integer) OWNER TO postgres;
-
 --
--- TOC entry 286 (class 1255 OID 24810)
--- Name: calculate_workout_total_volume(integer); Type: FUNCTION; Schema: public; Owner: postgres
+-- TOC entry 283 (class 1255 OID 24810)
+-- Name: calculate_workout_total_volume(integer); Type: FUNCTION; Schema: public; Owner: -
 --
 
 CREATE FUNCTION public.calculate_workout_total_volume(p_workout_id integer) RETURNS double precision
@@ -1119,11 +1005,9 @@ END;
 $$;
 
 
-ALTER FUNCTION public.calculate_workout_total_volume(p_workout_id integer) OWNER TO postgres;
-
 --
--- TOC entry 291 (class 1255 OID 24782)
--- Name: detect_training_split(integer); Type: FUNCTION; Schema: public; Owner: postgres
+-- TOC entry 299 (class 1255 OID 24782)
+-- Name: detect_training_split(integer); Type: FUNCTION; Schema: public; Owner: -
 --
 
 CREATE FUNCTION public.detect_training_split(p_user_id integer) RETURNS text
@@ -1132,24 +1016,24 @@ CREATE FUNCTION public.detect_training_split(p_user_id integer) RETURNS text
 DECLARE
     v_avg_groups_per_workout FLOAT;
     v_days_active_30d INT;
-    v_total_groups_30d INT;
-    v_has_legs BOOLEAN;
-    v_has_push BOOLEAN;
-    v_has_pull BOOLEAN;
+    v_has_legs BOOLEAN := FALSE;
+    v_has_push BOOLEAN := FALSE;
+    v_has_pull BOOLEAN := FALSE;
     v_result TEXT;
 BEGIN
-    -- 1. Pobieramy statystyki korzystając z funkcji CRUD
-    -- Wyliczamy unikalne dni, unikalne grupy oraz flagi kategorii
+    -- Pobieramy dane
     SELECT 
         COUNT(DISTINCT s.workout_id),
-        COUNT(DISTINCT s.muscle_group_name),
-        EXISTS (SELECT 1 FROM crud.get_user_training_stats(p_user_id) x WHERE x.muscle_group_name ILIKE '%Nogi%'),
-        EXISTS (SELECT 1 FROM crud.get_user_training_stats(p_user_id) x WHERE x.muscle_group_name IN ('Klatka piersiowa', 'Barki', 'Triceps')),
-        EXISTS (SELECT 1 FROM crud.get_user_training_stats(p_user_id) x WHERE x.muscle_group_name IN ('Plecy', 'Biceps'))
-    INTO v_days_active_30d, v_total_groups_30d, v_has_legs, v_has_push, v_has_pull
+        EXISTS (SELECT 1 FROM crud.get_user_training_stats(p_user_id) x 
+                WHERE x.muscle_group_name ILIKE ANY (ARRAY['%Nogi%', '%Uda%', '%Łydki%', '%Pośladki%'])),
+        EXISTS (SELECT 1 FROM crud.get_user_training_stats(p_user_id) x 
+                WHERE x.muscle_group_name IN ('Klatka piersiowa', 'Barki', 'Triceps')),
+        EXISTS (SELECT 1 FROM crud.get_user_training_stats(p_user_id) x 
+                WHERE x.muscle_group_name IN ('Plecy', 'Biceps'))
+    INTO v_days_active_30d, v_has_legs, v_has_push, v_has_pull
     FROM crud.get_user_training_stats(p_user_id) s;
 
-    -- 2. Średnia grup na trening (również z funkcji CRUD)
+    -- Średnia grup na trening
     SELECT AVG(daily_count) INTO v_avg_groups_per_workout
     FROM (
         SELECT COUNT(DISTINCT muscle_group_name) as daily_count
@@ -1157,22 +1041,19 @@ BEGIN
         GROUP BY workout_id
     ) AS subquery;
 
-    -- Jeśli brak aktywności
     IF v_days_active_30d = 0 OR v_avg_groups_per_workout IS NULL THEN
         RETURN 'Brak aktywności (30 dni)';
     END IF;
 
-    -- 3. Klasyfikacja (Logika bez zmian)
-    IF v_avg_groups_per_workout >= 3.8 THEN
+    -- KLASYFIKACJA
+    IF v_avg_groups_per_workout >= 4.0 THEN
         v_result := 'Full Body Workout';
+    ELSIF v_has_push AND v_has_pull AND v_has_legs THEN
+        v_result := 'Push Pull Legs';
     ELSIF v_has_push AND v_has_pull AND NOT v_has_legs THEN
         v_result := 'Push Pull (No Legs)';
-    ELSIF v_has_push AND v_has_pull AND v_has_legs AND v_avg_groups_per_workout < 3.5 THEN
-        v_result := 'Push Pull Legs';
-    ELSIF v_has_legs AND v_days_active_30d >= 4 AND v_total_groups_30d >= 5 AND v_avg_groups_per_workout BETWEEN 2.5 AND 3.5 THEN
+    ELSIF v_has_legs AND v_days_active_30d >= 4 THEN
         v_result := 'Upper Lower';
-    ELSIF v_days_active_30d >= 4 AND v_avg_groups_per_workout < 2.5 THEN
-        v_result := 'Body Part Split';
     ELSE
         v_result := 'Własny system';
     END IF;
@@ -1182,11 +1063,9 @@ END;
 $$;
 
 
-ALTER FUNCTION public.detect_training_split(p_user_id integer) OWNER TO postgres;
-
 --
--- TOC entry 238 (class 1255 OID 16517)
--- Name: get_detailed_workout(integer, integer); Type: FUNCTION; Schema: public; Owner: postgres
+-- TOC entry 294 (class 1255 OID 16517)
+-- Name: get_detailed_workout(integer, integer); Type: FUNCTION; Schema: public; Owner: -
 --
 
 CREATE FUNCTION public.get_detailed_workout(p_user_id integer, p_workout_id integer) RETURNS TABLE(workout_id integer, workout_date timestamp without time zone, exercise_name character varying, set_number integer, weight double precision, reps integer)
@@ -1209,17 +1088,15 @@ CREATE FUNCTION public.get_detailed_workout(p_user_id integer, p_workout_id inte
         workout_sets ws ON we.id = ws.workout_exercise_id
     WHERE
         w.id = p_workout_id
-        AND w.user_id = p_user_id -- Zabezpieczenie: upewnij się, że trening należy do tego użytkownika
+        AND w.user_id = p_user_id -- upewnienie się czy trening należy do użytkownika
     ORDER BY
         w.date, e.name, ws.set_number;
 $$;
 
 
-ALTER FUNCTION public.get_detailed_workout(p_user_id integer, p_workout_id integer) OWNER TO postgres;
-
 --
--- TOC entry 287 (class 1255 OID 24809)
--- Name: get_exercise_progression_status(integer, integer); Type: FUNCTION; Schema: public; Owner: postgres
+-- TOC entry 282 (class 1255 OID 24809)
+-- Name: get_exercise_progression_status(integer, integer); Type: FUNCTION; Schema: public; Owner: -
 --
 
 CREATE FUNCTION public.get_exercise_progression_status(p_user_id integer, p_exercise_id integer) RETURNS text
@@ -1230,8 +1107,8 @@ DECLARE
     v_prev_total_vol float;
     v_entry_count integer;
 BEGIN
-    -- 1. Pobieramy objętości z dwóch ostatnich sesji, w których wystąpiło to ćwiczenie
-    -- Używamy DISTINCT workout_id, żeby mieć pewność, że to dwa osobne treningi
+    -- Pobranie objętości z dwóch ostatnich sesji, w których wystąpiło to ćwiczenie
+    -- DISTINCT workout_id, żeby mieć pewność, że to dwa osobne treningi
     WITH exercise_history AS (
         SELECT 
             w.id as workout_id,
@@ -1259,12 +1136,12 @@ BEGIN
     INTO v_last_total_vol, v_prev_total_vol, v_entry_count
     FROM ranked_history;
 
-    -- 2. Debug: Jeśli masz mniej niż 2 sesje w historii, to zawsze będzie NEW
+    -- Jeśli użytkownika ma mniej niż 2 sesje w historii, to zawsze będzie NEW
     IF v_entry_count < 2 THEN 
         RETURN 'NEW'; 
     END IF;
 
-    -- 3. Porównanie objętości
+    -- Porównanie objętości
     IF v_last_total_vol > v_prev_total_vol THEN
         RETURN 'PROGRESS';     
     ELSIF v_last_total_vol = v_prev_total_vol THEN
@@ -1276,11 +1153,9 @@ END;
 $$;
 
 
-ALTER FUNCTION public.get_exercise_progression_status(p_user_id integer, p_exercise_id integer) OWNER TO postgres;
-
 --
--- TOC entry 274 (class 1255 OID 24783)
--- Name: get_exercise_volume_progression(integer, integer); Type: FUNCTION; Schema: public; Owner: postgres
+-- TOC entry 272 (class 1255 OID 24783)
+-- Name: get_exercise_volume_progression(integer, integer); Type: FUNCTION; Schema: public; Owner: -
 --
 
 CREATE FUNCTION public.get_exercise_volume_progression(p_user_id integer, p_exercise_id integer) RETURNS TABLE(workout_date date, total_volume numeric)
@@ -1290,12 +1165,12 @@ BEGIN
     RETURN QUERY
     SELECT 
         w.date::DATE,
-        -- Obliczamy objętość: suma (ciężar * powtórzenia) dla wszystkich serii w danym dniu
+        -- Obliczenie objętości suma (ciężar * powtórzenia) dla wszystkich serii w danym dniu
         SUM(COALESCE(ws.weight, 0) * COALESCE(ws.reps, 0))::NUMERIC
     FROM public.workouts w
-    -- Łączymy trening z ćwiczeniami (tabela pośrednia w Twojej bazie)
+    -- Łączenie: trening z ćwiczeniami
     JOIN public.workout_exercises we ON w.id = we.workout_id
-    -- Łączymy z seriami (workout_sets łączy się z workout_exercises przez workout_exercise_id)
+    -- Łączenie z seriami (workout_sets łączy się z workout_exercises przez workout_exercise_id)
     JOIN public.workout_sets ws ON we.id = ws.workout_exercise_id
     WHERE w.user_id = p_user_id 
       AND we.exercise_id = p_exercise_id
@@ -1306,11 +1181,9 @@ END;
 $$;
 
 
-ALTER FUNCTION public.get_exercise_volume_progression(p_user_id integer, p_exercise_id integer) OWNER TO postgres;
-
 --
--- TOC entry 250 (class 1255 OID 16516)
--- Name: get_exercises_by_muscle_group(character varying); Type: FUNCTION; Schema: public; Owner: postgres
+-- TOC entry 248 (class 1255 OID 16516)
+-- Name: get_exercises_by_muscle_group(character varying); Type: FUNCTION; Schema: public; Owner: -
 --
 
 CREATE FUNCTION public.get_exercises_by_muscle_group(p_muscle_group_name character varying) RETURNS TABLE(exercise_id integer, exercise_name character varying, muscle_group_name character varying)
@@ -1321,21 +1194,19 @@ CREATE FUNCTION public.get_exercises_by_muscle_group(p_muscle_group_name charact
         e.name, 
         mg.name
     FROM 
-        exercises e
+        crud.get_all_exercises() e 
     JOIN 
-        muscle_groups mg ON e.muscle_group_id = mg.id
+        crud.get_all_muscle_groups() mg ON e.muscle_group_id = mg.id 
     WHERE
-        mg.name ILIKE p_muscle_group_name -- Wyszukiwanie bez względu na wielkość liter (ILIKE)
+        mg.name ILIKE p_muscle_group_name 
     ORDER BY
         e.name;
 $$;
 
 
-ALTER FUNCTION public.get_exercises_by_muscle_group(p_muscle_group_name character varying) OWNER TO postgres;
-
 --
--- TOC entry 284 (class 1255 OID 24807)
--- Name: get_last_exercise_stats(integer, integer, integer); Type: FUNCTION; Schema: public; Owner: postgres
+-- TOC entry 280 (class 1255 OID 24807)
+-- Name: get_last_exercise_stats(integer, integer, integer); Type: FUNCTION; Schema: public; Owner: -
 --
 
 CREATE FUNCTION public.get_last_exercise_stats(p_user_id integer, p_exercise_id integer, p_set_no integer) RETURNS TABLE(last_weight double precision, last_reps integer)
@@ -1347,17 +1218,15 @@ CREATE FUNCTION public.get_last_exercise_stats(p_user_id integer, p_exercise_id 
     JOIN workouts w ON we.workout_id = w.id
     WHERE w.user_id = p_user_id 
       AND we.exercise_id = p_exercise_id
-      AND ws.set_number = p_set_no -- Szukamy konkretnego numeru serii
+      AND ws.set_number = p_set_no -- szukenie konkretnego numeru serii
     ORDER BY w.date DESC
     LIMIT 1;
 $$;
 
 
-ALTER FUNCTION public.get_last_exercise_stats(p_user_id integer, p_exercise_id integer, p_set_no integer) OWNER TO postgres;
-
 --
--- TOC entry 277 (class 1255 OID 24794)
--- Name: get_user_macros(integer); Type: FUNCTION; Schema: public; Owner: postgres
+-- TOC entry 295 (class 1255 OID 24794)
+-- Name: get_user_macros(integer); Type: FUNCTION; Schema: public; Owner: -
 --
 
 CREATE FUNCTION public.get_user_macros(p_user_id integer) RETURNS TABLE(protein_g integer, fat_g integer, carbs_g integer, calories_total integer)
@@ -1367,11 +1236,11 @@ DECLARE
     v_weight float;
     v_kcal integer;
 BEGIN
-    -- 1. Pobierz kalorie z Twojego głównego algorytmu
+    -- Pobierz kalorie z Twojego głównego algorytmu
     SELECT recommended_calories INTO v_kcal 
     FROM public.calculate_user_diet_calories(p_user_id);
 
-    -- 2. Pobierz najnowszą wagę
+    -- Pobierz najnowszą wagę
     SELECT weight INTO v_weight 
     FROM public.body_measurements 
     WHERE user_id = p_user_id 
@@ -1381,7 +1250,7 @@ BEGIN
     v_weight := COALESCE(v_weight, 70.0);
     calories_total := v_kcal;
 
-    -- 3. OBLICZENIA
+    -- OBLICZENIA
     -- Białko: 2g na kg masy ciała
     protein_g := round(v_weight * 2.0);
     
@@ -1396,11 +1265,9 @@ END;
 $$;
 
 
-ALTER FUNCTION public.get_user_macros(p_user_id integer) OWNER TO postgres;
-
 --
--- TOC entry 296 (class 1255 OID 24822)
--- Name: get_user_measurements(integer); Type: FUNCTION; Schema: public; Owner: postgres
+-- TOC entry 291 (class 1255 OID 24822)
+-- Name: get_user_measurements(integer); Type: FUNCTION; Schema: public; Owner: -
 --
 
 CREATE FUNCTION public.get_user_measurements(p_user_id integer) RETURNS TABLE(measurement_id integer, date timestamp without time zone, height double precision, weight double precision, chest double precision, waist double precision, neck double precision, biceps double precision, thighs double precision, hips double precision)
@@ -1413,24 +1280,22 @@ CREATE FUNCTION public.get_user_measurements(p_user_id integer) RETURNS TABLE(me
         bm.weight,
         bm.chest,
         bm.waist,
-        bm.neck, -- Nowa kolumna
+        bm.neck,
         bm.biceps,
         bm.thighs,
         bm.hips
     FROM 
-        public.body_measurements bm
+        crud.get_all_body_measurements() bm
     WHERE 
-        bm.user_id = p_user_id
-    ORDER BY
-        bm.date ASC;
+        bm.user_id = p_user_id::integer 
+    ORDER BY 
+        bm.date ASC; 
 $$;
 
 
-ALTER FUNCTION public.get_user_measurements(p_user_id integer) OWNER TO postgres;
-
 --
--- TOC entry 288 (class 1255 OID 24811)
--- Name: get_user_muscle_balance(integer); Type: FUNCTION; Schema: public; Owner: postgres
+-- TOC entry 285 (class 1255 OID 24811)
+-- Name: get_user_muscle_balance(integer); Type: FUNCTION; Schema: public; Owner: -
 --
 
 CREATE FUNCTION public.get_user_muscle_balance(p_user_id integer) RETURNS TABLE(muscle_group_name text, volume_percentage numeric)
@@ -1439,19 +1304,20 @@ CREATE FUNCTION public.get_user_muscle_balance(p_user_id integer) RETURNS TABLE(
 DECLARE
     v_total_volume numeric;
 BEGIN
-    -- 1. Obliczamy całkowitą objętość (rzutujemy na numeric dla bezpieczeństwa)
+    -- Obliczenie całkowitej objętości z ostatnich 7 dni
     SELECT SUM(ws.weight * ws.reps)::numeric INTO v_total_volume
     FROM public.workout_sets ws
     JOIN public.workout_exercises we ON ws.workout_exercise_id = we.id
     JOIN public.workouts w ON we.workout_id = w.id
-    WHERE w.user_id = p_user_id AND w.date > NOW() - INTERVAL '7 days';
+    WHERE w.user_id = p_user_id::integer 
+      AND w.date > NOW() - INTERVAL '7 days';
 
-    -- Jeśli brak treningów, zwracamy pustą tabelę
+    -- Zabezpieczenie przed dzieleniem przez zero
     IF v_total_volume IS NULL OR v_total_volume = 0 THEN
         RETURN;
     END IF;
 
-    -- 2. Zwracamy procentowy udział (dodano rzutowanie przed ROUND)
+    -- Zwrócenie procentowego udziału z wykorzystaniem CRUD dla słownika grup
     RETURN QUERY
     SELECT 
         mg.name::text,
@@ -1460,19 +1326,42 @@ BEGIN
     JOIN public.workout_exercises we ON ws.workout_exercise_id = we.id
     JOIN public.workouts w ON we.workout_id = w.id
     JOIN public.exercises e ON we.exercise_id = e.id
-    JOIN public.muscle_groups mg ON e.muscle_group_id = mg.id
-    WHERE w.user_id = p_user_id AND w.date > NOW() - INTERVAL '7 days'
+    JOIN crud.get_all_muscle_groups() mg ON e.muscle_group_id = mg.id
+    WHERE w.user_id = p_user_id::integer 
+      AND w.date > NOW() - INTERVAL '7 days'
     GROUP BY mg.name
     ORDER BY percentage DESC;
 END;
 $$;
 
 
-ALTER FUNCTION public.get_user_muscle_balance(p_user_id integer) OWNER TO postgres;
+--
+-- TOC entry 277 (class 1255 OID 24823)
+-- Name: get_user_profile_data(integer); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.get_user_profile_data(p_user_id integer) RETURNS TABLE(username character varying, email character varying, gender character varying, first_name character varying, last_name character varying)
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+    RETURN QUERY
+    SELECT 
+        u.username::varchar, 
+        u.email::varchar, 
+        u.gender::varchar, 
+        u.first_name::varchar, 
+        u.last_name::varchar
+    FROM 
+        crud.get_all_users() u
+    WHERE 
+        u.id = p_user_id::integer;
+END;
+$$;
+
 
 --
--- TOC entry 283 (class 1255 OID 24806)
--- Name: get_user_workout_history(integer); Type: FUNCTION; Schema: public; Owner: postgres
+-- TOC entry 281 (class 1255 OID 24806)
+-- Name: get_user_workout_history(integer); Type: FUNCTION; Schema: public; Owner: -
 --
 
 CREATE FUNCTION public.get_user_workout_history(p_user_id integer) RETURNS TABLE(workout_id integer, user_workout_no bigint, workout_date timestamp without time zone, duration interval, exercise_name character varying, set_number integer, weight double precision, reps integer)
@@ -1480,7 +1369,7 @@ CREATE FUNCTION public.get_user_workout_history(p_user_id integer) RETURNS TABLE
     AS $$
     SELECT
         w.id AS workout_id,
-        -- Numerowanie treningów od 1 dla każdego użytkownika z osobna
+        -- Numerowanie treningów od 1 dla konkretnego użytkownika (ranking dat)
         DENSE_RANK() OVER (PARTITION BY w.user_id ORDER BY w.date ASC) AS user_workout_no,
         w.date AS workout_date,
         w.duration,
@@ -1489,25 +1378,23 @@ CREATE FUNCTION public.get_user_workout_history(p_user_id integer) RETURNS TABLE
         ws.weight,
         ws.reps
     FROM 
-        workouts w
+        crud.get_all_workouts() w
     JOIN 
-        workout_exercises we ON w.id = we.workout_id
+        crud.get_all_workout_exercises() we ON w.id = we.workout_id
     JOIN
-        exercises e ON we.exercise_id = e.id
+        crud.get_all_exercises() e ON we.exercise_id = e.id
     JOIN 
-        workout_sets ws ON we.id = ws.workout_exercise_id
+        crud.get_all_workout_sets() ws ON we.id = ws.workout_exercise_id
     WHERE
-        w.user_id = p_user_id
+        w.user_id = p_user_id::integer
     ORDER BY
         w.date DESC, we.id ASC, ws.set_number ASC;
 $$;
 
 
-ALTER FUNCTION public.get_user_workout_history(p_user_id integer) OWNER TO postgres;
-
 --
--- TOC entry 289 (class 1255 OID 24812)
--- Name: get_volume_comparison(integer); Type: FUNCTION; Schema: public; Owner: postgres
+-- TOC entry 296 (class 1255 OID 24812)
+-- Name: get_volume_comparison(integer); Type: FUNCTION; Schema: public; Owner: -
 --
 
 CREATE FUNCTION public.get_volume_comparison(p_user_id integer) RETURNS TABLE(current_volume numeric, previous_volume numeric)
@@ -1516,46 +1403,72 @@ CREATE FUNCTION public.get_volume_comparison(p_user_id integer) RETURNS TABLE(cu
 BEGIN
     RETURN QUERY
     SELECT 
-        -- Tonaż z ostatnich 7 dni
-        COALESCE((SELECT SUM(ws.weight * ws.reps)::numeric 
-         FROM public.workout_sets ws
-         JOIN public.workout_exercises we ON ws.workout_exercise_id = we.id
-         JOIN public.workouts w ON we.workout_id = w.id
-         WHERE w.user_id = p_user_id AND w.date > NOW() - INTERVAL '7 days'), 0),
+        -- Tonaż z bieżącego tygodnia (0-7 dni temu)
+        COALESCE((
+            SELECT SUM(ws.weight * ws.reps)::numeric 
+            FROM crud.get_all_workout_sets() ws
+            JOIN crud.get_all_workout_exercises() we ON ws.workout_exercise_id = we.id
+            JOIN crud.get_all_workouts() w ON we.workout_id = w.id
+            WHERE w.user_id = p_user_id::integer 
+              AND w.date > NOW() - INTERVAL '7 days'
+        ), 0),
         
-        -- Tonaż z dni 8-14
-        COALESCE((SELECT SUM(ws.weight * ws.reps)::numeric 
-         FROM public.workout_sets ws
-         JOIN public.workout_exercises we ON ws.workout_exercise_id = we.id
-         JOIN public.workouts w ON we.workout_id = w.id
-         WHERE w.user_id = p_user_id AND w.date <= NOW() - INTERVAL '7 days' 
-         AND w.date > NOW() - INTERVAL '14 days'), 0);
+        -- Tonaż z ubiegłego tygodnia (8-14 dni temu)
+        COALESCE((
+            SELECT SUM(ws.weight * ws.reps)::numeric 
+            FROM crud.get_all_workout_sets() ws
+            JOIN crud.get_all_workout_exercises() we ON ws.workout_exercise_id = we.id
+            JOIN crud.get_all_workouts() w ON we.workout_id = w.id
+            WHERE w.user_id = p_user_id::integer 
+              AND w.date <= NOW() - INTERVAL '7 days' 
+              AND w.date > NOW() - INTERVAL '14 days'
+        ), 0);
 END;
 $$;
 
 
-ALTER FUNCTION public.get_volume_comparison(p_user_id integer) OWNER TO postgres;
+--
+-- TOC entry 276 (class 1255 OID 24824)
+-- Name: get_weekly_workout_count(integer); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.get_weekly_workout_count(p_user_id integer) RETURNS integer
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+    RETURN (
+        SELECT COUNT(*)::integer 
+        FROM crud.get_all_workouts() 
+        WHERE user_id = p_user_id::integer 
+          AND date > NOW() - INTERVAL '7 days' -- 7 dni wstecz
+          AND date <= NOW()                   
+    );
+END;
+$$;
+
 
 --
--- TOC entry 234 (class 1255 OID 16506)
--- Name: login_by_username(character varying, character varying); Type: FUNCTION; Schema: public; Owner: postgres
+-- TOC entry 284 (class 1255 OID 16506)
+-- Name: login_by_username(character varying, character varying); Type: FUNCTION; Schema: public; Owner: -
 --
 
 CREATE FUNCTION public.login_by_username(p_username character varying, p_password character varying) RETURNS TABLE(user_id integer, first_name character varying)
     LANGUAGE sql
     AS $$
-    SELECT u.id, u.first_name
-    FROM users u
-    WHERE u.username = p_username
-      AND u.password = p_password;
+    SELECT 
+        u.id, 
+        u.first_name::varchar
+    FROM 
+        crud.get_all_users() u
+    WHERE 
+        u.username = p_username::varchar
+        AND u.password = p_password::varchar;
 $$;
 
 
-ALTER FUNCTION public.login_by_username(p_username character varying, p_password character varying) OWNER TO postgres;
-
 --
--- TOC entry 281 (class 1255 OID 24804)
--- Name: save_complete_workout(integer, integer, jsonb); Type: FUNCTION; Schema: public; Owner: postgres
+-- TOC entry 297 (class 1255 OID 24804)
+-- Name: save_complete_workout(integer, integer, jsonb); Type: FUNCTION; Schema: public; Owner: -
 --
 
 CREATE FUNCTION public.save_complete_workout(p_user_id integer, p_duration_sec integer, p_workout_data jsonb) RETURNS integer
@@ -1568,32 +1481,37 @@ DECLARE
     v_set RECORD;
     v_set_idx INTEGER;
     v_now TIMESTAMP := CURRENT_TIMESTAMP;
-    v_duration INTERVAL := (p_duration_sec || ' seconds')::INTERVAL; -- Przygotowanie interwału
+    v_duration INTERVAL := (p_duration_sec || ' seconds')::INTERVAL; 
 BEGIN
-    -- 1. CZYSTY CRUD: Wstawiamy nagłówek od razu z czasem trwania
-    CALL crud.insert_workout(p_user_id, v_now, v_duration);
+    CALL crud.insert_workout(p_user_id::integer, v_now, v_duration);
     
-    -- Pobieramy ID stworzonego treningu
+    -- Pobranie ID nowo utworzonego treningu (najświeższy dla tego użytkownika)
     SELECT id INTO v_workout_id 
     FROM public.workouts 
-    WHERE user_id = p_user_id 
+    WHERE user_id = p_user_id::integer 
     ORDER BY date DESC, id DESC LIMIT 1;
 
-    -- 2. Pętla po ćwiczeniach (Wykorzystuje CALL crud.insert_workout_exercise)
+    -- Pętla po ćwiczeniach (Parsowanie JSONB)
     FOR v_exercise IN SELECT * FROM jsonb_array_elements(p_workout_data)
     LOOP
-        CALL crud.insert_workout_exercise(v_workout_id, (v_exercise.value->>'exercise_id')::INTEGER);
+        -- Wstawienie ćwiczenia do treningu przez CRUD
+        CALL crud.insert_workout_exercise(
+            v_workout_id, 
+            (v_exercise.value->>'exercise_id')::INTEGER
+        );
         
+        -- Pobranie ID relacji trening-ćwiczenie
         SELECT id INTO v_workout_exercise_id 
         FROM public.workout_exercises 
         WHERE workout_id = v_workout_id 
         AND exercise_id = (v_exercise.value->>'exercise_id')::INTEGER
         ORDER BY id DESC LIMIT 1;
 
-        -- 3. Pętla po seriach (Wykorzystuje CALL crud.insert_workout_set)
+        -- Pętla po seriach wewnątrz danego ćwiczenia
         v_set_idx := 1;
         FOR v_set IN SELECT * FROM jsonb_array_elements(v_exercise.value->'sets')
         LOOP
+            -- Wstawienie serii przez CRUD
             CALL crud.insert_workout_set(
                 v_workout_exercise_id,
                 (v_set.value->>'weight')::DOUBLE PRECISION,
@@ -1612,11 +1530,25 @@ END;
 $$;
 
 
-ALTER FUNCTION public.save_complete_workout(p_user_id integer, p_duration_sec integer, p_workout_data jsonb) OWNER TO postgres;
+--
+-- TOC entry 279 (class 1255 OID 24825)
+-- Name: update_user_goal(integer, text); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.update_user_goal(p_user_id integer, p_new_goal text) RETURNS void
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+    UPDATE public.users 
+    SET goal = p_new_goal 
+    WHERE id = p_user_id;
+END;
+$$;
+
 
 --
--- TOC entry 280 (class 1255 OID 24803)
--- Name: update_user_measurements(integer, numeric, numeric, numeric, numeric, numeric, numeric, numeric, numeric, numeric, character varying); Type: PROCEDURE; Schema: public; Owner: postgres
+-- TOC entry 275 (class 1255 OID 24803)
+-- Name: update_user_measurements(integer, numeric, numeric, numeric, numeric, numeric, numeric, numeric, numeric, numeric, character varying); Type: PROCEDURE; Schema: public; Owner: -
 --
 
 CREATE PROCEDURE public.update_user_measurements(IN p_user_id integer, IN p_weight numeric, IN p_height numeric, IN p_neck numeric, IN p_waist numeric, IN p_chest numeric, IN p_biceps numeric, IN p_thighs numeric, IN p_hips numeric, IN p_activity_level numeric, IN p_goal character varying)
@@ -1640,11 +1572,9 @@ END;
 $$;
 
 
-ALTER PROCEDURE public.update_user_measurements(IN p_user_id integer, IN p_weight numeric, IN p_height numeric, IN p_neck numeric, IN p_waist numeric, IN p_chest numeric, IN p_biceps numeric, IN p_thighs numeric, IN p_hips numeric, IN p_activity_level numeric, IN p_goal character varying) OWNER TO postgres;
-
 --
 -- TOC entry 226 (class 1259 OID 16430)
--- Name: body_measurements_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: body_measurements_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE public.body_measurements_id_seq
@@ -1656,12 +1586,10 @@ CREATE SEQUENCE public.body_measurements_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE public.body_measurements_id_seq OWNER TO postgres;
-
 --
--- TOC entry 5138 (class 0 OID 0)
+-- TOC entry 5140 (class 0 OID 0)
 -- Dependencies: 226
--- Name: body_measurements_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- Name: body_measurements_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
 ALTER SEQUENCE public.body_measurements_id_seq OWNED BY public.body_measurements.id;
@@ -1669,7 +1597,7 @@ ALTER SEQUENCE public.body_measurements_id_seq OWNED BY public.body_measurements
 
 --
 -- TOC entry 224 (class 1259 OID 16413)
--- Name: exercises_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: exercises_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE public.exercises_id_seq
@@ -1681,12 +1609,10 @@ CREATE SEQUENCE public.exercises_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE public.exercises_id_seq OWNER TO postgres;
-
 --
--- TOC entry 5139 (class 0 OID 0)
+-- TOC entry 5141 (class 0 OID 0)
 -- Dependencies: 224
--- Name: exercises_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- Name: exercises_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
 ALTER SEQUENCE public.exercises_id_seq OWNED BY public.exercises.id;
@@ -1694,7 +1620,7 @@ ALTER SEQUENCE public.exercises_id_seq OWNED BY public.exercises.id;
 
 --
 -- TOC entry 222 (class 1259 OID 16404)
--- Name: muscle_groups_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: muscle_groups_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE public.muscle_groups_id_seq
@@ -1706,12 +1632,10 @@ CREATE SEQUENCE public.muscle_groups_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE public.muscle_groups_id_seq OWNER TO postgres;
-
 --
--- TOC entry 5140 (class 0 OID 0)
+-- TOC entry 5142 (class 0 OID 0)
 -- Dependencies: 222
--- Name: muscle_groups_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- Name: muscle_groups_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
 ALTER SEQUENCE public.muscle_groups_id_seq OWNED BY public.muscle_groups.id;
@@ -1719,7 +1643,7 @@ ALTER SEQUENCE public.muscle_groups_id_seq OWNED BY public.muscle_groups.id;
 
 --
 -- TOC entry 220 (class 1259 OID 16389)
--- Name: users_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: users_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE public.users_id_seq
@@ -1731,12 +1655,10 @@ CREATE SEQUENCE public.users_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE public.users_id_seq OWNER TO postgres;
-
 --
--- TOC entry 5141 (class 0 OID 0)
+-- TOC entry 5143 (class 0 OID 0)
 -- Dependencies: 220
--- Name: users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- Name: users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
 ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
@@ -1744,7 +1666,7 @@ ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
 
 --
 -- TOC entry 230 (class 1259 OID 16460)
--- Name: workout_exercises_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: workout_exercises_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE public.workout_exercises_id_seq
@@ -1756,12 +1678,10 @@ CREATE SEQUENCE public.workout_exercises_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE public.workout_exercises_id_seq OWNER TO postgres;
-
 --
--- TOC entry 5142 (class 0 OID 0)
+-- TOC entry 5144 (class 0 OID 0)
 -- Dependencies: 230
--- Name: workout_exercises_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- Name: workout_exercises_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
 ALTER SEQUENCE public.workout_exercises_id_seq OWNED BY public.workout_exercises.id;
@@ -1769,7 +1689,7 @@ ALTER SEQUENCE public.workout_exercises_id_seq OWNED BY public.workout_exercises
 
 --
 -- TOC entry 232 (class 1259 OID 16480)
--- Name: workout_sets_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: workout_sets_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE public.workout_sets_id_seq
@@ -1781,12 +1701,10 @@ CREATE SEQUENCE public.workout_sets_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE public.workout_sets_id_seq OWNER TO postgres;
-
 --
--- TOC entry 5143 (class 0 OID 0)
+-- TOC entry 5145 (class 0 OID 0)
 -- Dependencies: 232
--- Name: workout_sets_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- Name: workout_sets_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
 ALTER SEQUENCE public.workout_sets_id_seq OWNED BY public.workout_sets.id;
@@ -1794,7 +1712,7 @@ ALTER SEQUENCE public.workout_sets_id_seq OWNED BY public.workout_sets.id;
 
 --
 -- TOC entry 228 (class 1259 OID 16445)
--- Name: workouts_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: workouts_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE public.workouts_id_seq
@@ -1806,77 +1724,75 @@ CREATE SEQUENCE public.workouts_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE public.workouts_id_seq OWNER TO postgres;
-
 --
--- TOC entry 5144 (class 0 OID 0)
+-- TOC entry 5146 (class 0 OID 0)
 -- Dependencies: 228
--- Name: workouts_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- Name: workouts_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
 ALTER SEQUENCE public.workouts_id_seq OWNED BY public.workouts.id;
 
 
 --
--- TOC entry 4942 (class 2604 OID 16434)
--- Name: body_measurements id; Type: DEFAULT; Schema: public; Owner: postgres
+-- TOC entry 4945 (class 2604 OID 16434)
+-- Name: body_measurements id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.body_measurements ALTER COLUMN id SET DEFAULT nextval('public.body_measurements_id_seq'::regclass);
 
 
 --
--- TOC entry 4941 (class 2604 OID 16417)
--- Name: exercises id; Type: DEFAULT; Schema: public; Owner: postgres
+-- TOC entry 4944 (class 2604 OID 16417)
+-- Name: exercises id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.exercises ALTER COLUMN id SET DEFAULT nextval('public.exercises_id_seq'::regclass);
 
 
 --
--- TOC entry 4940 (class 2604 OID 16408)
--- Name: muscle_groups id; Type: DEFAULT; Schema: public; Owner: postgres
+-- TOC entry 4943 (class 2604 OID 16408)
+-- Name: muscle_groups id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.muscle_groups ALTER COLUMN id SET DEFAULT nextval('public.muscle_groups_id_seq'::regclass);
 
 
 --
--- TOC entry 4939 (class 2604 OID 16393)
--- Name: users id; Type: DEFAULT; Schema: public; Owner: postgres
+-- TOC entry 4942 (class 2604 OID 16393)
+-- Name: users id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_id_seq'::regclass);
 
 
 --
--- TOC entry 4946 (class 2604 OID 16464)
--- Name: workout_exercises id; Type: DEFAULT; Schema: public; Owner: postgres
+-- TOC entry 4949 (class 2604 OID 16464)
+-- Name: workout_exercises id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.workout_exercises ALTER COLUMN id SET DEFAULT nextval('public.workout_exercises_id_seq'::regclass);
 
 
 --
--- TOC entry 4947 (class 2604 OID 16484)
--- Name: workout_sets id; Type: DEFAULT; Schema: public; Owner: postgres
+-- TOC entry 4950 (class 2604 OID 16484)
+-- Name: workout_sets id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.workout_sets ALTER COLUMN id SET DEFAULT nextval('public.workout_sets_id_seq'::regclass);
 
 
 --
--- TOC entry 4945 (class 2604 OID 16449)
--- Name: workouts id; Type: DEFAULT; Schema: public; Owner: postgres
+-- TOC entry 4948 (class 2604 OID 16449)
+-- Name: workouts id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.workouts ALTER COLUMN id SET DEFAULT nextval('public.workouts_id_seq'::regclass);
 
 
 --
--- TOC entry 5123 (class 0 OID 16431)
+-- TOC entry 5126 (class 0 OID 16431)
 -- Dependencies: 227
--- Data for Name: body_measurements; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: body_measurements; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 COPY public.body_measurements (id, user_id, date, height, weight, chest, waist, biceps, thighs, hips, neck, goal, activity_level) FROM stdin;
@@ -1897,13 +1813,15 @@ COPY public.body_measurements (id, user_id, date, height, weight, chest, waist, 
 15	15	2026-01-12 00:00:00	175	83	107	87	40	58	98	38	Rekompozycja ciała	1.550
 16	7	2026-01-12 18:18:25.525567	175	85	115	97	41	75	105	40	Rekompozycja ciała	1.375
 17	7	2026-01-12 18:18:39.640698	175	85	115	97	41	75	105	40	Rekompozycja ciała	1.375
+18	19	2026-01-16 15:00:14.024178	185	84	110	99	36	68	100	39	Rekompozycja ciała	1.200
+21	21	2026-01-16 15:35:31.007132	180	80	102	88	35	58	94	38.5	Rekompozycja ciała	1.550
 \.
 
 
 --
--- TOC entry 5121 (class 0 OID 16414)
+-- TOC entry 5124 (class 0 OID 16414)
 -- Dependencies: 225
--- Data for Name: exercises; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: exercises; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 COPY public.exercises (id, name, description, muscle_group_id) FROM stdin;
@@ -2011,9 +1929,9 @@ COPY public.exercises (id, name, description, muscle_group_id) FROM stdin;
 
 
 --
--- TOC entry 5119 (class 0 OID 16405)
+-- TOC entry 5122 (class 0 OID 16405)
 -- Dependencies: 223
--- Data for Name: muscle_groups; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: muscle_groups; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 COPY public.muscle_groups (id, name) FROM stdin;
@@ -2029,9 +1947,9 @@ COPY public.muscle_groups (id, name) FROM stdin;
 
 
 --
--- TOC entry 5117 (class 0 OID 16390)
+-- TOC entry 5120 (class 0 OID 16390)
 -- Dependencies: 221
--- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 COPY public.users (id, username, password, email, first_name, last_name, gender) FROM stdin;
@@ -2048,13 +1966,15 @@ COPY public.users (id, username, password, email, first_name, last_name, gender)
 16	oh134913	134913	oh134913@stud.ur.edu.pl	Oliwier	Hędrzak	Male
 17	dam	dam	dam@type.pl	Damian	Dudek	Male
 18	jan_mar	jan	janmar@onet.pl	Jan	Markowski	Male
+19	Andrew	and	andrew@onet.pl	Andrzej	Mazowiecki	Male
+21	tester	test	tester@aware.fit.pl	Adam	Tester	Male
 \.
 
 
 --
--- TOC entry 5127 (class 0 OID 16461)
+-- TOC entry 5130 (class 0 OID 16461)
 -- Dependencies: 231
--- Data for Name: workout_exercises; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: workout_exercises; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 COPY public.workout_exercises (id, workout_id, exercise_id) FROM stdin;
@@ -2220,6 +2140,7 @@ COPY public.workout_exercises (id, workout_id, exercise_id) FROM stdin;
 160	36	59
 161	36	34
 162	36	46
+662	199	6
 165	39	1
 166	39	2
 167	40	4
@@ -2349,13 +2270,95 @@ COPY public.workout_exercises (id, workout_id, exercise_id) FROM stdin;
 292	92	34
 293	93	2
 294	94	12
+295	95	6
+296	95	34
+297	95	29
+298	96	17
+299	97	3
+300	98	15
+501	166	6
+502	166	3
+503	166	2
+504	166	30
+505	166	37
+506	167	6
+507	167	3
+508	167	2
+509	167	30
+510	167	37
+511	168	6
+512	168	3
+513	168	2
+514	168	30
+515	168	37
+516	169	6
+517	169	3
+518	169	2
+519	169	30
+520	169	37
+521	170	6
+522	170	3
+523	170	2
+524	170	30
+525	170	37
+551	176	16
+552	176	18
+553	176	17
+554	176	44
+555	176	27
+556	177	16
+557	177	18
+558	177	17
+559	177	44
+560	177	27
+561	178	16
+562	178	18
+563	178	17
+564	178	44
+565	178	27
+566	179	16
+567	179	18
+568	179	17
+569	179	44
+570	179	27
+576	181	69
+577	181	59
+578	181	57
+579	181	64
+580	181	87
+581	182	69
+582	182	59
+583	182	57
+584	182	64
+585	182	87
+586	183	69
+587	183	59
+588	183	57
+589	183	64
+590	183	87
+591	184	69
+592	184	59
+593	184	57
+594	184	64
+595	184	87
+596	185	69
+597	185	59
+598	185	57
+599	185	64
+600	185	87
+663	199	3
+664	200	16
+665	200	18
+666	201	69
+667	201	59
+668	201	87
 \.
 
 
 --
--- TOC entry 5129 (class 0 OID 16481)
+-- TOC entry 5132 (class 0 OID 16481)
 -- Dependencies: 233
--- Data for Name: workout_sets; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: workout_sets; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 COPY public.workout_sets (id, workout_exercise_id, weight, reps, set_number) FROM stdin;
@@ -3267,13 +3270,265 @@ COPY public.workout_sets (id, workout_exercise_id, weight, reps, set_number) FRO
 907	294	80	8	2
 908	294	80	8	3
 909	294	80	8	4
+910	295	90	5	1
+911	295	90	5	2
+912	295	90	5	3
+913	295	90	6	4
+914	296	25	10	1
+915	296	25	9	2
+916	296	25	9	3
+917	296	25	9	4
+918	297	12	12	1
+919	297	12	12	2
+920	297	12	12	3
+921	297	12	13	4
+922	298	30	8	1
+923	298	30	8	2
+924	298	30	8	3
+925	299	90	4	1
+926	299	90	4	2
+927	299	90	4	3
+928	299	90	4	4
+929	300	83	88	1
+930	300	83	8	2
+1886	665	42	8	2
+1887	665	42	8	3
+1888	666	85	8	1
+1889	666	85	8	2
+1890	666	85	8	3
+1891	667	95	6	1
+1892	667	95	6	2
+1893	667	95	6	3
+1894	668	40	15	1
+1895	668	40	15	2
+1896	668	40	15	3
+1395	501	63	6	1
+1396	501	63	5	2
+1397	501	63	5	3
+1398	502	14	10	1
+1399	502	14	9	2
+1400	502	14	8	3
+1401	503	18	10	1
+1402	503	18	9	2
+1403	503	18	8	3
+1404	504	7	10	1
+1405	504	7	9	2
+1406	504	7	9	3
+1407	505	14	8	1
+1408	505	14	8	2
+1409	505	14	8	3
+1410	506	60	6	1
+1411	506	60	5	2
+1412	506	60	5	3
+1413	507	12	10	1
+1414	507	12	9	2
+1415	507	12	8	3
+1416	508	16	10	1
+1417	508	16	9	2
+1418	508	16	8	3
+1419	509	6	10	1
+1420	509	6	9	2
+1421	509	6	9	3
+1422	510	12	8	1
+1423	510	12	8	2
+1424	510	12	8	3
+1425	511	58	5	1
+1426	511	58	5	2
+1427	511	58	5	3
+1428	512	10	10	1
+1429	512	10	9	2
+1430	512	10	8	3
+1431	513	14	10	1
+1432	513	14	9	2
+1433	513	14	8	3
+1434	514	5	10	1
+1435	514	5	9	2
+1436	514	5	8	3
+1437	515	10	8	1
+1438	515	10	8	2
+1439	515	10	8	3
+1440	516	65	6	1
+1441	516	65	6	2
+1442	516	65	5	3
+1443	517	16	10	1
+1444	517	16	9	2
+1445	517	16	8	3
+1446	518	20	10	1
+1447	518	20	9	2
+1448	518	20	8	3
+1449	519	8	10	1
+1450	519	8	9	2
+1451	519	8	9	3
+1452	520	16	8	1
+1453	520	16	8	2
+1454	520	16	8	3
+1455	521	67	6	1
+1456	521	67	6	2
+1457	521	67	6	3
+1458	522	18	10	1
+1459	522	18	9	2
+1460	522	18	8	3
+1461	523	22	10	1
+1462	523	22	9	2
+1463	523	22	9	3
+1464	524	10	10	1
+1465	524	10	10	2
+1466	524	10	9	3
+1467	525	18	8	1
+1468	525	18	8	2
+1469	525	18	8	3
+1545	551	32	10	1
+1546	551	32	10	2
+1547	551	32	9	3
+1548	552	32	8	1
+1549	552	32	8	2
+1550	552	32	8	3
+1551	553	20	10	1
+1552	553	20	10	2
+1553	553	20	9	3
+1554	554	10	10	1
+1555	554	10	10	2
+1556	554	10	9	3
+1557	555	18	10	1
+1558	555	18	10	2
+1559	555	18	10	3
+1560	556	34	10	1
+1561	556	34	10	2
+1562	556	34	10	3
+1563	557	34	8	1
+1564	557	34	8	2
+1565	557	34	8	3
+1566	558	22	10	1
+1567	558	22	10	2
+1568	558	22	10	3
+1569	559	12	10	1
+1570	559	12	10	2
+1571	559	12	10	3
+1572	560	20	10	1
+1573	560	20	10	2
+1574	560	20	10	3
+1575	561	36	10	1
+1576	561	36	10	2
+1577	561	36	9	3
+1578	562	36	8	1
+1579	562	36	8	2
+1580	562	36	8	3
+1581	563	24	10	1
+1582	563	24	10	2
+1583	563	24	9	3
+1584	564	14	10	1
+1585	564	14	10	2
+1586	564	14	10	3
+1587	565	22	10	1
+1588	565	22	10	2
+1589	565	22	10	3
+1590	566	38	10	1
+1591	566	38	10	2
+1592	566	38	10	3
+1593	567	38	8	1
+1594	567	38	8	2
+1595	567	38	8	3
+1596	568	26	10	1
+1597	568	26	10	2
+1598	568	26	10	3
+1599	569	16	10	1
+1600	569	16	10	2
+1601	569	16	10	3
+1602	570	24	10	1
+1603	570	24	10	2
+1604	570	24	10	3
+1876	662	73	6	1
+1877	662	73	6	2
+1878	662	73	5	3
+1879	663	24	10	1
+1880	663	24	9	2
+1881	663	24	9	3
+1882	664	42	10	1
+1883	664	42	10	2
+1884	664	42	10	3
+1885	665	42	8	1
+1620	576	60	8	1
+1621	576	60	8	2
+1622	576	60	8	3
+1623	577	70	6	1
+1624	577	70	6	2
+1625	577	70	6	3
+1626	578	50	10	1
+1627	578	50	10	2
+1628	578	50	10	3
+1629	579	30	12	1
+1630	579	30	12	2
+1631	579	30	12	3
+1632	580	25	15	1
+1633	580	25	15	2
+1634	580	25	15	3
+1635	581	65	8	1
+1636	581	65	8	2
+1637	581	65	8	3
+1638	582	75	6	1
+1639	582	75	6	2
+1640	582	75	6	3
+1641	583	52	10	1
+1642	583	52	10	2
+1643	583	52	10	3
+1644	584	32	12	1
+1645	584	32	12	2
+1646	584	32	12	3
+1647	585	27	15	1
+1648	585	27	15	2
+1649	585	27	15	3
+1650	586	70	8	1
+1651	586	70	8	2
+1652	586	70	7	3
+1653	587	80	6	1
+1654	587	80	6	2
+1655	587	80	6	3
+1656	588	55	10	1
+1657	588	55	10	2
+1658	588	55	10	3
+1659	589	35	12	1
+1660	589	35	12	2
+1661	589	35	12	3
+1662	590	30	15	1
+1663	590	30	15	2
+1664	590	30	15	3
+1665	591	75	8	1
+1666	591	75	8	2
+1667	591	75	8	3
+1668	592	85	6	1
+1669	592	85	6	2
+1670	592	85	6	3
+1671	593	57	10	1
+1672	593	57	10	2
+1673	593	57	10	3
+1674	594	37	12	1
+1675	594	37	12	2
+1676	594	37	12	3
+1677	595	32	15	1
+1678	595	32	15	2
+1679	595	32	15	3
+1680	596	80	8	1
+1681	596	80	7	2
+1682	596	80	7	3
+1683	597	90	6	1
+1684	597	90	6	2
+1685	597	90	6	3
+1686	598	60	10	1
+1687	598	60	10	2
+1688	598	60	10	3
+1689	599	40	12	1
+1690	599	40	12	2
+1691	599	40	12	3
+1692	600	35	15	1
+1693	600	35	15	2
+1694	600	35	15	3
 \.
 
 
 --
--- TOC entry 5125 (class 0 OID 16446)
+-- TOC entry 5128 (class 0 OID 16446)
 -- Dependencies: 229
--- Data for Name: workouts; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: workouts; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 COPY public.workouts (id, user_id, date, duration) FROM stdin;
@@ -3313,6 +3568,7 @@ COPY public.workouts (id, user_id, date, duration) FROM stdin;
 34	5	2025-12-10 17:00:00	\N
 35	4	2025-12-12 16:00:00	\N
 36	5	2025-12-12 17:00:00	\N
+176	21	2025-12-23 17:00:00	01:00:00
 39	7	2025-12-29 00:00:00	\N
 40	7	2026-01-01 00:00:00	\N
 41	7	2025-12-22 00:00:00	\N
@@ -3341,8 +3597,15 @@ COPY public.workouts (id, user_id, date, duration) FROM stdin;
 65	1	2025-12-24 00:00:00	\N
 66	1	2025-12-26 00:00:00	\N
 67	1	2025-12-28 00:00:00	\N
+98	15	2026-01-16 15:20:05.375613	00:00:11
+177	21	2025-12-30 17:00:00	01:00:00
+178	21	2026-01-06 17:00:00	01:00:00
 77	7	2026-01-02 22:57:01.368517	01:21:40
 78	7	2026-01-02 23:04:10.998172	00:00:52
+179	21	2026-01-13 17:00:00	01:00:00
+181	21	2025-12-18 17:30:00	01:00:00
+166	21	2025-12-29 16:00:00	00:58:20
+167	21	2025-12-22 16:00:00	00:56:40
 82	16	2025-12-10 18:30:00	01:31:20
 83	16	2025-12-17 17:00:00	01:35:05
 84	16	2025-12-18 19:15:00	01:29:50
@@ -3351,6 +3614,7 @@ COPY public.workouts (id, user_id, date, duration) FROM stdin;
 87	16	2025-12-30 17:30:00	01:28:45
 88	16	2025-12-08 17:30:00	01:28:45
 89	16	2025-12-07 17:30:00	01:28:45
+168	21	2025-12-15 16:00:00	00:55:00
 68	15	2025-12-05 17:30:00	01:10:00
 69	15	2025-12-08 18:00:00	00:55:00
 70	15	2025-12-10 16:45:00	01:20:00
@@ -3368,75 +3632,87 @@ COPY public.workouts (id, user_id, date, duration) FROM stdin;
 92	15	2026-01-10 14:44:43.987412	00:03:16
 93	7	2026-01-12 13:48:58.204066	230:31:34
 94	7	2026-01-12 18:29:18.678663	00:00:13
+95	15	2026-01-16 14:38:18.541192	00:00:41
+96	19	2026-01-16 14:57:27.606717	00:00:11
+97	19	2026-01-16 15:01:52.536804	00:00:12
+169	21	2026-01-05 16:00:00	01:00:00
+170	21	2026-01-12 16:00:00	01:01:40
+182	21	2025-12-25 17:30:00	01:00:00
+183	21	2026-01-01 17:30:00	01:00:00
+184	21	2026-01-08 17:30:00	01:00:00
+185	21	2026-01-15 17:30:00	01:00:00
+199	21	2026-01-19 16:00:00	01:00:00
+200	21	2026-01-20 17:00:00	01:00:00
+201	21	2026-01-22 17:30:00	01:00:00
 \.
 
 
 --
--- TOC entry 5145 (class 0 OID 0)
+-- TOC entry 5147 (class 0 OID 0)
 -- Dependencies: 226
--- Name: body_measurements_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Name: body_measurements_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public.body_measurements_id_seq', 17, true);
+SELECT pg_catalog.setval('public.body_measurements_id_seq', 21, true);
 
 
 --
--- TOC entry 5146 (class 0 OID 0)
+-- TOC entry 5148 (class 0 OID 0)
 -- Dependencies: 224
--- Name: exercises_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Name: exercises_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
 SELECT pg_catalog.setval('public.exercises_id_seq', 103, true);
 
 
 --
--- TOC entry 5147 (class 0 OID 0)
+-- TOC entry 5149 (class 0 OID 0)
 -- Dependencies: 222
--- Name: muscle_groups_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Name: muscle_groups_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
 SELECT pg_catalog.setval('public.muscle_groups_id_seq', 9, true);
 
 
 --
--- TOC entry 5148 (class 0 OID 0)
--- Dependencies: 220
--- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('public.users_id_seq', 18, true);
-
-
---
--- TOC entry 5149 (class 0 OID 0)
--- Dependencies: 230
--- Name: workout_exercises_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('public.workout_exercises_id_seq', 294, true);
-
-
---
 -- TOC entry 5150 (class 0 OID 0)
--- Dependencies: 232
--- Name: workout_sets_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Dependencies: 220
+-- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public.workout_sets_id_seq', 909, true);
+SELECT pg_catalog.setval('public.users_id_seq', 21, true);
 
 
 --
 -- TOC entry 5151 (class 0 OID 0)
+-- Dependencies: 230
+-- Name: workout_exercises_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('public.workout_exercises_id_seq', 668, true);
+
+
+--
+-- TOC entry 5152 (class 0 OID 0)
+-- Dependencies: 232
+-- Name: workout_sets_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('public.workout_sets_id_seq', 1896, true);
+
+
+--
+-- TOC entry 5153 (class 0 OID 0)
 -- Dependencies: 228
--- Name: workouts_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Name: workouts_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public.workouts_id_seq', 94, true);
+SELECT pg_catalog.setval('public.workouts_id_seq', 201, true);
 
 
 --
--- TOC entry 4956 (class 2606 OID 16439)
--- Name: body_measurements body_measurements_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- TOC entry 4959 (class 2606 OID 16439)
+-- Name: body_measurements body_measurements_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.body_measurements
@@ -3444,8 +3720,8 @@ ALTER TABLE ONLY public.body_measurements
 
 
 --
--- TOC entry 4954 (class 2606 OID 16424)
--- Name: exercises exercises_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- TOC entry 4957 (class 2606 OID 16424)
+-- Name: exercises exercises_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.exercises
@@ -3453,8 +3729,8 @@ ALTER TABLE ONLY public.exercises
 
 
 --
--- TOC entry 4952 (class 2606 OID 16412)
--- Name: muscle_groups muscle_groups_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- TOC entry 4955 (class 2606 OID 16412)
+-- Name: muscle_groups muscle_groups_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.muscle_groups
@@ -3462,8 +3738,8 @@ ALTER TABLE ONLY public.muscle_groups
 
 
 --
--- TOC entry 4950 (class 2606 OID 16403)
--- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- TOC entry 4953 (class 2606 OID 16403)
+-- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.users
@@ -3471,8 +3747,8 @@ ALTER TABLE ONLY public.users
 
 
 --
--- TOC entry 4960 (class 2606 OID 16469)
--- Name: workout_exercises workout_exercises_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- TOC entry 4963 (class 2606 OID 16469)
+-- Name: workout_exercises workout_exercises_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.workout_exercises
@@ -3480,8 +3756,8 @@ ALTER TABLE ONLY public.workout_exercises
 
 
 --
--- TOC entry 4962 (class 2606 OID 16490)
--- Name: workout_sets workout_sets_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- TOC entry 4965 (class 2606 OID 16490)
+-- Name: workout_sets workout_sets_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.workout_sets
@@ -3489,8 +3765,8 @@ ALTER TABLE ONLY public.workout_sets
 
 
 --
--- TOC entry 4958 (class 2606 OID 16454)
--- Name: workouts workouts_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+-- TOC entry 4961 (class 2606 OID 16454)
+-- Name: workouts workouts_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.workouts
@@ -3498,8 +3774,8 @@ ALTER TABLE ONLY public.workouts
 
 
 --
--- TOC entry 4964 (class 2606 OID 16440)
--- Name: body_measurements body_measurements_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- TOC entry 4967 (class 2606 OID 16440)
+-- Name: body_measurements body_measurements_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.body_measurements
@@ -3507,8 +3783,8 @@ ALTER TABLE ONLY public.body_measurements
 
 
 --
--- TOC entry 4963 (class 2606 OID 16425)
--- Name: exercises exercises_muscle_group_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- TOC entry 4966 (class 2606 OID 16425)
+-- Name: exercises exercises_muscle_group_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.exercises
@@ -3516,8 +3792,8 @@ ALTER TABLE ONLY public.exercises
 
 
 --
--- TOC entry 4966 (class 2606 OID 16475)
--- Name: workout_exercises workout_exercises_exercise_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- TOC entry 4969 (class 2606 OID 16475)
+-- Name: workout_exercises workout_exercises_exercise_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.workout_exercises
@@ -3525,8 +3801,8 @@ ALTER TABLE ONLY public.workout_exercises
 
 
 --
--- TOC entry 4967 (class 2606 OID 16470)
--- Name: workout_exercises workout_exercises_workout_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- TOC entry 4970 (class 2606 OID 16470)
+-- Name: workout_exercises workout_exercises_workout_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.workout_exercises
@@ -3534,8 +3810,8 @@ ALTER TABLE ONLY public.workout_exercises
 
 
 --
--- TOC entry 4968 (class 2606 OID 16491)
--- Name: workout_sets workout_sets_workout_exercise_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- TOC entry 4971 (class 2606 OID 16491)
+-- Name: workout_sets workout_sets_workout_exercise_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.workout_sets
@@ -3543,19 +3819,19 @@ ALTER TABLE ONLY public.workout_sets
 
 
 --
--- TOC entry 4965 (class 2606 OID 16455)
--- Name: workouts workouts_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- TOC entry 4968 (class 2606 OID 16455)
+-- Name: workouts workouts_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.workouts
     ADD CONSTRAINT workouts_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id);
 
 
--- Completed on 2026-01-13 18:55:39
+-- Completed on 2026-01-16 18:46:10
 
 --
 -- PostgreSQL database dump complete
 --
 
-\unrestrict 2bfLs3J59zqLM9lrANlt2fbZL0BrtB1nmOOtz8XTLrDSLPZjIbtqsTieemJcxn0
+\unrestrict jDII0nafavgmwV887zLiYAWbWDg3jCBjyVb0O7tevesDMD6Y0gui0SGw4DeBjGa
 

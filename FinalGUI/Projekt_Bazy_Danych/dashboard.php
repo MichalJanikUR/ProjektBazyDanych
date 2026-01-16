@@ -5,21 +5,20 @@ include 'includes/db.php';
 $user_id = $_SESSION['user_id'];
 
 try {
-    // 1. Streak
-    $stmt = $pdo->prepare("SELECT crud.calculate_workout_streak(:user_id, 4) as streak");
-    $stmt->execute(['user_id' => $user_id]);
+    // Pobieranie statystyk aktywności (Streak i licznik tygodniowy)
+    $stmt = $pdo->prepare("SELECT crud.calculate_workout_streak(:user_id::integer, 4)");    $stmt->execute(['user_id' => $user_id]);
     $current_streak = $stmt->fetchColumn() ?: 0;
 
-    // 2. Typ Treningu & Aktywność Tygodniowa
-    $stmt = $pdo->prepare("SELECT public.detect_training_split(:user_id)");
+    $stmt = $pdo->prepare("SELECT public.get_weekly_workout_count(:user_id::integer)");
     $stmt->execute(['user_id' => $user_id]);
-    $training_type = $stmt->fetchColumn() ?: 'Brak treningów';
-
-    $stmt = $pdo->prepare("SELECT COUNT(*) FROM public.workouts WHERE user_id = ? AND date > NOW() - INTERVAL '7 days'");
-    $stmt->execute([$user_id]);
     $weekly_workouts = $stmt->fetchColumn() ?: 0;
 
-    // 3. Objętość i Trend
+    // Analiza systemu treningowego
+    $stmt = $pdo->prepare("SELECT public.detect_training_split(:user_id)");
+    $stmt->execute(['user_id' => $user_id]);
+    $training_type = $stmt->fetchColumn() ?: 'Brak danych';
+
+    // Porównanie objętości treningowej (Trend)
     $stmt = $pdo->prepare("SELECT * FROM public.get_volume_comparison(?)");
     $stmt->execute([$user_id]);
     $comp_data = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -34,7 +33,7 @@ try {
     }
     $trend_class = ($diff_percent >= 0) ? 'positive' : 'negative';
 
-    // 4. Kalorie i Makro
+    // Dane dietetyczne i makroskładniki
     $stmt = $pdo->prepare("SELECT recommended_calories FROM public.calculate_user_diet_calories(:id)");
     $stmt->execute(['id' => $user_id]);
     $calories_today = $stmt->fetchColumn() ?: 2000;
@@ -43,11 +42,10 @@ try {
     $stmt->execute(['id' => $user_id]);
     $macro_data = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    // 5. Logika Wykresu - Zmiana na domyślny brak wyboru
-    $muscle_groups = $pdo->query("SELECT * FROM public.muscle_groups ORDER BY name ASC")->fetchAll(PDO::FETCH_ASSOC);
-    $exercises_list = $pdo->query("SELECT id, name, muscle_group_id FROM public.exercises ORDER BY name ASC")->fetchAll(PDO::FETCH_ASSOC);
+    // Pobieranie danych do filtrów
+    $muscle_groups = $pdo->query("SELECT * FROM crud.get_all_muscle_groups() ORDER BY name ASC")->fetchAll(PDO::FETCH_ASSOC);
+    $exercises_list = $pdo->query("SELECT id, name, muscle_group_id FROM crud.get_all_exercises() ORDER BY name ASC")->fetchAll(PDO::FETCH_ASSOC);
     
-    // Pobieramy ID tylko z GET, nie ustawiamy domyślnej klatki
     $exercise_id = isset($_GET['exercise_id']) ? (int)$_GET['exercise_id'] : null; 
     
     $chart_labels = []; 
@@ -63,8 +61,8 @@ try {
         }
     }
 
-} catch (PDOException $e) {
-    echo "Szczegóły błędu: " . $e->getMessage();
+} catch (\PDOException $e) {
+    echo "Wystąpił błąd podczas ładowania danych dashboardu. Spróbuj odświeżyć stronę." . $e->getMessage();
     exit;
 }
 ?>

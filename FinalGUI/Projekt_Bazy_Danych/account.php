@@ -5,12 +5,21 @@ include 'includes/db.php';
 $user_id = $_SESSION['user_id'];
 
 try {
-    // Dodajemy first_name i last_name do SELECT
-    $stmt = $pdo->prepare("SELECT username, email, gender, first_name, last_name FROM public.users WHERE id = :id");
+    // Wywołanie funkcji zamiast bezpośredniego zapytania do tabeli
+    $stmt = $pdo->prepare("SELECT * FROM public.get_user_profile_data(:id)");
     $stmt->execute(['id' => $user_id]);
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
-} catch (PDOException $e) {
-    echo "Błąd: " . $e->getMessage();
+
+    if (!$user) {
+        throw new \Exception("Błąd: Nie odnaleziono danych użytkownika.");
+    }
+} catch (\PDOException $e) {
+    // Rejestrujemy błąd w logach, użytkownikowi pokazujemy tylko ogólny komunikat
+    error_log($e->getMessage());
+    echo "Wystąpił problem z połączeniem bazodanowym.";
+    exit;
+} catch (\Exception $e) {
+    echo $e->getMessage();
     exit;
 }
 ?>
@@ -60,9 +69,20 @@ try {
                 <span class="detail-value"><?php echo htmlspecialchars($user['username']); ?></span>
             </div>
             <div class="detail-item">
-                <span class="detail-label">Płeć</span>
-                <span class="detail-value"><?php echo ($user['gender'] == 'Male') ? 'Mężczyzna' : 'Kobieta'; ?></span>
-            </div>
+    <span class="detail-label">Płeć</span>
+    <span class="detail-value">
+        <?php 
+            $gender = $user['gender'] ?? '';
+            if ($gender === 'Male') {
+                echo 'Mężczyzna';
+            } elseif ($gender === 'Female') {
+                echo 'Kobieta';
+            } else {
+                echo 'Nie określono';
+            }
+        ?>
+    </span>
+</div>
         </section>
 
         <section class="profile-actions">

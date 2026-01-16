@@ -1,10 +1,10 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2025.6.12)  13 JAN 2026 18:52
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2025.6.12)  16 JAN 2026 18:38
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
  %&-line parsing enabled.
-**"c:/Users/oleiy/Desktop/AwareFit - Dokumentacja/praca.tex"
-(c:/Users/oleiy/Desktop/AwareFit - Dokumentacja/praca.tex
+**"c:/Users/oleiy/Documents/GitHub/ProjektBazyDanych/Dokumentacja - AwareFit/AwareFit - Dokumentacja/praca.tex"
+(c:/Users/oleiy/Documents/GitHub/ProjektBazyDanych/Dokumentacja - AwareFit/AwareFit - Dokumentacja/praca.tex
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-01-04>
 (urdpl.cls *** [urdpl.cls] --- (ZG, EZ) v1.0 <19.09.2024> ***
@@ -630,7 +630,7 @@ Package csquotes Info: Redefining alias 'default' -> 'polish'.
 File: l3backend-pdftex.def 2024-01-04 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count348
 \l__pdf_internal_box=\box75
-) (praca.aux (chapters/chapter001.aux) (chapters/chapter002.aux) (chapters/chapter003.aux) (chapters/chapter004.aux) (chapters/chapter005.aux) (chapters/chapter006.aux) (chapters/chapter007.aux) (appendix/statement-A.aux))
+) (praca.aux (chapters/chapter001.aux) (chapters/chapter002.aux) (chapters/chapter003.aux) (chapters/chapter004.aux) (chapters/chapter005.aux) (chapters/chapter006.aux) (chapters/chapter008.aux) (chapters/chapter007.aux) (appendix/statement-A.aux))
 \openout1 = `praca.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 200.
@@ -736,7 +736,7 @@ LaTeX Font Info:    Trying to load font information for U+msb on input line 202.
  (C:\Users\oleiy\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-<figures/ur.jpg, id=162, 134.00063pt x 134.00063pt>
+<figures/ur.jpg, id=182, 134.00063pt x 134.00063pt>
 File: figures/ur.jpg Graphic file (type jpg)
 <use figures/ur.jpg>
 Package pdftex.def Info: figures/ur.jpg  used on input line 202.
@@ -801,7 +801,7 @@ Rozdzia\l  3.
 
 
 ] [12] [13] [14]
-<figures/diagramERD.jpg, id=271, 729.32475pt x 386.6445pt>
+<figures/diagramERD.jpg, id=296, 729.32475pt x 386.6445pt>
 File: figures/diagramERD.jpg Graphic file (type jpg)
 <use figures/diagramERD.jpg>
 Package pdftex.def Info: figures/diagramERD.jpg  used on input line 172.
@@ -846,158 +846,76 @@ Underfull \hbox (badness 2035) in paragraph at lines 55--57
 []\T1/ptm/b/n/10 Perspektywa ad-mi-ni-stra-cyjna: \T1/ptm/m/n/10 Mimo braku od-po-wied-nich mo-du-ªów w bie-»¡-cym GUI, w
  []
 
-[20] [21] [22] [23]
-Overfull \hbox (86.81387pt too wide) in paragraph at lines 164--165
-[][][][][][][][][][][][][][][][][][][][][][][][] 
- []
-
-[24]
+[20] [21] [22] [23] [24]
 LaTeX Font Info:    Font shape `T1/pcr/m/it' in size <8> not available
-(Font)              Font shape `T1/pcr/m/sl' tried instead on input line 206.
+(Font)              Font shape `T1/pcr/m/sl' tried instead on input line 250.
  [25]
-Underfull \hbox (badness 10000) in paragraph at lines 252--253
-[]\T1/ptm/b/n/10 Inicjalizacja: \T1/ptm/m/n/10 Przy-j¦-cie \T1/pcr/m/n/10 p_user_id \T1/ptm/m/n/10 i \T1/pcr/m/n/10 p_exercise_id\T1/ptm/m/n/10 , de-kla-ra-cja zmien-nych
+Overfull \hbox (14.81314pt too wide) in paragraph at lines 303--304
+[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
  []
 
 [26]
-Overfull \hbox (10.01309pt too wide) in paragraph at lines 270--271
-[][][][][][][][][][][][][][][][][][][][][][][][][][] 
- []
-
-[27] [28]
-Underfull \hbox (badness 4279) in paragraph at lines 353--354
-[]\T1/ptm/b/n/10 Ekstrakcja pa-ra-me-trów: \T1/ptm/m/n/10 Po-bra-nie war-to-±ci ci¦-»aru (\T1/pcr/m/n/10 v_weight\T1/ptm/m/n/10 ) oraz liczby po-wtó-rze«
- []
-
-[29]
-
-Package Listings Warning: Text dropped after begin of listing on input line 370.
-
-
-Overfull \hbox (19.61319pt too wide) in paragraph at lines 383--384
+Overfull \hbox (38.81339pt too wide) in paragraph at lines 309--310
 [][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
  []
 
 
-Overfull \hbox (67.61368pt too wide) in paragraph at lines 386--387
+Overfull \hbox (86.81387pt too wide) in paragraph at lines 313--314
 [][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
  []
 
-
-Underfull \hbox (badness 10000) in paragraph at lines 393--393
-[]\T1/ptm/b/n/10 Ekstrakcja po-mia-rów an-tro-po-me-trycz-nych: \T1/ptm/m/n/10 Po-bra-nie naj-±wie»-szych wpi-sów z ta-beli
+[27]
+Overfull \hbox (86.81387pt too wide) in paragraph at lines 353--354
+[][][][][][][][][][][][][][][][][][][][][][][][] 
  []
 
-[30]
+[28] [29]
+Overfull \hbox (14.81314pt too wide) in paragraph at lines 432--433
+[][][][][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
 
-Package Listings Warning: Text dropped after begin of listing on input line 398.
-
-[31] [32]
-
-Package Listings Warning: Text dropped after begin of listing on input line 456.
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 475--476
-[]\T1/ptm/b/n/10 Integracja z mo-du-ªem ka-lo-rycz-no-±ci: \T1/ptm/m/n/10 Al-go-rytm wy-wo-ªuje funk-cj¦
+[30] [31]
+Underfull \hbox (badness 1527) in paragraph at lines 514--515
+[]\T1/ptm/b/n/10 Agregacja da-nych se-rii: \T1/ptm/m/n/10 Funk-cja ª¡-czy ta-bel¦ se-rii (\T1/ptm/m/it/10 wor-kout_sets\T1/ptm/m/n/10 ) z ta-bel¡ ¢wi-cze« (\T1/ptm/m/it/10 wor-
  []
 
 
-Underfull \hbox (badness 1152) in paragraph at lines 475--476
-\T1/pcr/m/n/10 calculate_user_diet_calories\T1/ptm/m/n/10 , aby uzy-ska¢ war-to±¢ \T1/pcr/m/n/10 v_kcal \T1/ptm/m/n/10 (re-ko-men-do-wan¡ po-
+Overfull \hbox (77.21378pt too wide) in paragraph at lines 553--554
+[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
  []
 
-[33]
-Underfull \hbox (badness 10000) in paragraph at lines 519--520
-[]\T1/ptm/b/n/10 Agregacja kom-pletu da-nych an-tro-po-me-trycz-nych: \T1/ptm/m/n/10 Funk-cja wy-biera z ta-beli
- []
-
-[34]
-Overfull \hbox (120.41422pt too wide) in paragraph at lines 549--550
-[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
+[32]
+Underfull \hbox (badness 10000) in paragraph at lines 594--595
+[]\T1/ptm/b/n/10 Ekstrakcja sta-ty-styk mi¦-±nio-wych: \T1/ptm/m/n/10 Funk-cja ana-li-zuje dane z po-moc-ni-czej pro-ce-dury
  []
 
 
-Overfull \hbox (259.61563pt too wide) in paragraph at lines 550--551
-[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
+Underfull \hbox (badness 1755) in paragraph at lines 594--595
+\T1/pcr/m/n/10 get_user_training_stats\T1/ptm/m/n/10 , spraw-dza-j¡c obec-no±¢ klu-czo-wych ru-chów: wy-py-cha-j¡-cych
  []
 
-
-Overfull \hbox (154.01456pt too wide) in paragraph at lines 551--552
-[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
- []
-
-
-Overfull \hbox (24.41324pt too wide) in paragraph at lines 568--569
-[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
- []
-
-[35]
-Underfull \hbox (badness 10000) in paragraph at lines 577--578
-[]\T1/ptm/b/n/10 Agregacja sta-ty-styk okre-so-wych: \T1/ptm/m/n/10 Funk-cja ko-rzy-sta z wi-doku
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 577--578
-\T1/pcr/m/n/10 crud.get_user_training_stats \T1/ptm/m/n/10 w celu wy-zna-cze-nia liczby ak-tyw-nych dni
- []
-
-
-Underfull \hbox (badness 2065) in paragraph at lines 578--579
-\T1/ptm/m/n/10 czo-wych wzor-ców ru-cho-wych: dol-nych par-tii ciaªa (\T1/pcr/m/n/10 v_has_legs\T1/ptm/m/n/10 ), ru-chów wy-ci-ska-j¡-cych
- []
-
-
-Overfull \hbox (14.81314pt too wide) in paragraph at lines 606--607
+[33] [34] [35] [36]
+Overfull \hbox (14.81314pt too wide) in paragraph at lines 768--769
 [][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
  []
 
-[36]
-Underfull \hbox (badness 2521) in paragraph at lines 619--620
-[]\T1/ptm/b/n/10 Kalkulacja ob-j¦-to-±ci caª-ko-wi-tej: \T1/ptm/m/n/10 Sys-tem su-muje ilo-czyn ci¦-»aru i po-wtó-rze« ze wszyst-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 620--621
-[]\T1/ptm/b/n/10 Zª¡czenia re-la-cyjne: \T1/ptm/m/n/10 Funk-cja ª¡-czy ta-bele \T1/pcr/m/n/10 workout_sets\T1/ptm/m/n/10 , \T1/pcr/m/n/10 workout_exercises\T1/ptm/m/n/10 ,
- []
-
-
-Underfull \hbox (badness 2197) in paragraph at lines 623--624
-[]\T1/ptm/b/n/10 Sortowanie hie-rar-chiczne: \T1/ptm/m/n/10 Re-kordy s¡ zwra-cane w ko-lej-no-±ci ma-le-j¡-cej we-dªug ko-lumny
- []
-
-[37] [38]
-Underfull \hbox (badness 10000) in paragraph at lines 713--714
-[]\T1/ptm/b/n/10 Relacyjne zª¡-cze-nie da-nych: \T1/ptm/m/n/10 Sys-tem wy-ko-nuje ope-ra-cje \T1/pcr/m/n/10 JOIN \T1/ptm/m/n/10 mi¦-dzy ta-be-lami
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 744--745
-[]\T1/ptm/b/n/10 Analiza ró»-no-rod-no-±ci: \T1/ptm/m/n/10 Wy-zna-cze-nie liczby uni-kal-nych ¢wi-cze« przy u»y-ciu funk-cji
- []
-
-[39]
-Underfull \hbox (badness 2564) in paragraph at lines 769--770
-[]\T1/ptm/b/n/10 Persystencja uwag: \T1/ptm/m/n/10 Za-pis opcjo-nal-nych no-ta-tek tre-nin-go-wych prze-ka-za-nych w pa-ra-me-trze
- []
-
-) [40]
+[37] [38] [39] [40]) [41]
 \openout2 = `chapters/chapter005.aux'.
 
  (chapters/chapter005.tex
 Rozdzia\l  5.
-<figures/GUI/register.jpg, id=888, 225.84375pt x 595.62524pt>
+<figures/GUI/register.jpg, id=894, 225.84375pt x 595.62524pt>
 File: figures/GUI/register.jpg Graphic file (type jpg)
 <use figures/GUI/register.jpg>
 Package pdftex.def Info: figures/GUI/register.jpg  used on input line 11.
 (pdftex.def)             Requested size: 170.71393pt x 450.25325pt.
-[41
+[42
 
 
 
 
  <./figures/GUI/register.jpg>]
-<figures/GUI/login.jpg, id=894, 284.56313pt x 617.30624pt>
+<figures/GUI/login.jpg, id=900, 284.56313pt x 617.30624pt>
 File: figures/GUI/login.jpg Graphic file (type jpg)
 <use figures/GUI/login.jpg>
 Package pdftex.def Info: figures/GUI/login.jpg  used on input line 34.
@@ -1012,12 +930,12 @@ Underfull \hbox (badness 4739) in paragraph at lines 39--42
 \T1/ptm/m/n/10 tod¡ \T1/pcr/m/n/10 POST\T1/ptm/m/n/10 , skrypt na-wi¡-zuje po-ª¡-cze-nie z baz¡ da-nych i wy-ko-rzy-stuje funk-cj¦ ba-zo-da-now¡
  []
 
-[42 <./figures/GUI/login.jpg>] [43]
-<figures/GUI/dashboard.jpg, id=904, 283.81032pt x 616.55344pt>
+[43 <./figures/GUI/login.jpg>] [44]
+<figures/GUI/dashboard.jpg, id=910, 242.1045pt x 524.55975pt>
 File: figures/GUI/dashboard.jpg Graphic file (type jpg)
 <use figures/GUI/dashboard.jpg>
 Package pdftex.def Info: figures/GUI/dashboard.jpg  used on input line 62.
-(pdftex.def)             Requested size: 170.71393pt x 370.8757pt.
+(pdftex.def)             Requested size: 170.71393pt x 369.8947pt.
 
 Underfull \hbox (badness 10000) in paragraph at lines 70--71
 []\T1/ptm/b/n/10 System tre-nin-gowy i ak-tyw-no±¢: \T1/ptm/m/n/10 Skrypt wy-wo-ªuje funk-cj¦
@@ -1038,14 +956,14 @@ Underfull \hbox (badness 5331) in paragraph at lines 73--74
 \T1/pcr/m/n/10 get_exercise_volume_progression\T1/ptm/m/n/10 , która do-star-cza hi-sto-ryczne dane o ob-j¦-to-±ci
  []
 
-[44 <./figures/GUI/dashboard.jpg>] [45]
-<figures/GUI/sesja-aktywna.jpg, id=915, 283.0575pt x 617.30624pt>
+[45 <./figures/GUI/dashboard.jpg>] [46]
+<figures/GUI/sesja-aktywna.jpg, id=921, 283.0575pt x 617.30624pt>
 File: figures/GUI/sesja-aktywna.jpg Graphic file (type jpg)
 <use figures/GUI/sesja-aktywna.jpg>
 Package pdftex.def Info: figures/GUI/sesja-aktywna.jpg  used on input line 91.
 (pdftex.def)             Requested size: 170.71393pt x 372.30814pt.
- [46 <./figures/GUI/sesja-aktywna.jpg>]
-<figures/GUI/wybor-partii.jpg, id=925, 283.81032pt x 616.55344pt>
+ [47 <./figures/GUI/sesja-aktywna.jpg>]
+<figures/GUI/wybor-partii.jpg, id=931, 283.81032pt x 616.55344pt>
 File: figures/GUI/wybor-partii.jpg Graphic file (type jpg)
 <use figures/GUI/wybor-partii.jpg>
 Package pdftex.def Info: figures/GUI/wybor-partii.jpg  used on input line 119.
@@ -1055,7 +973,7 @@ Underfull \hbox (badness 1558) in paragraph at lines 120--120
 \T1/ptm/m/n/9 boru par-tii mi¦-±nio-
  []
 
-<figures/GUI/wybor-cwiczenia.jpg, id=926, 283.81032pt x 616.55344pt>
+<figures/GUI/wybor-cwiczenia.jpg, id=932, 283.81032pt x 616.55344pt>
 File: figures/GUI/wybor-cwiczenia.jpg Graphic file (type jpg)
 <use figures/GUI/wybor-cwiczenia.jpg>
 Package pdftex.def Info: figures/GUI/wybor-cwiczenia.jpg  used on input line 126.
@@ -1065,7 +983,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 127--127
 []\T1/ptm/b/n/9 Rys. 5.6. |\T1/ptm/m/n/9 Dy-na-
  []
 
-<figures/GUI/dodane-serie.jpg, id=927, 283.81032pt x 617.30624pt>
+<figures/GUI/dodane-serie.jpg, id=933, 283.81032pt x 617.30624pt>
 File: figures/GUI/dodane-serie.jpg Graphic file (type jpg)
 <use figures/GUI/dodane-serie.jpg>
 Package pdftex.def Info: figures/GUI/dodane-serie.jpg  used on input line 136.
@@ -1080,7 +998,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 137--137
 \T1/ptm/m/n/9 wpro-wa-dza-nia da-
  []
 
-<figures/GUI/dodano-cwiczenie.jpg, id=928, 283.81032pt x 616.55344pt>
+<figures/GUI/dodano-cwiczenie.jpg, id=934, 283.81032pt x 616.55344pt>
 File: figures/GUI/dodano-cwiczenie.jpg Graphic file (type jpg)
 <use figures/GUI/dodano-cwiczenie.jpg>
 Package pdftex.def Info: figures/GUI/dodano-cwiczenie.jpg  used on input line 143.
@@ -1090,7 +1008,7 @@ Underfull \hbox (badness 1715) in paragraph at lines 144--144
 []\T1/ptm/b/n/9 Rys. 5.8. |\T1/ptm/m/n/9 Pod-su-mo-
  []
 
-[47 <./figures/GUI/wybor-partii.jpg> <./figures/GUI/wybor-cwiczenia.jpg>]
+[48 <./figures/GUI/wybor-partii.jpg> <./figures/GUI/wybor-cwiczenia.jpg>]
 Underfull \hbox (badness 10000) in paragraph at lines 149--151
 \T1/ptm/m/n/10 Kluczowym roz-wi¡-za-niem jest u»y-cie \T1/pcr/m/n/10 localStorage \T1/ptm/m/n/10 z uni-kal-nym klu-czem
  []
@@ -1100,12 +1018,12 @@ Underfull \hbox (badness 2884) in paragraph at lines 149--151
 \T1/pcr/m/n/10 activeWorkout_${currentUserId}\T1/ptm/m/n/10 . Dzi¦ki temu, w przy-padku awa-rii prze-gl¡-darki, dane
  []
 
-[48 <./figures/GUI/dodane-serie.jpg> <./figures/GUI/dodano-cwiczenie.jpg>]
-<figures/GUI/history.jpg, id=944, 285.31593pt x 616.55344pt>
+[49 <./figures/GUI/dodane-serie.jpg> <./figures/GUI/dodano-cwiczenie.jpg>]
+<figures/GUI/history.jpg, id=950, 241.50224pt x 525.162pt>
 File: figures/GUI/history.jpg Graphic file (type jpg)
 <use figures/GUI/history.jpg>
 Package pdftex.def Info: figures/GUI/history.jpg  used on input line 160.
-(pdftex.def)             Requested size: 170.71393pt x 368.90005pt.
+(pdftex.def)             Requested size: 170.71393pt x 371.2249pt.
 
 Underfull \hbox (badness 7649) in paragraph at lines 169--170
 []\T1/ptm/b/n/10 Dynamiczne ob-li-cza-nie ob-j¦-to-±ci: \T1/ptm/m/n/10 We-wn¡trz za-py-ta-nia SQL wy-wo-ªy-wana jest funk-cja
@@ -1116,7 +1034,7 @@ Underfull \hbox (badness 3281) in paragraph at lines 173--176
 \T1/ptm/m/n/10 Za war-stw¦ pre-zen-ta-cji od-po-wia-daj¡ de-dy-ko-wane style \T1/pcr/m/n/10 history.css \T1/ptm/m/n/10 oraz lo-gika za-warta w
  []
 
-[49 <./figures/GUI/history.jpg>]
+[50 <./figures/GUI/history.jpg>]
 Underfull \hbox (badness 3746) in paragraph at lines 176--177
 []\T1/ptm/b/n/10 System Akor-de-onów: \T1/ptm/m/n/10 Na-gªó-wek ka»-dego tre-ningu wy-±wie-tla klu-czowe me-ta-dane: nu-mer
  []
@@ -1126,13 +1044,16 @@ Underfull \hbox (badness 4193) in paragraph at lines 176--177
 \T1/ptm/m/n/10 tre-ningu (\T1/pcr/m/n/10 user_workout_no\T1/ptm/m/n/10 ), dat¦, czas trwa-nia oraz ª¡czn¡ ob-j¦-to±¢. Dzi¦ki funk-cji
  []
 
-[50]
-<figures/GUI/progress.jpg, id=954, 227.04825pt x 627.5445pt>
+[51]
+<figures/GUI/progress.jpg, id=961, 191.5155pt x 627.5445pt>
 File: figures/GUI/progress.jpg Graphic file (type jpg)
 <use figures/GUI/progress.jpg>
 Package pdftex.def Info: figures/GUI/progress.jpg  used on input line 191.
-(pdftex.def)             Requested size: 170.71393pt x 471.835pt.
+(pdftex.def)             Requested size: 170.71393pt x 559.42252pt.
 
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [52 <./figures/GUI/progress.jpg>]
 Underfull \hbox (badness 10000) in paragraph at lines 199--200
 []\T1/ptm/b/n/10 Detekcja sys-temu tre-nin-go-wego: \T1/ptm/m/n/10 Wy-ko-rzy-sta-nie au-tor-skiej funk-cji
  []
@@ -1142,12 +1063,12 @@ Underfull \hbox (badness 10000) in paragraph at lines 199--200
 \T1/pcr/m/n/10 public.detect_training_split \T1/ptm/m/n/10 po-zwala sys-te-mowi au-to-ma-tycz-nie zdia-gno-zo-wa¢,
  []
 
-[51 <./figures/GUI/progress.jpg>] [52]
-<figures/GUI/diet.jpg, id=969, 284.56313pt x 615.80063pt>
+[53]
+<figures/GUI/diet.jpg, id=975, 242.1045pt x 525.76425pt>
 File: figures/GUI/diet.jpg Graphic file (type jpg)
 <use figures/GUI/diet.jpg>
 Package pdftex.def Info: figures/GUI/diet.jpg  used on input line 224.
-(pdftex.def)             Requested size: 170.71393pt x 369.44563pt.
+(pdftex.def)             Requested size: 170.71393pt x 370.74406pt.
 
 Underfull \hbox (badness 10000) in paragraph at lines 233--234
 []\T1/ptm/b/n/10 Obliczanie za-po-trze-bo-wa-nia (TDEE): \T1/ptm/m/n/10 Skrypt wy-wo-ªuje funk-cj¦
@@ -1163,7 +1084,7 @@ Underfull \hbox (badness 3148) in paragraph at lines 233--234
 \T1/ptm/m/n/10 Je-ora oraz za-de-kla-ro-wa-nego po-ziomu ak-tyw-no-±ci (\T1/pcr/m/n/10 activity_level\T1/ptm/m/n/10 ), wy-li-cza caª-ko-wite
  []
 
-[53 <./figures/GUI/diet.jpg>]
+[54 <./figures/GUI/diet.jpg>]
 Underfull \hbox (badness 6510) in paragraph at lines 240--241
 []\T1/ptm/b/n/10 Zapisywanie da-nych: \T1/ptm/m/n/10 For-mu-larz prze-syªa dane do \T1/pcr/m/n/10 add_measurement_action.php\T1/ptm/m/n/10 ,
  []
@@ -1173,34 +1094,34 @@ Underfull \hbox (badness 10000) in paragraph at lines 240--241
 \T1/ptm/m/n/10 który za-miast pro-stego za-py-ta-nia \T1/pcr/m/n/10 INSERT\T1/ptm/m/n/10 , wy-wo-ªuje pro-ce-dur¦ skªa-do-wan¡
  []
 
-<figures/GUI/dodaj_pomiar.jpg, id=975, 284.56313pt x 617.30624pt>
+<figures/GUI/dodaj_pomiar.jpg, id=981, 284.56313pt x 617.30624pt>
 File: figures/GUI/dodaj_pomiar.jpg Graphic file (type jpg)
 <use figures/GUI/dodaj_pomiar.jpg>
 Package pdftex.def Info: figures/GUI/dodaj_pomiar.jpg  used on input line 246.
 (pdftex.def)             Requested size: 192.0548pt x 416.6449pt.
-[54 <./figures/GUI/dodaj_pomiar.jpg>] [55]
-<figures/GUI/acc.jpg, id=988, 283.81032pt x 618.05907pt>
+[55 <./figures/GUI/dodaj_pomiar.jpg>] [56]
+<figures/GUI/acc.jpg, id=994, 241.50224pt x 525.162pt>
 File: figures/GUI/acc.jpg Graphic file (type jpg)
 <use figures/GUI/acc.jpg>
 Package pdftex.def Info: figures/GUI/acc.jpg  used on input line 268.
-(pdftex.def)             Requested size: 170.71393pt x 371.78137pt.
+(pdftex.def)             Requested size: 170.71393pt x 371.2249pt.
 
 Underfull \hbox (badness 2846) in paragraph at lines 277--278
 []\T1/ptm/b/n/10 Bezpiecze«stwo se-sji: \T1/ptm/m/n/10 Ka»de »¡-da-nie do pliku \T1/pcr/m/n/10 account.php \T1/ptm/m/n/10 jest po-prze-dzone in-klu-zj¡
  []
 
-[56 <./figures/GUI/acc.jpg>]) [57]
+[57 <./figures/GUI/acc.jpg>]) [58]
 \openout2 = `chapters/chapter006.aux'.
 
  (chapters/chapter006.tex
 Rozdzia\l  6.
-[58
+[59
 
 
 
 
 ]
-<figures/GUI/pgAdmin4.jpg, id=1008, 950.80219pt x 715.92468pt>
+<figures/GUI/pgAdmin4.jpg, id=1014, 950.80219pt x 715.92468pt>
 File: figures/GUI/pgAdmin4.jpg Graphic file (type jpg)
 <use figures/GUI/pgAdmin4.jpg>
 Package pdftex.def Info: figures/GUI/pgAdmin4.jpg  used on input line 68.
@@ -1208,17 +1129,31 @@ Package pdftex.def Info: figures/GUI/pgAdmin4.jpg  used on input line 68.
 
 Underfull \vbox (badness 5231) has occurred while \output is active []
 
- [59]) [60 <./figures/GUI/pgAdmin4.jpg>]
+ [60]) [61 <./figures/GUI/pgAdmin4.jpg>]
+\openout2 = `chapters/chapter008.aux'.
+
+ (chapters/chapter008.tex
+Rozdzia\l  7.
+[62
+
+
+
+
+] (C:\Users\oleiy\AppData\Local\Programs\MiKTeX\tex/latex/listings\lstlang1.sty
+File: lstlang1.sty 2023/02/27 1.9 listings language file
+) (C:\Users\oleiy\AppData\Local\Programs\MiKTeX\tex/latex/listings\lstlang2.sty
+File: lstlang2.sty 2023/02/27 1.9 listings language file
+) [63]) [64]
 \openout2 = `chapters/chapter007.aux'.
 
  (chapters/chapter007.tex
-Rozdzia\l  7.
-[61
+Rozdzia\l  8.
+[65
 
 
 
 
-]) [62] (praca.bbl) [63
+]) [66] (praca.bbl) [67
 
 
 
@@ -1226,7 +1161,7 @@ Rozdzia\l  7.
 \tf@lof=\write5
 \openout5 = `praca.lof'.
 
- [64
+ [68
 
 ]
 \openout2 = `appendix/statement-A.aux'.
@@ -1246,7 +1181,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 25--27
 
  []
 
-) [65
+) [69
 
 
 
@@ -1255,26 +1190,26 @@ Underfull \hbox (badness 10000) in paragraph at lines 25--27
 Package caption Warning: Unused \captionsetup[sub] on input line 23.
 See the caption package documentation for explanation.
 
-(praca.aux (chapters/chapter001.aux) (chapters/chapter002.aux) (chapters/chapter003.aux) (chapters/chapter004.aux) (chapters/chapter005.aux) (chapters/chapter006.aux) (chapters/chapter007.aux) (appendix/statement-A.aux))
+(praca.aux (chapters/chapter001.aux) (chapters/chapter002.aux) (chapters/chapter003.aux) (chapters/chapter004.aux) (chapters/chapter005.aux) (chapters/chapter006.aux) (chapters/chapter008.aux) (chapters/chapter007.aux) (appendix/statement-A.aux))
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-01-04>
  ***********
 Package rerunfilecheck Info: File `praca.out' has not changed.
-(rerunfilecheck)             Checksum: 60604BEE17182AD364793419EBF01A48;9271.
+(rerunfilecheck)             Checksum: 98741E2F74F459C5B256CB47F161580C;10038.
  ) 
 Here is how much of TeX's memory you used:
- 24443 strings out of 474486
- 462095 string characters out of 5743755
+ 26314 strings out of 474486
+ 498138 string characters out of 5743755
  2085542 words of memory out of 5000000
- 45658 multiletter control sequences out of 15000+600000
- 631031 words of font info for 106 fonts, out of 8000000 for 9000
+ 47508 multiletter control sequences out of 15000+600000
+ 626665 words of font info for 103 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 88i,13n,94p,1797b,2919s stack positions out of 10000i,1000n,20000p,200000b,200000s
-<C:/Users/oleiy/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Users/oleiy/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi7.pfb><C:/Users/oleiy/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/oleiy/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr7.pfb><C:/Users/oleiy/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy7.pfb><C:/Users/oleiy/AppData/Local/Programs/MiKTeX/fonts/type1/urw/courier/ucrb8a.pfb><C:/Users/oleiy/AppData/Local/Programs/MiKTeX/fonts/type1/urw/courier/ucrr8a.pfb><C:/Users/oleiy/AppData/Local/Programs/MiKTeX/fonts/type1/urw/courier/ucrro8a.pfb><C:/Users/oleiy/AppData/Local/Programs/MiKTeX/fonts/type1/urw/helvetic/uhvb8a.pfb><C:/Users/oleiy/AppData/Local/Programs/MiKTeX/fonts/type1/urw/helvetic/uhvr8a.pfb><C:/Users/oleiy/AppData/Local/Programs/MiKTeX/fonts/type1/urw/helvetic/uhvro8a.pfb><C:/Users/oleiy/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmb8a.pfb><C:/Users/oleiy/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmbi8a.pfb><C:/Users/oleiy/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmr8a.pfb><C:/Users/oleiy/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmr8a.pfb><C:/Users/oleiy/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmri8a.pfb>
-Output written on praca.pdf (63 pages, 1209706 bytes).
+ 88i,13n,94p,849b,3012s stack positions out of 10000i,1000n,20000p,200000b,200000s
+<C:/Users/oleiy/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Users/oleiy/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/oleiy/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/oleiy/AppData/Local/Programs/MiKTeX/fonts/type1/urw/courier/ucrb8a.pfb><C:/Users/oleiy/AppData/Local/Programs/MiKTeX/fonts/type1/urw/courier/ucrr8a.pfb><C:/Users/oleiy/AppData/Local/Programs/MiKTeX/fonts/type1/urw/courier/ucrro8a.pfb><C:/Users/oleiy/AppData/Local/Programs/MiKTeX/fonts/type1/urw/helvetic/uhvb8a.pfb><C:/Users/oleiy/AppData/Local/Programs/MiKTeX/fonts/type1/urw/helvetic/uhvr8a.pfb><C:/Users/oleiy/AppData/Local/Programs/MiKTeX/fonts/type1/urw/helvetic/uhvro8a.pfb><C:/Users/oleiy/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmb8a.pfb><C:/Users/oleiy/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmbi8a.pfb><C:/Users/oleiy/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmr8a.pfb><C:/Users/oleiy/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmr8a.pfb><C:/Users/oleiy/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmri8a.pfb>
+Output written on praca.pdf (67 pages, 1199958 bytes).
 PDF statistics:
- 1273 PDF objects out of 1440 (max. 8388607)
- 654 named destinations out of 1000 (max. 500000)
- 401 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 1310 PDF objects out of 1440 (max. 8388607)
+ 665 named destinations out of 1000 (max. 500000)
+ 441 words of extra memory for PDF output out of 10000 (max. 10000000)
 

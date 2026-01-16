@@ -1,6 +1,6 @@
-PWD c:\Users\oleiy\Desktop\AwareFit - Dokumentacja
+PWD c:\Users\oleiy\Documents\GitHub\ProjektBazyDanych\Dokumentacja - AwareFit\AwareFit - Dokumentacja
 INPUT C:\Users\oleiy\AppData\Local\MiKTeX\miktex\data\le\pdftex\pdflatex.fmt
-INPUT c:\Users\oleiy\Desktop\AwareFit - Dokumentacja\praca.tex
+INPUT c:\Users\oleiy\Documents\GitHub\ProjektBazyDanych\Dokumentacja - AwareFit\AwareFit - Dokumentacja\praca.tex
 OUTPUT praca.log
 INPUT .\urdpl.cls
 INPUT urdpl.cls
@@ -248,6 +248,9 @@ INPUT chapters\chapter005.aux
 INPUT .\chapters\chapter006.aux
 INPUT .\chapters\chapter006.aux
 INPUT chapters\chapter006.aux
+INPUT .\chapters\chapter008.aux
+INPUT .\chapters\chapter008.aux
+INPUT chapters\chapter008.aux
 INPUT .\chapters\chapter007.aux
 INPUT .\chapters\chapter007.aux
 INPUT chapters\chapter007.aux
@@ -419,10 +422,6 @@ INPUT C:\Users\oleiy\AppData\Local\Programs\MiKTeX\fonts\tfm\adobe\courier\pcrb8
 INPUT C:\Users\oleiy\AppData\Local\Programs\MiKTeX\fonts\tfm\adobe\courier\pcrro8t.tfm
 INPUT C:\Users\oleiy\AppData\Local\Programs\MiKTeX\fonts\vf\adobe\courier\pcrro8t.vf
 INPUT C:\Users\oleiy\AppData\Local\Programs\MiKTeX\fonts\tfm\adobe\courier\pcrro8r.tfm
-INPUT C:\Users\oleiy\AppData\Local\Programs\MiKTeX\fonts\tfm\adobe\times\ptmr8t.tfm
-INPUT C:\Users\oleiy\AppData\Local\Programs\MiKTeX\fonts\tfm\adobe\times\ptmr8t.tfm
-INPUT C:\Users\oleiy\AppData\Local\Programs\MiKTeX\fonts\vf\adobe\times\ptmr8t.vf
-INPUT C:\Users\oleiy\AppData\Local\Programs\MiKTeX\fonts\tfm\adobe\times\ptmr8r.tfm
 INPUT .\chapters\chapter005.tex
 INPUT .\chapters\chapter005.tex
 OUTPUT chapters\chapter005.aux
@@ -539,6 +538,18 @@ INPUT .\figures\GUI\pgAdmin4.jpg
 INPUT .\figures\GUI\pgAdmin4.jpg
 INPUT .\figures\GUI\pgAdmin4.jpg
 INPUT .\figures\GUI\pgAdmin4.jpg
+INPUT .\chapters\chapter008.tex
+INPUT .\chapters\chapter008.tex
+OUTPUT chapters\chapter008.aux
+INPUT .\chapters\chapter008.tex
+INPUT .\chapters\chapter008.tex
+INPUT chapters\chapter008.tex
+INPUT C:\Users\oleiy\AppData\Local\Programs\MiKTeX\tex\latex\listings\lstlang1.sty
+INPUT C:\Users\oleiy\AppData\Local\Programs\MiKTeX\tex\latex\listings\lstlang1.sty
+INPUT C:\Users\oleiy\AppData\Local\Programs\MiKTeX\tex\latex\listings\lstlang1.sty
+INPUT C:\Users\oleiy\AppData\Local\Programs\MiKTeX\tex\latex\listings\lstlang2.sty
+INPUT C:\Users\oleiy\AppData\Local\Programs\MiKTeX\tex\latex\listings\lstlang2.sty
+INPUT C:\Users\oleiy\AppData\Local\Programs\MiKTeX\tex\latex\listings\lstlang2.sty
 INPUT .\chapters\chapter007.tex
 INPUT .\chapters\chapter007.tex
 OUTPUT chapters\chapter007.aux
@@ -581,6 +592,9 @@ INPUT chapters\chapter005.aux
 INPUT .\chapters\chapter006.aux
 INPUT .\chapters\chapter006.aux
 INPUT chapters\chapter006.aux
+INPUT .\chapters\chapter008.aux
+INPUT .\chapters\chapter008.aux
+INPUT chapters\chapter008.aux
 INPUT .\chapters\chapter007.aux
 INPUT .\chapters\chapter007.aux
 INPUT chapters\chapter007.aux
@@ -591,14 +605,10 @@ INPUT .\praca.out
 INPUT .\praca.out
 INPUT C:\Users\oleiy\AppData\Local\Programs\MiKTeX\fonts\type1\public\amsfonts\cm\cmmi10.pfb
 INPUT C:\Users\oleiy\AppData\Local\Programs\MiKTeX\fonts\type1\public\amsfonts\cm\cmmi10.pfb
-INPUT C:\Users\oleiy\AppData\Local\Programs\MiKTeX\fonts\type1\public\amsfonts\cm\cmmi7.pfb
-INPUT C:\Users\oleiy\AppData\Local\Programs\MiKTeX\fonts\type1\public\amsfonts\cm\cmmi7.pfb
 INPUT C:\Users\oleiy\AppData\Local\Programs\MiKTeX\fonts\type1\public\amsfonts\cm\cmr10.pfb
 INPUT C:\Users\oleiy\AppData\Local\Programs\MiKTeX\fonts\type1\public\amsfonts\cm\cmr10.pfb
-INPUT C:\Users\oleiy\AppData\Local\Programs\MiKTeX\fonts\type1\public\amsfonts\cm\cmr7.pfb
-INPUT C:\Users\oleiy\AppData\Local\Programs\MiKTeX\fonts\type1\public\amsfonts\cm\cmr7.pfb
-INPUT C:\Users\oleiy\AppData\Local\Programs\MiKTeX\fonts\type1\public\amsfonts\cm\cmsy7.pfb
-INPUT C:\Users\oleiy\AppData\Local\Programs\MiKTeX\fonts\type1\public\amsfonts\cm\cmsy7.pfb
+INPUT C:\Users\oleiy\AppData\Local\Programs\MiKTeX\fonts\type1\public\amsfonts\cm\cmsy10.pfb
+INPUT C:\Users\oleiy\AppData\Local\Programs\MiKTeX\fonts\type1\public\amsfonts\cm\cmsy10.pfb
 INPUT C:\Users\oleiy\AppData\Local\Programs\MiKTeX\fonts\type1\urw\courier\ucrb8a.pfb
 INPUT C:\Users\oleiy\AppData\Local\Programs\MiKTeX\fonts\type1\urw\courier\ucrb8a.pfb
 INPUT C:\Users\oleiy\AppData\Local\Programs\MiKTeX\fonts\type1\urw\courier\ucrr8a.pfb

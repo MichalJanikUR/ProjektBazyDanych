@@ -1,0 +1,92 @@
+\chapter{Instrukcja uruchomienia aplikacji}
+
+Niniejszy rozdział opisuje procedurę konfiguracji środowiska lokalnego oraz kroki niezbędne do poprawnego uruchomienia aplikacji AwareFit.
+
+\section{Wymagania systemowe i programowe}
+Do poprawnego działania aplikacji wymagane jest zainstalowanie i skonfigurowanie następujących komponentów:
+\begin{itemize}
+    \item \textbf{XAMPP}: Serwer lokalny z aktywnym modułem Apache.
+    \item \textbf{PostgreSQL}: Silnik bazy danych wraz z narzędziem do zarządzania \textbf{pgAdmin 4}.
+    \item \textbf{PHP PDO PostgreSQL}: Rozszerzenie \texttt{php\_pdo\_pgsql} musi być odkomentowane w pliku konfiguracyjnym \texttt{php.ini}.
+\end{itemize}
+
+\section{Konfiguracja bazy danych}
+W celu przygotowania warstwy danych należy wykonać poniższe kroki:
+\begin{enumerate}
+    \item Uruchomić narzędzie pgAdmin 4 i utworzyć nową bazę danych o nazwie \texttt{awarefit\_db}.
+    \item Zaimportować strukturę bazy danych oraz funkcje systemowe z dostarczonego pliku SQL.
+    \item Parametry połączenia:
+    \begin{itemize}
+        \item \textbf{Użytkownik}: \texttt{postgres}
+        \item \textbf{Hasło}: \texttt{psql} (Uwaga: W przypadku instalacji na innym serwerze należy zaktualizować hasło w pliku konfiguracyjnym aplikacji).
+    \end{itemize}
+\end{enumerate}
+
+\section{Instalacja i uruchomienie}
+Aplikacja jest zaimplementowana jako serwis webowy i powinna być hostowana wewnątrz środowiska XAMPP.
+\begin{enumerate}
+    \item Folder z kodem źródłowym (zawierający pliki PHP oraz interfejs graficzny GUI) należy umieścić w katalogu: \\
+    \texttt{C:\textbackslash xampp\textbackslash htdocs\textbackslash Projekt\_Bazy\_Danych\textbackslash}
+    \item W panelu kontrolnym XAMPP należy uruchomić usługę \textbf{Apache}.
+    \item Aplikacja jest dostępna pod adresem lokalnym:
+    \begin{quote}
+        \url{http://localhost/Projekt_Bazy_Danych/index.php}
+    \end{quote}
+\end{enumerate}
+
+\newpage
+\section{Konfiguracja połączenia z bazą danych (PHP)}
+Aplikacja wykorzystuje sterownik \textbf{PDO} (\textit{PHP Data Objects}) do komunikacji z bazą PostgreSQL. Kluczowe parametry połączenia zdefiniowane są w pliku konfiguracyjnym:
+\begin{quote}
+    \texttt{include/db.php}
+\end{quote}
+
+W przypadku zmiany parametrów serwera (np. przeniesienia bazy na inny host lub zmiany hasła systemowego), należy zaktualizować poniższy fragment kodu:
+
+\begin{lstlisting}[language=PHP, caption={Zawartość pliku include/db.php}, frame=single]
+<?php
+$host = "localhost";
+$port = "5432";
+$dbname = "awarefit_db";
+$user = "postgres";
+$password = "psql";
+
+try {
+    $dsn = "pgsql:host=$host;port=$port;dbname=$dbname";
+    $pdo = new PDO($dsn, $user, $password, [
+        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
+    ]);
+} catch (PDOException $e) {
+    die("Błąd połączenia: " . $e->getMessage());
+}
+?>
+\end{lstlisting}
+
+\subsection{Kluczowe zmienne konfiguracyjne}
+\begin{itemize}
+    \item \texttt{\$host}: Adres serwera bazy danych (domyślnie \texttt{localhost}).
+    \item \texttt{\$dbname}: Nazwa docelowej bazy danych (\texttt{awarefit\_db}).
+    \item \texttt{\$password}: Hasło użytkownika PostgreSQL (w tej konfiguracji ustawione na \texttt{psql}).
+    \item \texttt{PDO::ATTR\_ERRMODE}: Ustawienie \texttt{ERRMODE\_EXCEPTION} wymusza rzucanie wyjątków w przypadku błędnych zapytań SQL, co ułatwia debugowanie aplikacji.
+\end{itemize}
+
+\newpage
+\section{Dostęp do konta testowego}
+W celu poprawnej weryfikacji wszystkich funkcjonalności systemu bazodanowego (takich jak obliczanie objętości treningowej, generowanie wykresów progresji czy automatyczne wykrywanie rodzaju splitu), w bazie danych zostało przygotowane dedykowane konto testera. 
+
+Konto to zawiera historyczne dane treningowe niezbędne do poprawnego renderowania statystyk. Aby wejść do aplikacji, należy użyć poniższych danych uwierzytelniających:
+
+\begin{itemize}
+    \item \textbf{Nazwa użytkownika}: \texttt{tester}
+    \item \textbf{Hasło}: \texttt{test}
+\end{itemize}
+
+\section{Instrukcja generowania wykresu}
+Po zalogowaniu na konto \texttt{tester}, użytkownik uzyskuje dostęp do głównego panelu sterowania (\textit{Dashboard}). Aby zweryfikować poprawność działania dynamicznych wykresów progresji objętościowej, należy przeprowadzić procedurę wyboru ćwiczenia zgodnie z historią treningową zapisaną w bazie danych.
+
+Wykresy generowane są na podstawie unikalnych par: partia mięśniowa oraz konkretne ćwiczenie. Aby zobaczyć wykres, należy w panelu wybrać:
+
+\begin{itemize}
+    \item \textbf{Partia mięśniowa}: \texttt{Klatka piersiowa}
+    \item \textbf{Ćwiczenie}: \texttt{Wyciskanie sztangi na ławce płaskiej}
+\end{itemize}

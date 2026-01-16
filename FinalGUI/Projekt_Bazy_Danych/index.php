@@ -22,16 +22,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // Logowanie udane - funkcja zwróciła dane
             $_SESSION['user_id'] = $user['user_id'];
             $_SESSION['first_name'] = $user['first_name'];
-            $_SESSION['username'] = $user_input; // Login zachowujemy z posta
+            $_SESSION['username'] = $user_input;
             
             header("Location: dashboard.php");
             exit();
         } else {
-            // Funkcja nic nie zwróciła = błędne dane
+            // Funkcja nic nie zwróciła - błędne dane
             $error_message = "Nieprawidłowy login lub hasło.";
         }
-    } catch (PDOException $e) {
-        $error_message = "Błąd bazy danych: " . $e->getMessage();
+    } catch (\PDOException $e) {
+        error_log("Błąd logowania: " . $e->getMessage());
+        $error_message = "Wystąpił problem z usługą logowania. Spróbuj później.";
     }
 }
 ?>

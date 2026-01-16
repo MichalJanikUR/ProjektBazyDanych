@@ -5,25 +5,24 @@ include 'includes/db.php';
 $user_id = $_SESSION['user_id'];
 
 try {
-    // 1. Pobranie wszystkich pomiarów ciała przy użyciu funkcji SQL
+    // Pobranie wszystkich pomiarów ciała przy użyciu funkcji SQL
 $stmt = $pdo->prepare("SELECT * FROM public.get_user_measurements(:user_id)");
 $stmt->execute(['user_id' => $user_id]);
 $all_measurements = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-// Jeśli nadal potrzebujesz tylko najnowszego pomiaru do kafli na górze:
 $m = !empty($all_measurements) ? end($all_measurements) : null;
 
-    // 2. Pobranie makroskładników Z FUNKCJI SQL (To jest kluczowe)
+    // Pobranie makroskładników Z FUNKCJI SQL
     $stmt_macro = $pdo->prepare("SELECT * FROM public.get_user_macros(:user_id)");
     $stmt_macro->execute(['user_id' => $user_id]);
     $macro = $stmt_macro->fetch(PDO::FETCH_ASSOC);
 
-    // 3. Pobranie celu i opisu diety (do etykiety celu)
+    // Pobranie celu i opisu diety (do etykiety celu)
     $stmt_diet = $pdo->prepare("SELECT * FROM public.calculate_user_diet_calories(:user_id)");
     $stmt_diet->execute(['user_id' => $user_id]);
     $diet = $stmt_diet->fetch(PDO::FETCH_ASSOC);
 
-    // 4. Pobranie % BF
+    // Pobranie % BF
     $stmt_bf = $pdo->prepare("SELECT public.calculate_user_bf(:user_id)");
     $stmt_bf->execute(['user_id' => $user_id]);
     $body_fat = $stmt_bf->fetchColumn();

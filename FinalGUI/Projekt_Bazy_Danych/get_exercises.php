@@ -11,7 +11,6 @@ if (empty($muscle_group_name)) {
 }
 
 try {
-    // Wywołanie Twojej funkcji SQL: public.get_exercises_by_muscle_group(varchar)
     $stmt = $pdo->prepare("SELECT * FROM public.get_exercises_by_muscle_group(:name)");
     $stmt->execute(['name' => $muscle_group_name]);
     $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
