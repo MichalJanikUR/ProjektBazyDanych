@@ -1,0 +1,992 @@
+[{
+  "_id": 2,
+  "date": {
+    "$date": "2025-12-01T09:00:00.000Z"
+  },
+  "duration": null,
+  "userId": 2
+},
+{
+  "_id": 8,
+  "date": {
+    "$date": "2025-12-05T09:00:00.000Z"
+  },
+  "duration": null,
+  "userId": 2
+},
+{
+  "_id": 14,
+  "date": {
+    "$date": "2025-12-10T09:00:00.000Z"
+  },
+  "duration": null,
+  "userId": 2
+},
+{
+  "_id": 20,
+  "date": {
+    "$date": "2025-12-15T09:00:00.000Z"
+  },
+  "duration": null,
+  "userId": 2
+},
+{
+  "_id": 26,
+  "date": {
+    "$date": "2025-12-01T17:00:00.000Z"
+  },
+  "duration": null,
+  "userId": 5
+},
+{
+  "_id": 32,
+  "date": {
+    "$date": "2025-12-08T17:00:00.000Z"
+  },
+  "duration": null,
+  "userId": 5
+},
+{
+  "_id": 39,
+  "date": {
+    "$date": "2025-12-29T00:00:00.000Z"
+  },
+  "duration": null,
+  "userId": 7
+},
+{
+  "_id": 45,
+  "date": {
+    "$date": "2025-12-08T00:00:00.000Z"
+  },
+  "duration": null,
+  "userId": 7
+},
+{
+  "_id": 51,
+  "date": {
+    "$date": "2025-11-17T00:00:00.000Z"
+  },
+  "duration": null,
+  "userId": 7
+},
+{
+  "_id": 57,
+  "date": {
+    "$date": "2025-10-27T00:00:00.000Z"
+  },
+  "duration": null,
+  "userId": 7
+},
+{
+  "_id": 64,
+  "date": {
+    "$date": "2025-12-23T00:00:00.000Z"
+  },
+  "duration": null,
+  "userId": 1
+},
+{
+  "_id": 178,
+  "date": {
+    "$date": "2026-01-06T17:00:00.000Z"
+  },
+  "duration": {
+    "$numberLong": "3600000000"
+  },
+  "userId": 21
+},
+{
+  "_id": 167,
+  "date": {
+    "$date": "2025-12-22T16:00:00.000Z"
+  },
+  "duration": {
+    "$numberLong": "3400000000"
+  },
+  "userId": 21
+},
+{
+  "_id": 87,
+  "date": {
+    "$date": "2025-12-30T17:30:00.000Z"
+  },
+  "duration": {
+    "$numberLong": "5325000000"
+  },
+  "userId": 16
+},
+{
+  "_id": 70,
+  "date": {
+    "$date": "2025-12-10T16:45:00.000Z"
+  },
+  "duration": {
+    "$numberLong": "4800000000"
+  },
+  "userId": 15
+},
+{
+  "_id": 76,
+  "date": {
+    "$date": "2025-12-27T12:00:00.000Z"
+  },
+  "duration": {
+    "$numberLong": "5400000000"
+  },
+  "userId": 15
+},
+{
+  "_id": 92,
+  "date": {
+    "$date": "2026-01-10T14:44:43.987Z"
+  },
+  "duration": {
+    "$numberLong": "196000000"
+  },
+  "userId": 15
+},
+{
+  "_id": 169,
+  "date": {
+    "$date": "2026-01-05T16:00:00.000Z"
+  },
+  "duration": {
+    "$numberLong": "3600000000"
+  },
+  "userId": 21
+},
+{
+  "_id": 199,
+  "date": {
+    "$date": "2026-01-19T16:00:00.000Z"
+  },
+  "duration": {
+    "$numberLong": "3600000000"
+  },
+  "userId": 21
+},
+{
+  "_id": 6,
+  "date": {
+    "$date": "2025-12-03T10:00:00.000Z"
+  },
+  "duration": null,
+  "userId": 3
+},
+{
+  "_id": 12,
+  "date": {
+    "$date": "2025-12-08T10:00:00.000Z"
+  },
+  "duration": null,
+  "userId": 3
+},
+{
+  "_id": 18,
+  "date": {
+    "$date": "2025-12-12T10:00:00.000Z"
+  },
+  "duration": null,
+  "userId": 3
+},
+{
+  "_id": 24,
+  "date": {
+    "$date": "2025-12-17T10:00:00.000Z"
+  },
+  "duration": null,
+  "userId": 3
+},
+{
+  "_id": 30,
+  "date": {
+    "$date": "2025-12-05T17:00:00.000Z"
+  },
+  "duration": null,
+  "userId": 5
+},
+{
+  "_id": 36,
+  "date": {
+    "$date": "2025-12-12T17:00:00.000Z"
+  },
+  "duration": null,
+  "userId": 5
+},
+{
+  "_id": 43,
+  "date": {
+    "$date": "2025-12-15T00:00:00.000Z"
+  },
+  "duration": null,
+  "userId": 7
+},
+{
+  "_id": 49,
+  "date": {
+    "$date": "2025-11-24T00:00:00.000Z"
+  },
+  "duration": null,
+  "userId": 7
+},
+{
+  "_id": 55,
+  "date": {
+    "$date": "2025-11-03T00:00:00.000Z"
+  },
+  "duration": null,
+  "userId": 7
+},
+{
+  "_id": 61,
+  "date": {
+    "$date": "2025-10-13T00:00:00.000Z"
+  },
+  "duration": null,
+  "userId": 7
+},
+{
+  "_id": 98,
+  "date": {
+    "$date": "2026-01-16T15:20:05.375Z"
+  },
+  "duration": {
+    "$numberLong": "11000000"
+  },
+  "userId": 15
+},
+{
+  "_id": 181,
+  "date": {
+    "$date": "2025-12-18T17:30:00.000Z"
+  },
+  "duration": {
+    "$numberLong": "3600000000"
+  },
+  "userId": 21
+},
+{
+  "_id": 85,
+  "date": {
+    "$date": "2025-12-24T16:45:00.000Z"
+  },
+  "duration": {
+    "$numberLong": "5415000000"
+  },
+  "userId": 16
+},
+{
+  "_id": 68,
+  "date": {
+    "$date": "2025-12-05T17:30:00.000Z"
+  },
+  "duration": {
+    "$numberLong": "4200000000"
+  },
+  "userId": 15
+},
+{
+  "_id": 74,
+  "date": {
+    "$date": "2025-12-20T11:00:00.000Z"
+  },
+  "duration": {
+    "$numberLong": "3720000000"
+  },
+  "userId": 15
+},
+{
+  "_id": 90,
+  "date": {
+    "$date": "2026-01-05T17:15:00.000Z"
+  },
+  "duration": {
+    "$numberLong": "4200000000"
+  },
+  "userId": 15
+},
+{
+  "_id": 96,
+  "date": {
+    "$date": "2026-01-16T14:57:27.606Z"
+  },
+  "duration": {
+    "$numberLong": "11000000"
+  },
+  "userId": 19
+},
+{
+  "_id": 184,
+  "date": {
+    "$date": "2026-01-08T17:30:00.000Z"
+  },
+  "duration": {
+    "$numberLong": "3600000000"
+  },
+  "userId": 21
+},
+{
+  "_id": 3,
+  "date": {
+    "$date": "2025-12-01T10:00:00.000Z"
+  },
+  "duration": null,
+  "userId": 3
+},
+{
+  "_id": 9,
+  "date": {
+    "$date": "2025-12-05T10:00:00.000Z"
+  },
+  "duration": null,
+  "userId": 3
+},
+{
+  "_id": 15,
+  "date": {
+    "$date": "2025-12-10T10:00:00.000Z"
+  },
+  "duration": null,
+  "userId": 3
+},
+{
+  "_id": 21,
+  "date": {
+    "$date": "2025-12-15T10:00:00.000Z"
+  },
+  "duration": null,
+  "userId": 3
+},
+{
+  "_id": 27,
+  "date": {
+    "$date": "2025-12-03T16:00:00.000Z"
+  },
+  "duration": null,
+  "userId": 4
+},
+{
+  "_id": 33,
+  "date": {
+    "$date": "2025-12-10T16:00:00.000Z"
+  },
+  "duration": null,
+  "userId": 4
+},
+{
+  "_id": 40,
+  "date": {
+    "$date": "2026-01-01T00:00:00.000Z"
+  },
+  "duration": null,
+  "userId": 7
+},
+{
+  "_id": 46,
+  "date": {
+    "$date": "2025-12-11T00:00:00.000Z"
+  },
+  "duration": null,
+  "userId": 7
+},
+{
+  "_id": 52,
+  "date": {
+    "$date": "2025-11-20T00:00:00.000Z"
+  },
+  "duration": null,
+  "userId": 7
+},
+{
+  "_id": 58,
+  "date": {
+    "$date": "2025-10-30T00:00:00.000Z"
+  },
+  "duration": null,
+  "userId": 7
+},
+{
+  "_id": 65,
+  "date": {
+    "$date": "2025-12-24T00:00:00.000Z"
+  },
+  "duration": null,
+  "userId": 1
+},
+{
+  "_id": 77,
+  "date": {
+    "$date": "2026-01-02T22:57:01.368Z"
+  },
+  "duration": {
+    "$numberLong": "4900000000"
+  },
+  "userId": 7
+},
+{
+  "_id": 82,
+  "date": {
+    "$date": "2025-12-10T18:30:00.000Z"
+  },
+  "duration": {
+    "$numberLong": "5480000000"
+  },
+  "userId": 16
+},
+{
+  "_id": 88,
+  "date": {
+    "$date": "2025-12-08T17:30:00.000Z"
+  },
+  "duration": {
+    "$numberLong": "5325000000"
+  },
+  "userId": 16
+},
+{
+  "_id": 71,
+  "date": {
+    "$date": "2025-12-13T10:30:00.000Z"
+  },
+  "duration": {
+    "$numberLong": "3900000000"
+  },
+  "userId": 15
+},
+{
+  "_id": 79,
+  "date": {
+    "$date": "2025-12-30T18:30:00.000Z"
+  },
+  "duration": {
+    "$numberLong": "4320000000"
+  },
+  "userId": 15
+},
+{
+  "_id": 93,
+  "date": {
+    "$date": "2026-01-12T13:48:58.204Z"
+  },
+  "duration": {
+    "$numberLong": "829894000000"
+  },
+  "userId": 7
+},
+{
+  "_id": 170,
+  "date": {
+    "$date": "2026-01-12T16:00:00.000Z"
+  },
+  "duration": {
+    "$numberLong": "3700000000"
+  },
+  "userId": 21
+},
+{
+  "_id": 200,
+  "date": {
+    "$date": "2026-01-20T17:00:00.000Z"
+  },
+  "duration": {
+    "$numberLong": "3600000000"
+  },
+  "userId": 21
+},
+{
+  "_id": 5,
+  "date": {
+    "$date": "2025-12-03T09:00:00.000Z"
+  },
+  "duration": null,
+  "userId": 2
+},
+{
+  "_id": 11,
+  "date": {
+    "$date": "2025-12-08T09:00:00.000Z"
+  },
+  "duration": null,
+  "userId": 2
+},
+{
+  "_id": 17,
+  "date": {
+    "$date": "2025-12-12T09:00:00.000Z"
+  },
+  "duration": null,
+  "userId": 2
+},
+{
+  "_id": 23,
+  "date": {
+    "$date": "2025-12-17T09:00:00.000Z"
+  },
+  "duration": null,
+  "userId": 2
+},
+{
+  "_id": 29,
+  "date": {
+    "$date": "2025-12-05T16:00:00.000Z"
+  },
+  "duration": null,
+  "userId": 4
+},
+{
+  "_id": 35,
+  "date": {
+    "$date": "2025-12-12T16:00:00.000Z"
+  },
+  "duration": null,
+  "userId": 4
+},
+{
+  "_id": 42,
+  "date": {
+    "$date": "2025-12-25T00:00:00.000Z"
+  },
+  "duration": null,
+  "userId": 7
+},
+{
+  "_id": 48,
+  "date": {
+    "$date": "2025-12-04T00:00:00.000Z"
+  },
+  "duration": null,
+  "userId": 7
+},
+{
+  "_id": 54,
+  "date": {
+    "$date": "2025-11-13T00:00:00.000Z"
+  },
+  "duration": null,
+  "userId": 7
+},
+{
+  "_id": 60,
+  "date": {
+    "$date": "2025-10-23T00:00:00.000Z"
+  },
+  "duration": null,
+  "userId": 7
+},
+{
+  "_id": 67,
+  "date": {
+    "$date": "2025-12-28T00:00:00.000Z"
+  },
+  "duration": null,
+  "userId": 1
+},
+{
+  "_id": 179,
+  "date": {
+    "$date": "2026-01-13T17:00:00.000Z"
+  },
+  "duration": {
+    "$numberLong": "3600000000"
+  },
+  "userId": 21
+},
+{
+  "_id": 84,
+  "date": {
+    "$date": "2025-12-18T19:15:00.000Z"
+  },
+  "duration": {
+    "$numberLong": "5390000000"
+  },
+  "userId": 16
+},
+{
+  "_id": 168,
+  "date": {
+    "$date": "2025-12-15T16:00:00.000Z"
+  },
+  "duration": {
+    "$numberLong": "3300000000"
+  },
+  "userId": 21
+},
+{
+  "_id": 73,
+  "date": {
+    "$date": "2025-12-17T18:15:00.000Z"
+  },
+  "duration": {
+    "$numberLong": "4500000000"
+  },
+  "userId": 15
+},
+{
+  "_id": 81,
+  "date": {
+    "$date": "2026-01-04T15:00:00.000Z"
+  },
+  "duration": {
+    "$numberLong": "3000000000"
+  },
+  "userId": 15
+},
+{
+  "_id": 95,
+  "date": {
+    "$date": "2026-01-16T14:38:18.541Z"
+  },
+  "duration": {
+    "$numberLong": "41000000"
+  },
+  "userId": 15
+},
+{
+  "_id": 183,
+  "date": {
+    "$date": "2026-01-01T17:30:00.000Z"
+  },
+  "duration": {
+    "$numberLong": "3600000000"
+  },
+  "userId": 21
+},
+{
+  "_id": 1,
+  "date": {
+    "$date": "2025-12-01T08:00:00.000Z"
+  },
+  "duration": null,
+  "userId": 1
+},
+{
+  "_id": 7,
+  "date": {
+    "$date": "2025-12-05T08:00:00.000Z"
+  },
+  "duration": null,
+  "userId": 1
+},
+{
+  "_id": 13,
+  "date": {
+    "$date": "2025-12-10T08:00:00.000Z"
+  },
+  "duration": null,
+  "userId": 1
+},
+{
+  "_id": 19,
+  "date": {
+    "$date": "2025-12-15T08:00:00.000Z"
+  },
+  "duration": null,
+  "userId": 1
+},
+{
+  "_id": 25,
+  "date": {
+    "$date": "2025-12-01T16:00:00.000Z"
+  },
+  "duration": null,
+  "userId": 4
+},
+{
+  "_id": 31,
+  "date": {
+    "$date": "2025-12-08T16:00:00.000Z"
+  },
+  "duration": null,
+  "userId": 4
+},
+{
+  "_id": 176,
+  "date": {
+    "$date": "2025-12-23T17:00:00.000Z"
+  },
+  "duration": {
+    "$numberLong": "3600000000"
+  },
+  "userId": 21
+},
+{
+  "_id": 44,
+  "date": {
+    "$date": "2025-12-18T00:00:00.000Z"
+  },
+  "duration": null,
+  "userId": 7
+},
+{
+  "_id": 50,
+  "date": {
+    "$date": "2025-11-27T00:00:00.000Z"
+  },
+  "duration": null,
+  "userId": 7
+},
+{
+  "_id": 56,
+  "date": {
+    "$date": "2025-11-06T00:00:00.000Z"
+  },
+  "duration": null,
+  "userId": 7
+},
+{
+  "_id": 62,
+  "date": {
+    "$date": "2025-10-16T00:00:00.000Z"
+  },
+  "duration": null,
+  "userId": 7
+},
+{
+  "_id": 177,
+  "date": {
+    "$date": "2025-12-30T17:00:00.000Z"
+  },
+  "duration": {
+    "$numberLong": "3600000000"
+  },
+  "userId": 21
+},
+{
+  "_id": 166,
+  "date": {
+    "$date": "2025-12-29T16:00:00.000Z"
+  },
+  "duration": {
+    "$numberLong": "3500000000"
+  },
+  "userId": 21
+},
+{
+  "_id": 86,
+  "date": {
+    "$date": "2025-12-25T18:00:00.000Z"
+  },
+  "duration": {
+    "$numberLong": "5530000000"
+  },
+  "userId": 16
+},
+{
+  "_id": 69,
+  "date": {
+    "$date": "2025-12-08T18:00:00.000Z"
+  },
+  "duration": {
+    "$numberLong": "3300000000"
+  },
+  "userId": 15
+},
+{
+  "_id": 75,
+  "date": {
+    "$date": "2025-12-22T17:00:00.000Z"
+  },
+  "duration": {
+    "$numberLong": "3480000000"
+  },
+  "userId": 15
+},
+{
+  "_id": 91,
+  "date": {
+    "$date": "2026-01-05T18:38:45.595Z"
+  },
+  "duration": {
+    "$numberLong": "66000000"
+  },
+  "userId": 15
+},
+{
+  "_id": 97,
+  "date": {
+    "$date": "2026-01-16T15:01:52.536Z"
+  },
+  "duration": {
+    "$numberLong": "12000000"
+  },
+  "userId": 19
+},
+{
+  "_id": 185,
+  "date": {
+    "$date": "2026-01-15T17:30:00.000Z"
+  },
+  "duration": {
+    "$numberLong": "3600000000"
+  },
+  "userId": 21
+},
+{
+  "_id": 4,
+  "date": {
+    "$date": "2025-12-03T08:00:00.000Z"
+  },
+  "duration": null,
+  "userId": 1
+},
+{
+  "_id": 10,
+  "date": {
+    "$date": "2025-12-08T08:00:00.000Z"
+  },
+  "duration": null,
+  "userId": 1
+},
+{
+  "_id": 16,
+  "date": {
+    "$date": "2025-12-12T08:00:00.000Z"
+  },
+  "duration": null,
+  "userId": 1
+},
+{
+  "_id": 22,
+  "date": {
+    "$date": "2025-12-17T08:00:00.000Z"
+  },
+  "duration": null,
+  "userId": 1
+},
+{
+  "_id": 28,
+  "date": {
+    "$date": "2025-12-03T17:00:00.000Z"
+  },
+  "duration": null,
+  "userId": 5
+},
+{
+  "_id": 34,
+  "date": {
+    "$date": "2025-12-10T17:00:00.000Z"
+  },
+  "duration": null,
+  "userId": 5
+},
+{
+  "_id": 41,
+  "date": {
+    "$date": "2025-12-22T00:00:00.000Z"
+  },
+  "duration": null,
+  "userId": 7
+},
+{
+  "_id": 47,
+  "date": {
+    "$date": "2025-12-01T00:00:00.000Z"
+  },
+  "duration": null,
+  "userId": 7
+},
+{
+  "_id": 53,
+  "date": {
+    "$date": "2025-11-10T00:00:00.000Z"
+  },
+  "duration": null,
+  "userId": 7
+},
+{
+  "_id": 59,
+  "date": {
+    "$date": "2025-10-20T00:00:00.000Z"
+  },
+  "duration": null,
+  "userId": 7
+},
+{
+  "_id": 66,
+  "date": {
+    "$date": "2025-12-26T00:00:00.000Z"
+  },
+  "duration": null,
+  "userId": 1
+},
+{
+  "_id": 78,
+  "date": {
+    "$date": "2026-01-02T23:04:10.998Z"
+  },
+  "duration": {
+    "$numberLong": "52000000"
+  },
+  "userId": 7
+},
+{
+  "_id": 83,
+  "date": {
+    "$date": "2025-12-17T17:00:00.000Z"
+  },
+  "duration": {
+    "$numberLong": "5705000000"
+  },
+  "userId": 16
+},
+{
+  "_id": 89,
+  "date": {
+    "$date": "2025-12-07T17:30:00.000Z"
+  },
+  "duration": {
+    "$numberLong": "5325000000"
+  },
+  "userId": 16
+},
+{
+  "_id": 72,
+  "date": {
+    "$date": "2025-12-15T19:00:00.000Z"
+  },
+  "duration": {
+    "$numberLong": "2880000000"
+  },
+  "userId": 15
+},
+{
+  "_id": 80,
+  "date": {
+    "$date": "2026-01-02T16:00:00.000Z"
+  },
+  "duration": {
+    "$numberLong": "3900000000"
+  },
+  "userId": 15
+},
+{
+  "_id": 94,
+  "date": {
+    "$date": "2026-01-12T18:29:18.678Z"
+  },
+  "duration": {
+    "$numberLong": "13000000"
+  },
+  "userId": 7
+},
+{
+  "_id": 182,
+  "date": {
+    "$date": "2025-12-25T17:30:00.000Z"
+  },
+  "duration": {
+    "$numberLong": "3600000000"
+  },
+  "userId": 21
+},
+{
+  "_id": 201,
+  "date": {
+    "$date": "2026-01-22T17:30:00.000Z"
+  },
+  "duration": {
+    "$numberLong": "3600000000"
+  },
+  "userId": 21
+}]

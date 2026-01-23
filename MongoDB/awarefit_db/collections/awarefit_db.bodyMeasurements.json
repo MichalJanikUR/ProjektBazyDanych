@@ -1,0 +1,389 @@
+[{
+  "_id": 3,
+  "date": {
+    "$date": "2025-11-26T16:52:38.017Z"
+  },
+  "height": 178,
+  "weight": 92,
+  "chest": 110,
+  "waist": 95,
+  "biceps": 41,
+  "thighs": 65,
+  "hips": 102,
+  "neck": null,
+  "goal": "Rekompozycja",
+  "userId": 3,
+  "activityLevel": {
+    "$numberDecimal": "1.200"
+  }
+},
+{
+  "_id": 9,
+  "date": {
+    "$date": "2026-01-02T00:00:00.000Z"
+  },
+  "height": 175,
+  "weight": 83,
+  "chest": 108,
+  "waist": 86,
+  "biceps": 40,
+  "thighs": 57,
+  "hips": 98,
+  "neck": {
+    "$numberDecimal": "38"
+  },
+  "goal": "Rekompozycja ciała",
+  "userId": 15,
+  "activityLevel": {
+    "$numberDecimal": "1.200"
+  }
+},
+{
+  "_id": 15,
+  "date": {
+    "$date": "2026-01-12T00:00:00.000Z"
+  },
+  "height": 175,
+  "weight": 83,
+  "chest": 107,
+  "waist": 87,
+  "biceps": 40,
+  "thighs": 58,
+  "hips": 98,
+  "neck": {
+    "$numberDecimal": "38"
+  },
+  "goal": "Rekompozycja ciała",
+  "userId": 15,
+  "activityLevel": {
+    "$numberDecimal": "1.550"
+  }
+},
+{
+  "_id": 1,
+  "date": {
+    "$date": "2025-11-26T16:52:38.017Z"
+  },
+  "height": 180,
+  "weight": 85.5,
+  "chest": 105,
+  "waist": 90,
+  "biceps": 38,
+  "thighs": 60,
+  "hips": 100,
+  "neck": null,
+  "goal": "Rekompozycja",
+  "userId": 1,
+  "activityLevel": {
+    "$numberDecimal": "1.200"
+  }
+},
+{
+  "_id": 7,
+  "date": {
+    "$date": "2025-12-29T00:00:00.000Z"
+  },
+  "height": 175,
+  "weight": 83,
+  "chest": 107,
+  "waist": 87,
+  "biceps": 40,
+  "thighs": 58,
+  "hips": 99,
+  "neck": {
+    "$numberDecimal": "38"
+  },
+  "goal": "Rekompozycja",
+  "userId": 15,
+  "activityLevel": {
+    "$numberDecimal": "1.200"
+  }
+},
+{
+  "_id": 13,
+  "date": {
+    "$date": "2026-01-05T00:00:00.000Z"
+  },
+  "height": 175,
+  "weight": 83,
+  "chest": 106,
+  "waist": 87,
+  "biceps": 39.5,
+  "thighs": 58,
+  "hips": 99,
+  "neck": {
+    "$numberDecimal": "38"
+  },
+  "goal": "Rekompozycja ciała",
+  "userId": 15,
+  "activityLevel": {
+    "$numberDecimal": "1.550"
+  }
+},
+{
+  "_id": 21,
+  "date": {
+    "$date": "2026-01-16T15:35:31.007Z"
+  },
+  "height": 180,
+  "weight": 80,
+  "chest": 102,
+  "waist": 88,
+  "biceps": 35,
+  "thighs": 58,
+  "hips": 94,
+  "neck": {
+    "$numberDecimal": "38.5"
+  },
+  "goal": "Rekompozycja ciała",
+  "userId": 21,
+  "activityLevel": {
+    "$numberDecimal": "1.550"
+  }
+},
+{
+  "_id": 6,
+  "date": {
+    "$date": "2025-12-29T00:00:00.000Z"
+  },
+  "height": 180,
+  "weight": 85,
+  "chest": null,
+  "waist": 90,
+  "biceps": null,
+  "thighs": null,
+  "hips": 95,
+  "neck": {
+    "$numberDecimal": "40"
+  },
+  "goal": "Rekompozycja",
+  "userId": 1,
+  "activityLevel": {
+    "$numberDecimal": "1.200"
+  }
+},
+{
+  "_id": 12,
+  "date": {
+    "$date": "2026-01-02T00:00:00.000Z"
+  },
+  "height": 180,
+  "weight": 80,
+  "chest": 102,
+  "waist": 90,
+  "biceps": 35,
+  "thighs": 60,
+  "hips": 99,
+  "neck": {
+    "$numberDecimal": "38"
+  },
+  "goal": "Rekompozycja ciała",
+  "userId": 14,
+  "activityLevel": {
+    "$numberDecimal": "1.550"
+  }
+},
+{
+  "_id": 18,
+  "date": {
+    "$date": "2026-01-16T15:00:14.024Z"
+  },
+  "height": 185,
+  "weight": 84,
+  "chest": 110,
+  "waist": 99,
+  "biceps": 36,
+  "thighs": 68,
+  "hips": 100,
+  "neck": {
+    "$numberDecimal": "39"
+  },
+  "goal": "Rekompozycja ciała",
+  "userId": 19,
+  "activityLevel": {
+    "$numberDecimal": "1.200"
+  }
+},
+{
+  "_id": 2,
+  "date": {
+    "$date": "2025-11-26T16:52:38.017Z"
+  },
+  "height": 165,
+  "weight": 58,
+  "chest": 88,
+  "waist": 65,
+  "biceps": 28,
+  "thighs": 52,
+  "hips": 92,
+  "neck": null,
+  "goal": "Rekompozycja",
+  "userId": 2,
+  "activityLevel": {
+    "$numberDecimal": "1.200"
+  }
+},
+{
+  "_id": 8,
+  "date": {
+    "$date": "2026-01-02T00:00:00.000Z"
+  },
+  "height": 175,
+  "weight": 82,
+  "chest": 108,
+  "waist": 86,
+  "biceps": 40,
+  "thighs": 57,
+  "hips": 98,
+  "neck": {
+    "$numberDecimal": "38"
+  },
+  "goal": "Zbudowanie masy mięśniowej",
+  "userId": 15,
+  "activityLevel": {
+    "$numberDecimal": "1.550"
+  }
+},
+{
+  "_id": 14,
+  "date": {
+    "$date": "2026-01-05T00:00:00.000Z"
+  },
+  "height": 175,
+  "weight": 83,
+  "chest": 106,
+  "waist": 87,
+  "biceps": 39.5,
+  "thighs": 58,
+  "hips": 99,
+  "neck": {
+    "$numberDecimal": "38"
+  },
+  "goal": "Rekompozycja ciała",
+  "userId": 16,
+  "activityLevel": {
+    "$numberDecimal": "1.550"
+  }
+},
+{
+  "_id": 5,
+  "date": {
+    "$date": "2025-11-26T16:52:38.017Z"
+  },
+  "height": 185,
+  "weight": 78,
+  "chest": 100,
+  "waist": 82,
+  "biceps": 36,
+  "thighs": 58,
+  "hips": 98,
+  "neck": null,
+  "goal": "Rekompozycja",
+  "userId": 5,
+  "activityLevel": {
+    "$numberDecimal": "1.200"
+  }
+},
+{
+  "_id": 11,
+  "date": {
+    "$date": "2026-01-02T00:00:00.000Z"
+  },
+  "height": 180,
+  "weight": 80,
+  "chest": 110,
+  "waist": 90,
+  "biceps": 38,
+  "thighs": 70,
+  "hips": 100,
+  "neck": {
+    "$numberDecimal": "39"
+  },
+  "goal": "Rekompozycja ciała",
+  "userId": 7,
+  "activityLevel": {
+    "$numberDecimal": "1.550"
+  }
+},
+{
+  "_id": 17,
+  "date": {
+    "$date": "2026-01-12T18:18:39.640Z"
+  },
+  "height": 175,
+  "weight": 85,
+  "chest": 115,
+  "waist": 97,
+  "biceps": 41,
+  "thighs": 75,
+  "hips": 105,
+  "neck": {
+    "$numberDecimal": "40"
+  },
+  "goal": "Rekompozycja ciała",
+  "userId": 7,
+  "activityLevel": {
+    "$numberDecimal": "1.375"
+  }
+},
+{
+  "_id": 4,
+  "date": {
+    "$date": "2025-11-26T16:52:38.017Z"
+  },
+  "height": 170,
+  "weight": 62.5,
+  "chest": 90,
+  "waist": 68,
+  "biceps": 29,
+  "thighs": 55,
+  "hips": 95,
+  "neck": null,
+  "goal": "Rekompozycja",
+  "userId": 4,
+  "activityLevel": {
+    "$numberDecimal": "1.200"
+  }
+},
+{
+  "_id": 10,
+  "date": {
+    "$date": "2026-01-02T00:00:00.000Z"
+  },
+  "height": 175,
+  "weight": 84,
+  "chest": 107,
+  "waist": 87,
+  "biceps": 40,
+  "thighs": 58,
+  "hips": 99,
+  "neck": {
+    "$numberDecimal": "38"
+  },
+  "goal": "Rekompozycja ciała",
+  "userId": 15,
+  "activityLevel": {
+    "$numberDecimal": "1.550"
+  }
+},
+{
+  "_id": 16,
+  "date": {
+    "$date": "2026-01-12T18:18:25.525Z"
+  },
+  "height": 175,
+  "weight": 85,
+  "chest": 115,
+  "waist": 97,
+  "biceps": 41,
+  "thighs": 75,
+  "hips": 105,
+  "neck": {
+    "$numberDecimal": "40"
+  },
+  "goal": "Rekompozycja ciała",
+  "userId": 7,
+  "activityLevel": {
+    "$numberDecimal": "1.375"
+  }
+}]

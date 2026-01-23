@@ -1,0 +1,135 @@
+[{
+  "_id": 7,
+  "username": "test",
+  "password": "test",
+  "email": "test@example.com",
+  "gender": "Male",
+  "firstName": "Test",
+  "lastName": "Test"
+},
+{
+  "_id": 17,
+  "username": "dam",
+  "password": "dam",
+  "email": "dam@type.pl",
+  "gender": "Male",
+  "firstName": "Damian",
+  "lastName": "Dudek"
+},
+{
+  "_id": 6,
+  "username": "nowy_user",
+  "password": "nowe_haslo",
+  "email": "nowy@user.com",
+  "gender": "Male",
+  "firstName": "Test",
+  "lastName": "Testowy"
+},
+{
+  "_id": 16,
+  "username": "oh134913",
+  "password": "134913",
+  "email": "oh134913@stud.ur.edu.pl",
+  "gender": "Male",
+  "firstName": "Oliwier",
+  "lastName": "Hędrzak"
+},
+{
+  "_id": 3,
+  "username": "piotr_wisniewski",
+  "password": "silownia2023",
+  "email": "piotr.w@example.com",
+  "gender": "Male",
+  "firstName": "Piotr",
+  "lastName": "Wiśniewski"
+},
+{
+  "_id": 2,
+  "username": "anna_nowak",
+  "password": "bezpieczneHaslo",
+  "email": "anna.n@example.com",
+  "gender": "Female",
+  "firstName": "Anna",
+  "lastName": "Nowak"
+},
+{
+  "_id": 21,
+  "username": "tester",
+  "password": "test",
+  "email": "tester@aware.fit.pl",
+  "gender": "Male",
+  "firstName": "Adam",
+  "lastName": "Tester"
+},
+{
+  "_id": 14,
+  "username": "mark",
+  "password": "gryz",
+  "email": "marcin@gmail.com",
+  "gender": "Male",
+  "firstName": "Marcin",
+  "lastName": "Fryz"
+},
+{
+  "_id": 8,
+  "username": "trener_arek",
+  "password": "haslo123",
+  "email": "arek@gym.pl",
+  "gender": "Male",
+  "firstName": "Arkadiusz",
+  "lastName": "Nowak"
+},
+{
+  "_id": 18,
+  "username": "jan_mar",
+  "password": "jan",
+  "email": "janmar@onet.pl",
+  "gender": "Male",
+  "firstName": "Jan",
+  "lastName": "Markowski"
+},
+{
+  "_id": 5,
+  "username": "michal_zielinski",
+  "password": "trening1",
+  "email": "michal.z@example.com",
+  "gender": "Male",
+  "firstName": "Michał",
+  "lastName": "Zieliński"
+},
+{
+  "_id": 4,
+  "username": "kasia_lewandowska",
+  "password": "fitness4life",
+  "email": "kasia.l@example.com",
+  "gender": "Female",
+  "firstName": "Katarzyna",
+  "lastName": "Lewandowska"
+},
+{
+  "_id": 15,
+  "username": "oleiy",
+  "password": "ylo",
+  "email": "oleiy@gmail.com",
+  "gender": "Male",
+  "firstName": "Oliwier",
+  "lastName": "Hędrzak"
+},
+{
+  "_id": 1,
+  "username": "jan_kowalski",
+  "password": "haslo123",
+  "email": "jan.k@example.com",
+  "gender": "Male",
+  "firstName": "Jan",
+  "lastName": "Kowalski"
+},
+{
+  "_id": 19,
+  "username": "Andrew",
+  "password": "and",
+  "email": "andrew@onet.pl",
+  "gender": "Male",
+  "firstName": "Andrzej",
+  "lastName": "Mazowiecki"
+}]
