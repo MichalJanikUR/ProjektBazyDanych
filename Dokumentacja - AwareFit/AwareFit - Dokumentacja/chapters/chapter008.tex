@@ -90,3 +90,34 @@ Wykresy generowane są na podstawie unikalnych par: partia mięśniowa oraz konk
     \item \textbf{Partia mięśniowa}: \texttt{Klatka piersiowa}
     \item \textbf{Ćwiczenie}: \texttt{Wyciskanie sztangi na ławce płaskiej}
 \end{itemize}
+
+\newpage
+\section{Dostęp do bazy danych MongoDB (NoSQL)}
+W ramach rozszerzenia projektu, system AwareFit oferuje dostęp do danych zmigrowanych do bazy NoSQL. Baza ta jest utrzymywana w chmurze (\textit{MongoDB Atlas}), co umożliwia jej zdalną weryfikację bez konieczności lokalnej konfiguracji serwera MongoDB.
+
+\subsection{Procedura logowania przy użyciu narzędzia MongoDB Compass}
+W celu przeglądania struktury dokumentowej bazy danych wykorzystywane jest darmowe narzędzie \textbf{MongoDB Compass}. Proces uzyskania dostępu do danych przebiega według następujących kroków:
+
+\begin{enumerate}
+    \item Po uruchomieniu programu \textbf{MongoDB Compass} w menu głównym wybierana jest opcja dodania nowego połączenia (\textit{New Connection}).
+    \item W polu \textbf{URI} umieszczany jest dedykowany ciąg znaków (\textit{Connection String}):
+    \begin{quote}
+        \footnotesize \verb|mongodb+srv://pgrochowalski:AwareFit2026@cluster0.ecve17l.mongodb.net/?appName=Cluster0|
+    \end{quote}
+    \item W zakładce \textbf{Advanced Connection Options}, w sekcji \textbf{Authentication}, weryfikowane są dane uwierzytelniające.
+    \item W odpowiednie pola wprowadzane są poniższe dane:
+    \begin{itemize}
+        \item \textbf{Username}: \texttt{pgrochowalski}
+        \item \textbf{Password}: \texttt{AwareFit2026}
+    \end{itemize}
+    \item Po zatwierdzeniu danych przyciskiem \textbf{Connect}, następuje nawiązanie połączenia z bazą danych o nazwie \verb|awarefit_db|, która zawiera zmigrowane kolekcje systemu AwareFit.
+\end{enumerate}
+
+
+
+\subsection{Możliwości weryfikacji danych NoSQL}
+Poprawne nawiązanie połączenia umożliwia dostęp do wszystkich 7 kluczowych kolekcji (odpowiedników relacyjnych tabel SQL). System zapewnia w tym zakresie:
+\begin{itemize}
+    \item Podgląd dokumentów w formatach JSON oraz BSON.
+    \item Weryfikację integralności danych poprzez analizę zaimportowanych rekordów.
+\end{itemize}

@@ -1,0 +1,44 @@
+\chapter{Implementacja i migracja bazy danych MongoDB}
+
+W ramach rozszerzenia projektu oraz zapewnienia skalowalności systemu AwareFit, przeprowadzono proces migracji danych z relacyjnej bazy danych PostgreSQL do nierelacyjnej bazy MongoDB. Poniższy rozdział opisuje techniczne aspekty tego procesu, od mapowania schematu po eksport danych do formatu JSON.
+
+\section{Proces migracji danych SQL do MongoDB}
+Do przeprowadzenia transformacji danych wykorzystano narzędzie \textit{MongoDB Relational Migrator}, które umożliwia automatyczne mapowanie struktur relacyjnych na model dokumentowy.
+
+\subsection{Konfiguracja połączenia i mapowanie schematu}
+Proces rozpoczęto od nawiązania połączenia z lokalną bazą danych \verb|awarefit_db|. W narzędziu konfiguracyjnym zdefiniowano parametry hosta (\textit{localhost}), nazwę użytkownika oraz hasło systemowe. 
+
+Następnie przeprowadzono mapowanie struktur:
+\begin{itemize}
+    \item Z bazy źródłowej wybrano wszystkie 7 dostępnych tabel.
+    \item Zastosowano rekomendowany przez narzędzie schemat bazy MongoDB, zachowując oryginalne nazewnictwo kolekcji.
+    \item Wygenerowano finalny schemat dokumentowy, który stał się podstawą do dalszych operacji.
+\end{itemize}
+
+\subsection{Migracja do chmury MongoDB Atlas}
+W celu zapewnienia dostępności danych w architekturze rozproszonej, wykorzystano usługę chmurową \textit{MongoDB Atlas}. 
+\begin{enumerate}
+    \item W chmurze utworzono bazę danych o nazwie zgodnej z oryginałem (\verb|awarefit_db|).
+    \item Ustanowiono połączenie między lokalnym narzędziem migracyjnym a klastrem w chmurze przy użyciu dedykowanego ciągu znaków (\textit{Connection String}).
+    \item Uruchomiono proces typu \textit{Snapshot}, który przetworzył rekordy SQL na format dokumentowy BSON i zainicjował ich przesył do chmury.
+\end{enumerate}
+
+
+Po zakończeniu operacji zweryfikowano poprawność transferu. System potwierdził migrację wszystkich 7 kolekcji oraz ponad 1000 rekordów, co wykazano poprzez porównanie zawartości tabel w PostgreSQL z odpowiadającymi im dokumentami w MongoDB.
+
+\newpage
+\section{Eksport i backup danych NoSQL}
+W celu zapewnienia przenoszalności projektu oraz możliwości odtworzenia bazy w dowolnym środowisku lokalnym, przeprowadzono procedurę eksportu danych przy użyciu narzędzia \textbf{MongoDB Compass}.
+
+\subsection{Procedura eksportu do formatu JSON}
+Proces archiwizacji danych przebiegał według następujących kroków:
+\begin{enumerate}
+    \item Nawiązano połączenie z bazą produkcyjną przy użyciu zautoryzowanego ciągu znaków.
+    \item Dla każdej z 7 kolekcji (m.in. \verb|users|, \verb|workouts|, \verb|body_measurements|) wykonano indywidualną operację eksportu.
+    \item Jako format wyjściowy wybrano \textbf{JSON}, co pozwala na łatwy podgląd struktury danych w dowolnym edytorze tekstowym.
+\end{enumerate}
+
+
+
+\subsection{Weryfikacja plików wynikowych}
+W wyniku przeprowadzonych prac uzyskano komplet plików JSON, które zostały umieszczone w repozytorium projektu. Pliki te stanowią kopię zapasową bazy danych i umożliwiają natychmiastowy import danych do nowej instancji MongoDB za pomocą komendy \verb|mongoimport|. Dzięki temu struktura danych jest niezależna od konkretnego hosta i może być weryfikowana przez prowadzącego w dowolnym momencie.
